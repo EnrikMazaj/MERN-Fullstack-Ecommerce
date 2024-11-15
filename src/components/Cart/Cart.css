@@ -1,0 +1,22 @@
+.cart-icon-container {
+    border-radius: 50%;
+    padding: 2px;
+    position: fixed;
+    bottom: 20px;
+    right: 15px;
+    background-color: rgb(252, 252, 252);
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;          
+    justify-content: center; 
+    align-items: center;    
+    width: 50px;            
+    height: 50px;           
+  }
+  
+  .shoppingCart {
+    font-size: 28px;
+    color: rgb(68, 64, 64);
+  }
+  
