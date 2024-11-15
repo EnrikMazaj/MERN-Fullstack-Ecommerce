@@ -46,7 +46,7 @@ footer {
   .comment-box textarea {
     resize: none;
     height: 100px;
-    width: 300px;
+    width: auto;
   }
   
   .comment-box input[type="submit"] {

@@ -7,11 +7,7 @@
   height: 40vmin;
   pointer-events: none;
 }
-.navbar-divider {
-  border: 0;
-  background-color: var(--primary-color); 
-  margin: 10px 0; 
-}
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

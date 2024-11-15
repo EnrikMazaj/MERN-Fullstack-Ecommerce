@@ -13,7 +13,6 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
-        <hr className="navbar-divider" />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/routes" element={<RoutesKtel />} />

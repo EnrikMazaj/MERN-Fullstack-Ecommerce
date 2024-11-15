@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Ubuntu:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Ubuntu:wght@400;500&display=swap");
 
 .buttons {
   display: flex;
@@ -11,7 +11,7 @@
 #login {
   padding: 11px;
   font-size: 18px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 500;
   cursor: pointer;
   border: none;
@@ -22,7 +22,7 @@
 #signin {
   padding: 10px;
   font-size: 18px;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: "Ubuntu", sans-serif;
   font-weight: 500;
   cursor: pointer;
   border: none;
@@ -59,13 +59,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Ensure modal is on top of all other content */
+  z-index: 10000;
 }
 
 /* Modal content styling */
 .modalContent {
   background-color: #fff;
-  padding: 15px;
+  padding-bottom: 40px;
   border-radius: 10px;
   width: 300px;
   text-align: center;
@@ -90,7 +90,7 @@
 
 /* Title styling */
 h2 {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: "Ubuntu", sans-serif;
   font-size: 24px;
   margin-bottom: 20px;
 }
@@ -100,6 +100,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  align-items: center;
 }
 
 input {
@@ -111,29 +112,27 @@ input {
   transition: border 0.3s ease;
 }
 
-input:focus {
-  border-color: #007bff; /* Blue border on focus */
-}
-
 button[type="submit"] {
   padding: 12px;
+  margin-top: 20px;
   background-color: var(--primary-color);
   color: white;
-  border: none;
   border-radius: 5px;
+  border: none;
+  width: 40%;
   cursor: pointer;
   font-size: 18px;
   transition: background-color 0.3s ease;
 }
 
 button[type="submit"]:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: rgb(78, 97, 154);
+  color: white;
 }
 
-/* Responsive adjustments */
 @media (max-width: 480px) {
   .modalContent {
-    width: 90%; /* Full width on smaller screens */
+    width: 90%;
     padding: 20px;
   }
 
@@ -141,7 +140,8 @@ button[type="submit"]:hover {
     font-size: 20px;
   }
 
-  input, button[type="submit"] {
+  input,
+  button[type="submit"] {
     font-size: 16px;
   }
 }

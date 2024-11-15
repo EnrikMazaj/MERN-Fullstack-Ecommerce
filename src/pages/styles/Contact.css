@@ -1,0 +1,20 @@
+/* Contact.css */
+.map-container-wrapper {
+    height: 400px;
+    width: 80%;    
+    margin: 0 auto; 
+    padding: 40px;
+  }
+  
+  .map-container {
+    height: 100%;
+    width: 100%;  
+    border: 2px solid #ddd; 
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    
+}
+  
+
+
+  
