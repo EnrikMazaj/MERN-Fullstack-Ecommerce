@@ -1,72 +1,147 @@
-/* Modal styling */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Ubuntu:wght@400;500&display=swap');
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-right: 10px;
+  margin-left: auto;
+}
+
+#login {
+  padding: 11px;
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  border-radius: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+#signin {
+  padding: 10px;
+  font-size: 18px;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+#login {
+  background-color: rgb(35, 114, 189);
+  color: white;
+}
+
+#signin {
+  background-color: rgb(29, 114, 99);
+  color: white;
+}
+
+#login:hover {
+  background-color: rgb(6, 33, 77);
+}
+
+#signin:hover {
+  background-color: rgb(6, 33, 77);
+}
+
+/* Modal container */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Fixed position */
-    z-index: 1000; /* Above other content */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Background overlay */
-    display: flex;
-    justify-content: center; /* Center modal */
-    align-items: center; /* Center modal vertically */
-  }
-  
-  .modal-content {
-    background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure modal is on top of all other content */
+}
+
+/* Modal content styling */
+.modalContent {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Close button */
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+  cursor: pointer;
+  color: #000;
+  transition: color 0.3s ease;
+}
+
+.closeBtn:hover {
+  color: #ff0000; /* Change color on hover */
+}
+
+/* Title styling */
+h2 {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Form styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+input:focus {
+  border-color: #007bff; /* Blue border on focus */
+}
+
+button[type="submit"] {
+  padding: 12px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .modalContent {
+    width: 90%; /* Full width on smaller screens */
     padding: 20px;
-    border-radius: 10px;
-    width: 300px;
-    text-align: center;
   }
-  
+
   h2 {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    margin: 10px 0 5px;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  .btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .login-btn {
-    background-color: #4CAF50; /* Green for Login */
-    color: white;
-  }
-  
-  .signup-btn {
-    background-color: #008CBA; /* Blue for Sign In */
-    color: white;
-  }
-  
-  .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
     font-size: 20px;
-    cursor: pointer;
   }
-  
+
+  input, button[type="submit"] {
+    font-size: 16px;
+  }
+}

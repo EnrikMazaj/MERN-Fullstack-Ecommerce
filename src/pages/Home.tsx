@@ -1,5 +1,5 @@
 import React from "react";
-import Slideshow from "../components/Slideshow/Slideshow";
+import Slideshow from "../components/Slideshow/Slideshow.tsx";
 
 const Home = () => {
   return (

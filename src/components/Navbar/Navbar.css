@@ -1,40 +1,94 @@
-* {
-  font-size: 25px;
-  padding-top: 3px;
-  align-items: center;
-}
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Ubuntu:wght@400;500&display=swap');
 
 .navbar {
   display: flex;
- 
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 img {
-  height: 140px;
-  width: 220px;
+  height: 60px;
+  width: 90px;
 }
 
 .list {
   list-style-type: none;
-  gap: 45px;
+  display: flex;
+  gap: 30px;
 }
 
 .list li {
   display: inline;
-  margin-right: 50px;
 }
 
 .list li a {
-  color: #000000;
   text-decoration: none;
-  padding: 0.5rem 0.75rem;
+  color: #000;
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
 }
 
-.list li:hover {
-  background-color: #93c2e8;
-  padding: 0.5rem 0.75rem;
+.list li a:hover {
+  color: #007bff;
+}
+
+/* Login Modal Button (for reference) */
+.buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+#login {
+  padding: 10px 20px;
+  background-color: rgb(35, 114, 189);
+  color: white;
+  border: none;
   border-radius: 20px;
-  a{
-    color: #ffffff;
+  cursor: pointer;
+}
+
+/* Hamburger Icon */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.hamburger .bar {
+  width: 30px;
+  height: 5px;
+  background-color: #333;
+  border-radius: 5px;
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .list {
+    display: none; /* Hide the menu items */
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 20px;
+    z-index: 999;
+  }
+
+  .list.active {
+    display: flex; 
+  }
+
+  .hamburger {
+    display: flex; /* Show the hamburger on small screens */
   }
 }
+
