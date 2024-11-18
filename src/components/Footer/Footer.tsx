@@ -11,7 +11,7 @@ const Footer = () => (
                 <label htmlFor="email">Email:</label>
                 <input type="email" id="email" name="email" />
                 <label htmlFor="comment">Comment:</label>
-                <textarea id="comment" name="comment" rows="4"></textarea>
+                <textarea id="comment" name="comment" ></textarea>
                 <input type="submit" value="Submit" />
             </form>
         </div>

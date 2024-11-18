@@ -5,19 +5,20 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
-  background-color: #fff;
+  background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-img {
-  height: 60px;
-  width: 90px;
+.logo {
+  height: 80px;
+  border: 3px solid black;
+  width: 120px;
 }
 
 .list {
   list-style-type: none;
   display: flex;
-  gap: 30px;
+  gap: 34px;
 }
 
 .list li {
@@ -27,12 +28,15 @@ img {
 .list li a {
   text-decoration: none;
   color: #000;
-  font-size: 18px;
+  font-size: 20px;
+  display: inline-block;
   font-family: 'Roboto', sans-serif;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .list li a:hover {
-  color: #007bff;
+  color: var(--primary-color); 
+  transform: scale(1.2); 
 }
 
 /* Login Modal Button (for reference) */
@@ -89,6 +93,14 @@ img {
 
   .hamburger {
     display: flex; /* Show the hamburger on small screens */
+  }
+}
+
+@media (min-width: 890px) {
+  .list {
+    list-style-type: none;
+    display: flex;
+    gap: 80px;
   }
 }
 

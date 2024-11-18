@@ -31,12 +31,12 @@
 }
 
 #login {
-  background-color: rgb(35, 114, 189);
+  background-color: var(--primary-color);
   color: white;
 }
 
 #signin {
-  background-color: rgb(29, 114, 99);
+  background-color: rgb(11, 96, 81);
   color: white;
 }
 

@@ -1,10 +1,10 @@
 import React from "react";
 import Slideshow from "../components/Slideshow/Slideshow.tsx";
-
+import './styles/Home.css'
 const Home = () => {
   return (
-    <div>
-      <h1>Welcome to Ktel Attikis</h1>
+    <div className="content">
+      <h1>Welcome to<strong> Ktel Attikis</strong></h1>
       <p>
         Ktel Attikis is your trusted partner for bus travel across the Attica region. Whether you are commuting for business, exploring the beautiful sights of Athens, or traveling with family and friends, we offer affordable and reliable bus services to ensure a smooth journey.
       </p>

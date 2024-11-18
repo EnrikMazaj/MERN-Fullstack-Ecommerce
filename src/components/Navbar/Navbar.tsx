@@ -12,8 +12,12 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
-      <img src={`${process.env.PUBLIC_URL}/assets/ktel.png`} alt="Ktel Logo" />
-
+      <Link to={"/"}>
+        <img className="logo"
+          src={`${process.env.PUBLIC_URL}/assets/ktel.png`}
+          alt="Ktel Logo"
+        />
+      </Link>
       {/* The mobile menu */}
       <div className={`menu ${isMenuOpen ? "active" : ""}`}>
         <ul className="list">
@@ -34,7 +38,6 @@ const Navbar = () => {
 
       <LoginModal />
 
-      
       <div className="hamburger" onClick={toggleMenu}>
         <div className="bar"></div>
         <div className="bar"></div>
@@ -45,4 +48,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

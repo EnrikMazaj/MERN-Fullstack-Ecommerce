@@ -15,7 +15,7 @@ const Contact = () => {
     shadowSize: [41, 41],
   });
   return (
-    <div>
+    <div className="content">
       <h3>You can find us here!</h3>
       <div className="map-container-wrapper">
         <MapContainer
