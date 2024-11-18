@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Ubuntu:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Ubuntu:wght@400;500&display=swap");
 
 .navbar {
   display: flex;
@@ -30,13 +30,13 @@
   color: #000;
   font-size: 20px;
   display: inline-block;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .list li a:hover {
-  color: var(--primary-color); 
-  transform: scale(1.2); 
+  color: var(--primary-color);
+  transform: scale(1.2);
 }
 
 /* Login Modal Button (for reference) */
@@ -63,6 +63,7 @@
   width: 30px;
   height: 25px;
   cursor: pointer;
+  transition: transform 0.3s ease-in-out; /* Smooth transition for the hamburger */
 }
 
 .hamburger .bar {
@@ -70,29 +71,53 @@
   height: 5px;
   background-color: #333;
   border-radius: 5px;
+  transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out; /* Smooth transition for each bar */
+}
+
+/* Transform the hamburger bars into an 'X' when active */
+.hamburger.active .bar:nth-child(1) {
+  transform: translateY(10px) rotate(45deg); /* Move first bar down and rotate */
+}
+
+.hamburger.active .bar:nth-child(2) {
+  opacity: 0; /* Hide the middle bar */
+}
+
+.hamburger.active .bar:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg); /* Move third bar up and rotate */
 }
 
 /* Responsive Navbar */
 @media (max-width: 768px) {
-  .list {
-    display: none; /* Hide the menu items */
-    flex-direction: column;
+  .menu {
     position: absolute;
     top: 80px;
     right: 20px;
     background-color: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    padding: 20px;
+    border-radius: 15px;
     z-index: 999;
+    display: none;
+    .list {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 30px 20px 30px;
+      height: auto;
+      min-width: 100px;
+      li a {
+        font-size: 18px;
+      }
+    }
   }
 
-  .list.active {
-    display: flex; 
+
+
+  .menu.active {
+    display: flex;
   }
 
   .hamburger {
-    display: flex; /* Show the hamburger on small screens */
+    display: flex;
   }
 }
 
@@ -103,4 +128,3 @@
     gap: 80px;
   }
 }
-
