@@ -53,6 +53,23 @@ label span {
   margin-top: 20px;
 }
 
+.confirm-button {
+  position: flex;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.confirm-button:hover {
+  background-color: #45a049;
+}
+
+
 .departure-calendar-container,
 .return-calendar-container {
   display: flex;
