@@ -45,7 +45,11 @@ const Tickets = () => {
 
 
   const handleConfirm = () => {
-    if (!selectedRoute || !selectedDates) {
+    if (!selectedRoute) {
+      toast.error("Please select a route before confirming!");
+      return;
+    }
+    else if(!selectedDates){
       toast.error("Please select a route before confirming!");
       return;
     }
@@ -106,25 +110,12 @@ const Tickets = () => {
             </div>
           </div>
 
-          <div className="selected-info">
-            {selectedRoute && <p>Route Selected: {selectedRoute}</p>}
-            <p>
-              Departure Date:{" "}
-              {selectedDates
-                ? Array.isArray(selectedDates)
-                  ? `${selectedDates[0].toDateString()} to ${selectedDates[1].toDateString()}`
-                  : selectedDates.toDateString()
-                : "Not selected"}
-            </p>
-          </div>
 
           <button className="confirm-button" onClick={handleConfirm}>
             Confirm
           </button>
         </div>
 
-
-      {/* Toast Container to display the toast notifications */}
       <ToastContainer />
     </div>
   );

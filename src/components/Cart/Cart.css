@@ -1,22 +1,85 @@
+/* Existing styles for the cart icon container */
 .cart-icon-container {
-    border-radius: 50%;
-    padding: 2px;
-    position: fixed;
-    bottom: 20px;
-    right: 15px;
-    background-color: rgb(252, 252, 252);
-    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.6);
-    cursor: pointer;
-    z-index: 1000;
-    display: flex;          
-    justify-content: center; 
-    align-items: center;    
-    width: 50px;            
-    height: 50px;           
-  }
-  
-  .shoppingCart {
-    font-size: 28px;
-    color: rgb(68, 64, 64);
-  }
-  
+  border-radius: 50%;
+  padding: 2px;
+  position: fixed;
+  bottom: 20px;
+  right: 15px;
+  background-color: rgb(252, 252, 252);
+  box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;          
+  justify-content: center; 
+  align-items: center;    
+  width: 50px;            
+  height: 50px;           
+}
+
+/* Shopping cart icon */
+.shoppingCart {
+  font-size: 28px;
+  color: rgb(68, 64, 64);
+}
+
+/* Cart count badge */
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  font-size: 14px;
+  border-radius: 50%;
+  padding: 5px 10px;
+}
+
+/* Cart details container (for showing tickets in the cart) */
+.cart-details {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-top: 10px;
+  width: 250px;
+  position: fixed;
+  bottom: 80px;  /* Slightly above the cart icon */
+  right: 15px;
+  z-index: 999; /* Below the icon but still visible */
+}
+
+/* Cart item styling */
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-size: 14px;
+}
+
+.remove-btn {
+  background-color: #ff5c5c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  background-color: #e04e4e;
+}
+
+.clear-cart-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.clear-cart-btn:hover {
+  background-color: #45a049;
+}
