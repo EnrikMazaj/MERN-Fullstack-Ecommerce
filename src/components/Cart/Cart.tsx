@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeTicket, clearCart } from "../../features/cartSlice.tsx";
 import { FaShoppingCart } from "react-icons/fa";
+import { RootState } from '../../redux/store.tsx';
 import "./Cart.css";
 
 const Cart = () => {
   const [isCartVisible, setCartVisibility] = useState(false);
-  const tickets = useSelector((state) => state.cart.tickets);
+  const tickets = useSelector((state: RootState) => state.cart.tickets);
   const dispatch = useDispatch();
 
   const totalTickets = tickets.length;

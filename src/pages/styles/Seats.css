@@ -17,6 +17,7 @@
 }
 
 .bus-seat {
+  cursor:pointer;
   background-color: green;
   border-radius: 40%;
   color: white;
@@ -29,8 +30,13 @@
 }
 
 .bus-seat.selected {
-  background-color: lightblue;
+  background-color: rgb(22, 27, 44);
   color: black;
+}
+
+.bus-seat.disabled{
+  background-color:rgb(22, 27, 44);
+  cursor:not-allowed;
 }
 
 .divider {

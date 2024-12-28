@@ -1,16 +1,18 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import SeatModal from "../components/SeatModal/SeatModal.tsx";
 import './styles/Seats.css';
+import { RootState } from "../redux/store.tsx";
 
 const Seats = () => {
   const [selectedSeat, setSelectedSeat] = useState(null);
 
+  const tickets = useSelector((state:RootState) => state.cart.tickets);
+
   const handleSeatClick = (seatNumber) => {
-    if (selectedSeat === seatNumber) {
-      setSelectedSeat(null); 
-    } else {
+    if (!tickets.some(ticket=> ticket.seatNumber === seatNumber)) {
       setSelectedSeat(seatNumber); 
-    }
+    } 
   };
 
   return (
@@ -20,7 +22,7 @@ const Seats = () => {
         <div className="bus-container">
           {Array.from({ length: 40 }, (_, i) => (
             <p
-              className={`bus-seat ${selectedSeat === i + 1 ? "selected" : ""}`}
+              className={`bus-seat ${tickets.some(ticket =>ticket.seatNumber === i + 1) ? "disabled" : ""}`}
               key={i + 1}
               onClick={() => handleSeatClick(i + 1)}
             >
@@ -30,10 +32,7 @@ const Seats = () => {
           <div className="divider"></div>
         </div>
       </div>
-      <SeatModal 
-        selectedSeat={selectedSeat}
-        setSelectedSeat={setSelectedSeat}
-      />
+      {selectedSeat && <SeatModal selectedSeat={selectedSeat} setSelectedSeat={setSelectedSeat} />}
     </div>
   );
 };

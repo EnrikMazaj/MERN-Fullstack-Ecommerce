@@ -1,10 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {Ticket} from "./types"
 
+
+interface CartState{
+  tickets:Ticket[];
+}
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    tickets: [], // Properly initialize the tickets array
-  },
+    tickets: [], 
+  } as CartState,
   reducers: {
     addTicket: (state, action) => {
       state.tickets.push(action.payload);
