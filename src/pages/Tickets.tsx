@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "./styles/Tickets.css";
 import "react-calendar/dist/Calendar.css";
-import Seats from "../components/Seats/Seats.tsx"; // Import the Seats component
-import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import the Toastify CSS
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
+import { useNavigate } from "react-router-dom";
 
 const Tickets = () => {
   const [selectedRoute, setSelectedRoute] = useState("");
   const [isRoundTrip, setIsRoundTrip] = useState(false);
   const [selectedDates, setSelectedDates] = useState<Date | [Date, Date] | null>(new Date());
-  const [isConfirmed, setIsConfirmed] = useState(false);
-
+  const navigate = useNavigate();
+  
   const locations = [
     "Athens",
     "Thessaloniki",
@@ -43,32 +43,27 @@ const Tickets = () => {
     }
   };
 
+
   const handleConfirm = () => {
     if (!selectedRoute || !selectedDates) {
-      // Show toast notification for missing route or dates
-      toast.error("Please select both a route and a departure date before confirming!");
-      return; // Don't proceed if the validation fails
+      toast.error("Please select a route before confirming!");
+      return;
     }
 
-    setIsConfirmed(true);
+    navigate("/seats", {
+      state: {
+        selectedRoute,
+        isRoundTrip,
+        selectedDates,
+      },
+    });
   };
 
-  const handleBack = () => {
-    setIsConfirmed(false); // Go back to the initial selection page
-  };
 
   return (
     <div className="content">
       <h1>Tickets</h1>
 
-      {isConfirmed ? (
-        <Seats
-          selectedRoute={selectedRoute}
-          isRoundTrip={isRoundTrip}
-          selectedDates={selectedDates}
-          onBack={handleBack} // Passing the back function to allow user to go back
-        />
-      ) : (
         <div>
           <h3>Route</h3>
           <div className="selection">
@@ -127,7 +122,7 @@ const Tickets = () => {
             Confirm
           </button>
         </div>
-      )}
+
 
       {/* Toast Container to display the toast notifications */}
       <ToastContainer />

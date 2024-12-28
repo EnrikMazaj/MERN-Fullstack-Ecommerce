@@ -6,6 +6,7 @@ import Contact from "./pages/Contact.tsx";
 import RoutesKtel from "./pages/Routes.tsx";
 import Navbar from "./components/Navbar/Navbar.tsx";
 import Footer from "./components/Footer/Footer.tsx";
+import Seats from "./pages/Seats.tsx"
 import React from "react";
 import Cart from "./components/Cart/Cart.tsx";
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/routes" element={<RoutesKtel />} />
           <Route path="/tickets" element={<Tickets />} />
+          <Route path="/seats" element={<Seats />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
         <Cart />

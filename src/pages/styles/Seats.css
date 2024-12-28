@@ -1,0 +1,48 @@
+.bus {
+  background-color: rgb(167, 168, 189);
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  border-radius: 20%;
+  width: 350px;
+  padding: 10px;
+  margin: 0 auto; 
+}
+
+.bus-container {
+  display: grid;
+  grid-template-columns: repeat(2, auto) 20px repeat(2, auto);
+  gap: 10px;
+  position: relative;
+}
+
+.bus-seat {
+  background-color: green;
+  border-radius: 40%;
+  color: white;
+  height: 45px;
+  width: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.bus-seat.selected {
+  background-color: lightblue;
+  color: black;
+}
+
+.divider {
+  grid-column: 3;
+  grid-row: 11 / 1;
+  width: 5px;
+  background-color: black;
+}
+
+
+@media (max-width: 500px) {
+  .bus {
+    width: 300px; /* Adjust width to 60% for smaller screens */
+  }
+}

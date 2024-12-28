@@ -1,0 +1,65 @@
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  
+  .seatForm button:hover {
+    background-color: #0056b3;
+  }
+  
+.custom-select {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+}
+
+h2{
+    padding-top:15px;
+}
+
+.custom-select select {
+    width: 72.5%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    appearance: none; 
+    cursor: pointer;
+    outline: none; 
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+
+.custom-select select:hover {
+    border-color: #007bff;
+}
+
+.custom-select select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+.custom-select select option {
+    padding: 10px;
+    background-color: #ffffff;
+    color: #333;
+    font-size: 16px;
+}
+
+
+.custom-select select option:disabled {
+    color: #999;
+}
