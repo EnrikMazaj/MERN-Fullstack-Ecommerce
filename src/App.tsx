@@ -9,10 +9,13 @@ import Footer from './components/Footer/Footer.tsx';
 import Seats from './pages/Seats.tsx';
 import React from 'react';
 import Cart from './components/Cart/Cart.tsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <Router>
+      <ToastContainer />
       <div className="App">
         <Navbar />
         <Routes>
