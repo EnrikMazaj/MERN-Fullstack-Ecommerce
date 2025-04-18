@@ -11,24 +11,27 @@ import React from 'react';
 import Cart from './components/Cart/Cart.tsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <Router>
-      <ToastContainer />
-      <div className="App">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/routes" element={<RoutesKtel />} />
-          <Route path="/tickets" element={<Tickets />} />
-          <Route path="/seats" element={<Seats />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-        <Cart />
-        <Footer />
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <ToastContainer />
+        <div className="App">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/routes" element={<RoutesKtel />} />
+            <Route path="/tickets" element={<Tickets />} />
+            <Route path="/seats" element={<Seats />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+          <Cart />
+          <Footer />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
