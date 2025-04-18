@@ -1,14 +1,24 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./dist",
     "allowJs": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["backend/src/*"],
+      "@config/*": ["backend/src/config/*"],
+      "@routes/*": ["backend/src/routes/*"],
+      "@controllers/*": ["backend/src/controllers/*"],
+      "@models/*": ["backend/src/models/*"],
+      "@middleware/*": ["backend/src/middleware/*"],
+      "@utils/*": ["backend/src/utils/*"]
+    }
   },
   "ts-node": {
     "esm": true

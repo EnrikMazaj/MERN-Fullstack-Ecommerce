@@ -1,4 +1,4 @@
-import express, { Response } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectDB } from './config/database.js';
@@ -13,9 +13,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.use('/heathcheck',(res:Response) => {
-    res.send(200);
+// Healthcheck endpoint
+app.get('/healthcheck', (req, res) => {
+    res.status(200).json({ message: 'Server is running' });
 });
 
 // Connect to database
