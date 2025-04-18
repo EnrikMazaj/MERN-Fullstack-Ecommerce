@@ -12,6 +12,7 @@ import Cart from './components/Cart/Cart.tsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './context/AuthContext';
+import MyBookings from './pages/MyBookings.tsx';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/tickets" element={<Tickets />} />
             <Route path="/seats" element={<Seats />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/my-bookings" element={<MyBookings />} />
           </Routes>
           <Cart />
           <Footer />

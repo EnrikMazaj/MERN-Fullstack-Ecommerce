@@ -1,0 +1,227 @@
+.my-bookings-container {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #333;
+  padding-bottom: 100px;
+  background-color: rgba(248, 249, 250, 0.92);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.my-bookings-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.08;
+  z-index: -1;
+  border-radius: 16px;
+}
+
+.my-bookings-container h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 800;
+  color: #2c3e50;
+  position: relative;
+  padding-bottom: 15px;
+  letter-spacing: -0.5px;
+}
+
+.my-bookings-container h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: #3498db;
+  border-radius: 3px;
+}
+
+.my-bookings-container h1::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: #2ecc71;
+  border-radius: 3px;
+  margin-left: 60px;
+}
+
+.bookings-list {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  margin-top: 30px;
+}
+
+.booking-card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-left: 4px solid var(--primary-color);
+}
+
+.booking-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.booking-header h3 {
+  font-family: "Ubuntu", sans-serif;
+  color: #2c3e50;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status.active {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.status.completed {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status.cancelled {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.booking-details {
+  margin-bottom: 20px;
+}
+
+.booking-details p {
+  margin: 8px 0;
+  font-family: "Roboto", sans-serif;
+  color: #555;
+}
+
+.booking-details strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.booking-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.view-details-btn, .cancel-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.view-details-btn {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.view-details-btn:hover {
+  background-color: rgb(6, 33, 77);
+  transform: translateY(-2px);
+}
+
+.cancel-btn {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #ff5252;
+  transform: translateY(-2px);
+}
+
+.no-bookings {
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  color: #666;
+  grid-column: 1 / -1;
+  padding: 40px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .my-bookings-container {
+    margin: 20px auto;
+    padding: 30px 15px;
+  }
+
+  .my-bookings-container h1 {
+    font-size: 28px;
+  }
+
+  .bookings-list {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-actions {
+    flex-direction: column;
+  }
+
+  .view-details-btn, .cancel-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .my-bookings-container {
+    padding: 20px 10px;
+  }
+
+  .my-bookings-container h1 {
+    font-size: 24px;
+  }
+
+  .booking-card {
+    padding: 15px;
+  }
+} 

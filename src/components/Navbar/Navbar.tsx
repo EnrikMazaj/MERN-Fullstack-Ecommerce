@@ -2,9 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 import LoginModal from '../LoginModal/LoginModal.tsx';
+import { useAuth } from '../../context/AuthContext';
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const { isLoggedIn } = useAuth();
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   const hamburgerRef = useRef<HTMLDivElement | null>(null);
@@ -67,6 +69,13 @@ const Navbar = () => {
               Contact
             </Link>
           </li>
+          {isLoggedIn && (
+            <li>
+              <Link to="/my-bookings" onClick={handleLinkClick}>
+                My Bookings
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
 
