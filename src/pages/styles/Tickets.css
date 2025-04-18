@@ -1,106 +1,194 @@
 /* Tickets.css */
 .content {
-  padding: 20px;
-  text-align: center;
-}
-
-.selection {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: #f8f9fa;
 }
 
 h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-h3 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-}
-
-.route-dropdown {
-  padding: 10px;
-  font-size: 16px;
-  width: 200px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-
-input[type="checkbox"] {
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-label {
-  font-size: 16px;
-  font-family: "Roboto", sans-serif;
-  cursor: pointer;
-}
-
-label span {
-  font-weight: 500;
-}
-
-.calendars-container {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 20px;
-}
-
-.confirm-button {
-  position: flex;
-  bottom: 20px;
-  right: 20px;
-  margin-top:40px;
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.confirm-button:hover {
-  background-color: #45a049;
-}
-
-
-.departure-calendar-container,
-.return-calendar-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 300px;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #2d3748;
+  font-weight: 700;
   text-align: center;
 }
 
-.selected-info {
-  margin-top: 20px;
+h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #4a5568;
+  font-weight: 600;
+}
+
+.selection {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.route-dropdown {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: white;
+  color: #2d3748;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+.route-dropdown:hover {
+  border-color: #4299e1;
+}
+
+.route-dropdown:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+}
+
+.trip-toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #f7fafc;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.trip-toggle-container label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 4px;
+  border: 2px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #4299e1;
+  border-color: #4299e1;
+}
+
+.calendars-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin: 2rem 0;
+}
+
+.departure-calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Calendar customization */
+.react-calendar {
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  font-family: inherit;
+}
+
+.react-calendar__tile {
+  padding: 1rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #ebf8ff;
+  color: #2b6cb0;
+}
+
+.react-calendar__tile--active {
+  background: #4299e1 !important;
+  color: white !important;
+}
+
+.react-calendar__tile--now {
+  background: #ebf8ff;
+  color: #2b6cb0;
+}
+
+.confirm-button {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem 2rem;
+  background-color: #4299e1;
+  color: white;
+  border: none;
+  border-radius: 8px;
   font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 2rem auto;
+  display: block;
 }
 
-.selected-info p {
-    margin: 55px 0;
+.confirm-button:hover {
+  background-color: #3182ce;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.confirm-button:active {
+  transform: translateY(0);
+}
 
-@media (max-width: 700px) {
-    .calendars-container {
-      flex-direction: column; 
-      align-items: center; 
-      gap: 20px; 
-    }
-  
-    .departure-calendar-container,
-    .return-calendar-container {
-      width: 100%;
-      max-width: 300px; 
-    }
+@media (max-width: 768px) {
+  .content {
+    padding: 1rem;
   }
+
+  .selection {
+    padding: 1.5rem;
+  }
+
+  .calendars-container {
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .react-calendar {
+    max-width: 100%;
+  }
+}
   

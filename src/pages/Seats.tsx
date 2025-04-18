@@ -18,21 +18,32 @@ const Seats = () => {
   return (
     <div className="content">
       <h1>Seats</h1>
-      <div className="bus">
-        <div className="bus-container">
-          {Array.from({ length: 40 }, (_, i) => (
-            <p
-              className={`bus-seat ${tickets.some(ticket =>ticket.seatNumber === i + 1) ? "disabled" : ""}`}
-              key={i + 1}
-              onClick={() => handleSeatClick(i + 1)}
-            >
-              {i + 1}
-            </p>
-          ))}
-          <div className="divider"></div>
+      <div className="seats-container">
+        <div className="bus">
+          <div className="bus-container">
+            {Array.from({ length: 40 }, (_, i) => (
+              <p
+                className={`bus-seat ${tickets.some(ticket =>ticket.seatNumber === i + 1) ? "disabled" : ""} ${selectedSeat === i + 1 ? "selected" : ""}`}
+                key={i + 1}
+                onClick={() => handleSeatClick(i + 1)}
+              >
+                {i + 1}
+              </p>
+            ))}
+            <div className="divider"></div>
+          </div>
+        </div>
+        <div className="seat-details-panel">
+          {selectedSeat ? (
+            <SeatModal selectedSeat={selectedSeat} setSelectedSeat={setSelectedSeat} />
+          ) : (
+            <div className="no-seat-selected">
+              <h2>Select a Seat</h2>
+              <p>Click on an available seat to book it</p>
+            </div>
+          )}
         </div>
       </div>
-      {selectedSeat && <SeatModal selectedSeat={selectedSeat} setSelectedSeat={setSelectedSeat} />}
     </div>
   );
 };
