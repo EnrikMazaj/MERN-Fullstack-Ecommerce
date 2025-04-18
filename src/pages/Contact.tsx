@@ -1,17 +1,17 @@
-import React from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import "./styles/Contact.css";
-import L, { LatLngTuple } from "leaflet";
-import "leaflet/dist/leaflet.css";
+import React from 'react';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import './styles/Contact.css';
+import L, { LatLngTuple } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 const Contact = () => {
   const coordinates: LatLngTuple = [37.9910994, 23.7320582];
 
   const icon = new L.Icon({
-    iconUrl: require("leaflet/dist/images/marker-icon.png"),
+    iconUrl: require('leaflet/dist/images/marker-icon.png'),
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
-    shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
     shadowSize: [41, 41],
   });
   return (

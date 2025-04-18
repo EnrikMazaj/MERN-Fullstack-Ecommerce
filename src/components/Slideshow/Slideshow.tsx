@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import "./Slideshow.css";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import React, { useState } from 'react';
+import './Slideshow.css';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 const Slideshow = () => {
   const images = [
-    "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/cc/8d/2a/the-beautiful-mylopotamos.jpg?w=700&h=-1&s=1",
-    "https://wowiwalkers.com/wp-content/uploads/2021/10/Thessaloniki-Photoshop.jpg",
+    'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/cc/8d/2a/the-beautiful-mylopotamos.jpg?w=700&h=-1&s=1',
+    'https://wowiwalkers.com/wp-content/uploads/2021/10/Thessaloniki-Photoshop.jpg',
   ];
 
   const [index, setIndex] = useState(0);
@@ -30,8 +30,10 @@ const Slideshow = () => {
         <FaArrowRight />
       </button>
       <div className="index-number">
-      <p>{index + 1} / {images.length}</p>
-    </div>
+        <p>
+          {index + 1} / {images.length}
+        </p>
+      </div>
     </div>
   );
 };

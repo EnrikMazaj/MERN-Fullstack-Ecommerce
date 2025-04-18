@@ -1,28 +1,30 @@
-import React, { useState } from "react";
-import Calendar from "react-calendar";
-import "./styles/Tickets.css";
-import "react-calendar/dist/Calendar.css";
-import { ToastContainer, toast } from 'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css'; 
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import Calendar from 'react-calendar';
+import './styles/Tickets.css';
+import 'react-calendar/dist/Calendar.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const Tickets = () => {
-  const [selectedRoute, setSelectedRoute] = useState("");
+  const [selectedRoute, setSelectedRoute] = useState('');
   const [isRoundTrip, setIsRoundTrip] = useState(false);
-  const [selectedDates, setSelectedDates] = useState<Date | [Date, Date] | null>(new Date());
+  const [selectedDates, setSelectedDates] = useState<
+    Date | [Date, Date] | null
+  >(new Date());
   const navigate = useNavigate();
-  
+
   const locations = [
-    "Athens",
-    "Thessaloniki",
-    "Patras",
-    "Heraklion",
-    "Chania",
-    "Larissa",
-    "Ioannina",
-    "Kalamata",
-    "Volos",
-    "Rhodes",
+    'Athens',
+    'Thessaloniki',
+    'Patras',
+    'Heraklion',
+    'Chania',
+    'Larissa',
+    'Ioannina',
+    'Kalamata',
+    'Volos',
+    'Rhodes',
   ];
 
   const today = new Date();
@@ -43,18 +45,16 @@ const Tickets = () => {
     }
   };
 
-
   const handleConfirm = () => {
     if (!selectedRoute) {
-      toast.error("Please select a route before confirming!");
+      toast.error('Please select a route before confirming!');
       return;
-    }
-    else if(!selectedDates){
-      toast.error("Please select a route before confirming!");
+    } else if (!selectedDates) {
+      toast.error('Please select a route before confirming!');
       return;
     }
 
-    navigate("/seats", {
+    navigate('/seats', {
       state: {
         selectedRoute,
         isRoundTrip,
@@ -63,58 +63,56 @@ const Tickets = () => {
     });
   };
 
-
   return (
     <div className="content">
       <h1>Tickets</h1>
 
-        <div>
-          <h3>Route</h3>
-          <div className="selection">
-            <select
-              className="route-dropdown"
-              value={selectedRoute}
-              onChange={handleRouteChange}
-            >
-              <option value="" disabled>
-                Select a route
+      <div>
+        <h3>Route</h3>
+        <div className="selection">
+          <select
+            className="route-dropdown"
+            value={selectedRoute}
+            onChange={handleRouteChange}
+          >
+            <option value="" disabled>
+              Select a route
+            </option>
+            {locations.map((location, index) => (
+              <option key={index} value={location}>
+                {location}
               </option>
-              {locations.map((location, index) => (
-                <option key={index} value={location}>
-                  {location}
-                </option>
-              ))}
-            </select>
+            ))}
+          </select>
 
-            <div className="trip-toggle-container">
-              <label>
-                <input
-                  type="checkbox"
-                  checked={isRoundTrip}
-                  onChange={handleTripTypeToggle}
-                />
-                <span>{isRoundTrip ? "Round Trip" : "One-Way"}</span>
-              </label>
-            </div>
-          </div>
-
-          <div className="calendars-container">
-            <div className="departure-calendar-container">
-              <h3>Departure Date</h3>
-              <Calendar
-                onChange={(value) => handleDateChange(value)}
-                tileDisabled={({ date }) => date <= yesterday}
-                selectRange={isRoundTrip}
-                value={selectedDates}
+          <div className="trip-toggle-container">
+            <label>
+              <input
+                type="checkbox"
+                checked={isRoundTrip}
+                onChange={handleTripTypeToggle}
               />
-            </div>
+              <span>{isRoundTrip ? 'Round Trip' : 'One-Way'}</span>
+            </label>
           </div>
-
-
-          <button className="confirm-button" onClick={handleConfirm}>
-            Confirm
-          </button>
         </div>
+
+        <div className="calendars-container">
+          <div className="departure-calendar-container">
+            <h3>Departure Date</h3>
+            <Calendar
+              onChange={(value) => handleDateChange(value)}
+              tileDisabled={({ date }) => date <= yesterday}
+              selectRange={isRoundTrip}
+              value={selectedDates}
+            />
+          </div>
+        </div>
+
+        <button className="confirm-button" onClick={handleConfirm}>
+          Confirm
+        </button>
+      </div>
 
       <ToastContainer />
     </div>
@@ -122,4 +120,3 @@ const Tickets = () => {
 };
 
 export default Tickets;
-

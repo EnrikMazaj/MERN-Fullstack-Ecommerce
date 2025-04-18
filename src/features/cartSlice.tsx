@@ -1,14 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
-import {Ticket} from "./types"
+import { createSlice } from '@reduxjs/toolkit';
+import { Ticket } from './types';
 
-
-interface CartState{
-  tickets:Ticket[];
+interface CartState {
+  tickets: Ticket[];
 }
 const cartSlice = createSlice({
-  name: "cart",
+  name: 'cart',
   initialState: {
-    tickets: [], 
+    tickets: [],
   } as CartState,
   reducers: {
     addTicket: (state, action) => {

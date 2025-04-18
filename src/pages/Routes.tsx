@@ -1,43 +1,43 @@
-import React from "react";
-import "./styles/Routes.css";
+import React from 'react';
+import './styles/Routes.css';
 
 const Routes = () => {
   const busRoutes = [
     {
-      time: "08:00 AM",
-      bus: "Express A1",
-      destination: "Athens Central",
-      price: "$15",
+      time: '08:00 AM',
+      bus: 'Express A1',
+      destination: 'Athens Central',
+      price: '$15',
     },
     {
-      time: "10:00 AM",
-      bus: "Express B2",
-      destination: "Thessaloniki",
-      price: "$30",
+      time: '10:00 AM',
+      bus: 'Express B2',
+      destination: 'Thessaloniki',
+      price: '$30',
     },
     {
-      time: "12:30 PM",
-      bus: "Standard C3",
-      destination: "Patras",
-      price: "$20",
+      time: '12:30 PM',
+      bus: 'Standard C3',
+      destination: 'Patras',
+      price: '$20',
     },
     {
-      time: "02:00 PM",
-      bus: "Express D4",
-      destination: "Heraklion",
-      price: "$50",
+      time: '02:00 PM',
+      bus: 'Express D4',
+      destination: 'Heraklion',
+      price: '$50',
     },
     {
-      time: "04:00 PM",
-      bus: "Standard E5",
-      destination: "Ioannina",
-      price: "$25",
+      time: '04:00 PM',
+      bus: 'Standard E5',
+      destination: 'Ioannina',
+      price: '$25',
     },
     {
-      time: "06:00 PM",
-      bus: "Express F6",
-      destination: "Kalamata",
-      price: "$35",
+      time: '06:00 PM',
+      bus: 'Express F6',
+      destination: 'Kalamata',
+      price: '$35',
     },
   ];
 

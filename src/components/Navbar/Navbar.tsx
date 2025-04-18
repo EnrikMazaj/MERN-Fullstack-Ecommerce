@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import "./Navbar.css";
-import LoginModal from "../LoginModal/LoginModal.tsx";
+import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import './Navbar.css';
+import LoginModal from '../LoginModal/LoginModal.tsx';
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -25,19 +25,19 @@ const Navbar = () => {
   };
 
   const handleLinkClick = () => {
-    setMenuOpen(false); 
+    setMenuOpen(false);
   };
 
   useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener('click', handleClickOutside);
     };
   }, []);
 
   return (
     <div className="navbar">
-      <Link to={"/"}>
+      <Link to={'/'}>
         <img
           className="logo"
           src={`${process.env.PUBLIC_URL}/assets/ktel.png`}
@@ -45,19 +45,27 @@ const Navbar = () => {
         />
       </Link>
       {/* The mobile menu */}
-      <div ref={menuRef} className={`menu ${isMenuOpen ? "active" : ""}`}>
+      <div ref={menuRef} className={`menu ${isMenuOpen ? 'active' : ''}`}>
         <ul className="list">
           <li>
-            <Link to="/" onClick={handleLinkClick}>Home</Link>
+            <Link to="/" onClick={handleLinkClick}>
+              Home
+            </Link>
           </li>
           <li>
-            <Link to="/Routes" onClick={handleLinkClick}>Routes</Link>
+            <Link to="/Routes" onClick={handleLinkClick}>
+              Routes
+            </Link>
           </li>
           <li>
-            <Link to="/Tickets" onClick={handleLinkClick}>Tickets</Link>
+            <Link to="/Tickets" onClick={handleLinkClick}>
+              Tickets
+            </Link>
           </li>
           <li>
-            <Link to="/Contact" onClick={handleLinkClick}>Contact</Link>
+            <Link to="/Contact" onClick={handleLinkClick}>
+              Contact
+            </Link>
           </li>
         </ul>
       </div>
@@ -66,7 +74,7 @@ const Navbar = () => {
 
       <div
         ref={hamburgerRef}
-        className={`hamburger ${isMenuOpen ? "active" : ""}`}
+        className={`hamburger ${isMenuOpen ? 'active' : ''}`}
         onClick={toggleMenu}
       >
         <div className="bar"></div>
@@ -78,4 +86,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

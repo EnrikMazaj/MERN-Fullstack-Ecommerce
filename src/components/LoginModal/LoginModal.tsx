@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import './LoginModal.css';
 
 const LoginModal = () => {
@@ -7,12 +7,12 @@ const LoginModal = () => {
 
   const handleLoginClick = () => {
     setLoginOpen(true);
-    setRegisterOpen(false);  // Close Register modal when Login is clicked
+    setRegisterOpen(false); // Close Register modal when Login is clicked
   };
 
   const handleRegisterClick = () => {
     setRegisterOpen(true);
-    setLoginOpen(false);  // Close Login modal when Register is clicked
+    setLoginOpen(false); // Close Login modal when Register is clicked
   };
 
   const handleCloseLogin = () => {
@@ -25,14 +25,20 @@ const LoginModal = () => {
 
   return (
     <div className="buttons">
-      <button id="login" onClick={handleLoginClick}>Login</button>
-      <button id="signin" onClick={handleRegisterClick}>Register</button>
+      <button id="login" onClick={handleLoginClick}>
+        Login
+      </button>
+      <button id="signin" onClick={handleRegisterClick}>
+        Register
+      </button>
 
       {/* Login Modal */}
       {isLoginOpen && (
         <div className="modal">
           <div className="modalContent">
-            <span className="closeBtn" onClick={handleCloseLogin}>&times;</span>
+            <span className="closeBtn" onClick={handleCloseLogin}>
+              &times;
+            </span>
             <h2>Login Form</h2>
             <form>
               <input type="text" placeholder="Username" />
@@ -47,7 +53,9 @@ const LoginModal = () => {
       {isRegisterOpen && (
         <div className="modal">
           <div className="modalContent">
-            <span className="closeBtn" onClick={handleCloseRegister}>&times;</span>
+            <span className="closeBtn" onClick={handleCloseRegister}>
+              &times;
+            </span>
             <h2>Register Form</h2>
             <form>
               <input type="text" placeholder="Username" />
