@@ -1,6 +1,6 @@
 {
   "watch": ["backend"],
-  "ext": ".ts,.tsx,.js",
+  "ext": ".ts,.js",
   "ignore": [],
-  "exec": "ts-node ./backend/server.tsx"
+  "exec": "node --experimental-specifier-resolution=node --loader ts-node/esm ./backend/src/server.ts"
 }
