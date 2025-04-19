@@ -28,6 +28,20 @@ function SeatModal({ selectedSeat, setSelectedSeat }) {
     setSelectedSeat(null);
   };
 
+  // Get price based on ticket type
+  const getTicketPrice = (type: string) => {
+    switch (type) {
+      case 'student':
+        return 11;
+      case 'standard':
+        return 16;
+      case 'kids':
+        return 6;
+      default:
+        return 0;
+    }
+  };
+
   // ADD TICKET FUNCTION
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -36,6 +50,7 @@ function SeatModal({ selectedSeat, setSelectedSeat }) {
         addTicket({
           seatNumber: selectedSeat,
           ticketType: ticketType,
+          price: getTicketPrice(ticketType),
         })
       );
       handleCloseModal();
@@ -66,9 +81,9 @@ function SeatModal({ selectedSeat, setSelectedSeat }) {
                   <option value="" disabled selected>
                     Select a ticket type
                   </option>
-                  <option value="student">Student - $11</option>
-                  <option value="standard">Standard - $16</option>
-                  <option value="kids">Kids under 12 - $6</option>
+                  <option value="student">Student - €11</option>
+                  <option value="standard">Standard - €16</option>
+                  <option value="kids">Kids under 12 - €6</option>
                 </select>
               </div>
               <button type="submit">Add to Cart</button>
@@ -100,9 +115,9 @@ function SeatModal({ selectedSeat, setSelectedSeat }) {
             <option value="" disabled selected>
               Select a ticket type
             </option>
-            <option value="student">Student - $11</option>
-            <option value="standard">Standard - $16</option>
-            <option value="kids">Kids under 12 - $6</option>
+            <option value="student">Student - €11</option>
+            <option value="standard">Standard - €16</option>
+            <option value="kids">Kids under 12 - €6</option>
           </select>
         </div>
         <button type="submit">Add to Cart</button>

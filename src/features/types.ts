@@ -2,4 +2,5 @@
 export interface Ticket {
   seatNumber: number;
   ticketType: string;
+  price: number;
 }

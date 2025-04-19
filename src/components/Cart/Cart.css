@@ -1,85 +1,161 @@
-/* Existing styles for the cart icon container */
-.cart-icon-container {
-  border-radius: 50%;
-  padding: 2px;
+/* Cart container */
+.cart-container {
   position: fixed;
   bottom: 20px;
-  right: 15px;
-  background-color: rgb(252, 252, 252);
-  box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.6);
-  cursor: pointer;
+  right: 20px;
   z-index: 1000;
-  display: flex;          
-  justify-content: center; 
-  align-items: center;    
-  width: 50px;            
-  height: 50px;           
+}
+
+/* Cart icon container */
+.cart-icon-container {
+  position: relative;
+  cursor: pointer;
+  background-color: #4a90e2;
+  padding: 10px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.cart-icon-container:hover {
+  transform: scale(1.1);
 }
 
 /* Shopping cart icon */
 .shoppingCart {
-  font-size: 28px;
-  color: rgb(68, 64, 64);
+  color: white;
+  font-size: 20px;
 }
 
 /* Cart count badge */
 .cart-count {
   position: absolute;
-  top: -5px;
-  right: -5px;
-  background-color: red;
+  top: -8px;
+  right: -8px;
+  background-color: #e74c3c;
   color: white;
-  font-size: 14px;
   border-radius: 50%;
-  padding: 5px 10px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
 }
 
-/* Cart details container (for showing tickets in the cart) */
+/* Cart details container */
 .cart-details {
-  background-color: #f9f9f9;
-  padding: 10px;
-  border: 1px solid #ddd;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  background-color: white;
   border-radius: 8px;
-  margin-top: 10px;
-  width: 250px;
-  position: fixed;
-  bottom: 80px;  /* Slightly above the cart icon */
-  right: 15px;
-  z-index: 999; /* Below the icon but still visible */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 15px;
+}
+
+.cart-details h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 18px;
+}
+
+/* Cart items list */
+.cart-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 15px 0;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 /* Cart item styling */
 .cart-item {
   display: flex;
   justify-content: space-between;
-  padding: 5px 0;
-  font-size: 14px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
 }
 
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item span {
+  flex: 1;
+}
+
+/* Cart total */
+.cart-total {
+  margin: 15px 0;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Remove button */
 .remove-btn {
-  background-color: #ff5c5c;
-  color: white;
+  background: none;
   border: none;
-  border-radius: 4px;
-  padding: 4px 8px;
+  color: #e74c3c;
   cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .remove-btn:hover {
-  background-color: #e04e4e;
+  transform: scale(1.1);
+  color: #e5e6e8;
 }
 
-.clear-cart-btn {
-  background-color: #4caf50;
+/* Checkout button */
+.checkout-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #2ecc71;
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 6px 12px;
   cursor: pointer;
-  margin-top: 10px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
 }
 
-.clear-cart-btn:hover {
-  background-color: #45a049;
+.checkout-btn:hover {
+  background-color: #27ae60;
+}
+
+/* Empty cart message */
+.empty-cart {
+  text-align: center;
+  color: #666;
+  padding: 20px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .cart-details {
+    width: 280px;
+    right: 10px;
+  }
+  
+  .cart-icon-container {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .shoppingCart {
+    font-size: 20px;
+  }
 }
