@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import './styles/Tickets.css';
 import 'react-calendar/dist/Calendar.css';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import routeService, { Route } from '../services/routeService';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -13,20 +14,27 @@ const Tickets = () => {
   const [selectedRoute, setSelectedRoute] = useState('');
   const [isRoundTrip, setIsRoundTrip] = useState(false);
   const [selectedDates, setSelectedDates] = useState<Value>(new Date());
+  const [routes, setRoutes] = useState<Route[]>([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const locations = [
-    'Athens',
-    'Thessaloniki',
-    'Patras',
-    'Heraklion',
-    'Chania',
-    'Larissa',
-    'Ioannina',
-    'Kalamata',
-    'Volos',
-    'Rhodes',
-  ];
+  // Fetch routes from the backend
+  useEffect(() => {
+    const fetchRoutes = async () => {
+      try {
+        setLoading(true);
+        const fetchedRoutes = await routeService.getAllRoutes();
+        setRoutes(fetchedRoutes);
+      } catch (error) {
+        console.error('Error fetching routes:', error);
+        toast.error('Failed to load routes. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRoutes();
+  }, []);
 
   const today = new Date();
   const yesterday = new Date(today);
@@ -49,7 +57,7 @@ const Tickets = () => {
       toast.error('Please select a route before confirming!');
       return;
     } else if (!selectedDates) {
-      toast.error('Please select a route before confirming!');
+      toast.error('Please select a date before confirming!');
       return;
     }
 
@@ -73,13 +81,14 @@ const Tickets = () => {
             className="route-dropdown"
             value={selectedRoute}
             onChange={handleRouteChange}
+            disabled={loading}
           >
             <option value="" disabled>
-              Select a route
+              {loading ? 'Loading routes...' : 'Select a route'}
             </option>
-            {locations.map((location, index) => (
-              <option key={index} value={location}>
-                {location}
+            {routes.map((route) => (
+              <option key={route._id} value={route._id}>
+                {route.origin} → {route.destination} ({route.departureTime})
               </option>
             ))}
           </select>

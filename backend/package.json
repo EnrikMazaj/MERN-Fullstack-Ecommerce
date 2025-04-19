@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "seed:routes": "node --loader ts-node/esm src/scripts/seedRoutes.ts",
+    "seed:bus-routes": "node --loader ts-node/esm src/scripts/seedBusRoutes.ts"
   },
   "type": "module",
   "keywords": [],
@@ -16,5 +18,10 @@
     "express": "^4.21.2",
     "mongodb": "^6.15.0",
     "mongoose": "^8.13.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   }
 }

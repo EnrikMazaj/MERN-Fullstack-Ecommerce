@@ -32,6 +32,7 @@ h3 {
   flex-direction: column;
   gap: 1.5rem;
   align-items: center;
+  position: relative;
 }
 
 .route-dropdown {
@@ -50,6 +51,8 @@ h3 {
   background-repeat: no-repeat;
   background-position: right 1rem center;
   background-size: 1em;
+  position: relative;
+  z-index: 1;
 }
 
 .route-dropdown:hover {
@@ -62,14 +65,25 @@ h3 {
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
 }
 
+.route-dropdown option {
+  padding: 0.75rem;
+  background-color: white;
+  color: #2d3748;
+  font-size: 1rem;
+}
+
 .trip-toggle-container {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem;
+  padding: 0.75rem 1rem;
   background: #f7fafc;
   border-radius: 8px;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
+  width: 100%;
+  max-width: 400px;
+  justify-content: center;
+  border: 2px solid #e2e8f0;
 }
 
 .trip-toggle-container label {
@@ -78,6 +92,8 @@ h3 {
   gap: 0.5rem;
   cursor: pointer;
   user-select: none;
+  color: #2d3748;
+  font-weight: 500;
 }
 
 input[type="checkbox"] {
@@ -87,6 +103,7 @@ input[type="checkbox"] {
   border: 2px solid #e2e8f0;
   cursor: pointer;
   transition: all 0.2s ease;
+  accent-color: #4299e1;
 }
 
 input[type="checkbox"]:checked {
@@ -100,6 +117,10 @@ input[type="checkbox"]:checked {
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   margin: 2rem 0;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .departure-calendar-container {

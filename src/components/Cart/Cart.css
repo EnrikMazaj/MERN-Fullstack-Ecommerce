@@ -290,3 +290,67 @@
     font-size: 20px;
   }
 }
+
+.error-message {
+  color: #e74c3c;
+  background-color: #fadbd8;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.passport-form {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  margin: 10px 0;
+}
+
+.passport-form h4 {
+  margin-top: 0;
+  color: #333;
+}
+
+.passport-form p {
+  margin-bottom: 15px;
+  color: #666;
+}
+
+.passport-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-buttons button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.form-buttons button[type="button"] {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: #4caf50;
+  color: white;
+}
+
+.form-buttons button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

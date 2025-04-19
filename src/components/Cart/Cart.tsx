@@ -3,12 +3,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeBooking } from '../../features/cartSlice.tsx';
 import { FaShoppingCart, FaTrash, FaTimes, FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
 import { RootState } from '../../redux/store.tsx';
+import { useAuth } from '../../context/AuthContext';
+import bookingService from '../../services/bookingService';
 import './Cart.css';
 
 const Cart = () => {
   const [isCartVisible, setCartVisibility] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showPassportForm, setShowPassportForm] = useState(false);
+  const [passportNumber, setPassportNumber] = useState('');
   const bookings = useSelector((state: RootState) => state.cart.bookings);
   const dispatch = useDispatch();
+  const { isLoggedIn, user } = useAuth();
 
   const totalBookings = bookings.length;
 
@@ -55,9 +62,108 @@ const Cart = () => {
     });
   };
 
-  const handleCheckout = () => {
-    // TODO: Implement checkout functionality
-    console.log('Proceeding to checkout...');
+  const handleCheckout = async () => {
+    // Check if user is logged in
+    if (!isLoggedIn || !user) {
+      setError('Please log in to complete your booking');
+      // You might want to redirect to login page or show login modal here
+      return;
+    }
+
+    // Check if cart is empty
+    if (totalBookings === 0) {
+      setError('Your cart is empty');
+      return;
+    }
+
+    // Check if passport information is needed
+    if (!bookings[0].passengerPassport || bookings[0].passengerPassport === 'N/A') {
+      setShowPassportForm(true);
+      return;
+    }
+
+    await processCheckout();
+  };
+
+  const processCheckout = async () => {
+    try {
+      setIsProcessing(true);
+      setError(null);
+
+      console.log('Starting checkout process with bookings:', bookings);
+      console.log('User information:', user);
+
+      if (!user?.id) {
+        throw new Error('User ID not found. Please log in again.');
+      }
+
+      // Create bookings for each item in the cart
+      const bookingPromises = bookings.map(booking => {
+        const bookingData = {
+          seatNumber: booking.seatNumber,
+          totalPrice: booking.totalPrice,
+          passengerName: booking.passengerName,
+          passengerPassport: passportNumber || booking.passengerPassport,
+          userId: user.id, // Using the MongoDB _id from the user object
+          routeId: booking.routeId,
+          travelDate: booking.travelDate
+        };
+
+        console.log('Creating booking with data:', bookingData);
+        return bookingService.createBooking(bookingData);
+      });
+
+      console.log('Waiting for all booking promises to resolve...');
+      await Promise.all(bookingPromises);
+      console.log('All bookings created successfully');
+
+      // Clear the cart after successful booking
+      bookings.forEach(booking => {
+        dispatch(removeBooking({ seatNumber: booking.seatNumber }));
+      });
+
+      // Close the cart modal
+      setCartVisibility(false);
+
+      // Show success message
+      alert('Bookings created successfully!');
+    } catch (error) {
+      console.error('Error in checkout process:', error);
+
+      // Extract error message from different error types
+      let errorMessage = 'Failed to create bookings. Please try again.';
+
+      if (error instanceof Error) {
+        errorMessage = `Error: ${error.message}`;
+      } else if (typeof error === 'object' && error !== null) {
+        const axiosError = error as any;
+        if (axiosError.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          errorMessage = `Server error (${axiosError.response.status}): ${JSON.stringify(axiosError.response.data)}`;
+        } else if (axiosError.request) {
+          // The request was made but no response was received
+          errorMessage = 'No response from server. Please check your connection.';
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          errorMessage = `Request error: ${axiosError.message}`;
+        }
+      }
+
+      setError(errorMessage);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handlePassportSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passportNumber.trim()) {
+      setShowPassportForm(false);
+      processCheckout();
+    } else {
+      setError('Please enter a valid passport number');
+    }
   };
 
   return (
@@ -80,7 +186,31 @@ const Cart = () => {
             </button>
             <h3>Your Cart</h3>
 
-            {totalBookings > 0 ? (
+            {error && <div className="error-message">{error}</div>}
+
+            {showPassportForm ? (
+              <div className="passport-form">
+                <h4>Passport Information Required</h4>
+                <p>Please enter your passport number to complete the booking:</p>
+                <form onSubmit={handlePassportSubmit}>
+                  <input
+                    type="text"
+                    value={passportNumber}
+                    onChange={(e) => setPassportNumber(e.target.value)}
+                    placeholder="Enter passport number"
+                    required
+                  />
+                  <div className="form-buttons">
+                    <button type="button" onClick={() => setShowPassportForm(false)}>
+                      Cancel
+                    </button>
+                    <button type="submit" disabled={isProcessing}>
+                      {isProcessing ? 'Processing...' : 'Submit'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            ) : totalBookings > 0 ? (
               <>
                 <ul>
                   {bookings.map((booking) => (
@@ -134,8 +264,9 @@ const Cart = () => {
                 <button
                   className="checkout-btn"
                   onClick={handleCheckout}
+                  disabled={isProcessing}
                 >
-                  Checkout
+                  {isProcessing ? 'Processing...' : 'Checkout'}
                 </button>
               </>
             ) : (

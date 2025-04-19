@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import SeatModal from '../components/SeatModal/SeatModal.tsx';
 import './styles/Seats.css';
 import { RootState } from '../redux/store.tsx';
+import routeService, { Route } from '../services/routeService';
+import { toast } from 'react-toastify';
 
 interface LocationState {
   selectedRoute: string;
@@ -13,10 +15,32 @@ interface LocationState {
 
 const Seats = () => {
   const [selectedSeat, setSelectedSeat] = useState<number | null>(null);
+  const [routeDetails, setRouteDetails] = useState<Route | null>(null);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const { selectedRoute, selectedDates, isRoundTrip } = location.state as LocationState;
 
   const bookings = useSelector((state: RootState) => state.cart.bookings);
+
+  // Fetch route details
+  useEffect(() => {
+    const fetchRouteDetails = async () => {
+      try {
+        setLoading(true);
+        const route = await routeService.getRouteById(selectedRoute);
+        setRouteDetails(route);
+      } catch (error) {
+        console.error('Error fetching route details:', error);
+        toast.error('Failed to load route details. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (selectedRoute) {
+      fetchRouteDetails();
+    }
+  }, [selectedRoute]);
 
   const handleSeatClick = (seatNumber: number) => {
     if (!bookings.some((booking) => booking.seatNumber === seatNumber)) {
@@ -24,9 +48,33 @@ const Seats = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="content">
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
+
+  if (!routeDetails) {
+    return (
+      <div className="content">
+        <h1>Route not found</h1>
+        <p>The selected route could not be found. Please go back and try again.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="content">
       <h1>Seats</h1>
+      <div className="route-info">
+        <h2>{routeDetails.origin} → {routeDetails.destination}</h2>
+        <p>Departure: {new Date(selectedDates as Date).toLocaleDateString()}</p>
+        {isRoundTrip && Array.isArray(selectedDates) && selectedDates[1] && (
+          <p>Return: {new Date(selectedDates[1]).toLocaleDateString()}</p>
+        )}
+      </div>
       <div className="seats-container">
         <div className="bus">
           <div className="bus-container">
