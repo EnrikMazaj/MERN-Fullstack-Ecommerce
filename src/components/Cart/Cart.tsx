@@ -5,7 +5,14 @@ import { FaShoppingCart, FaTrash, FaTimes, FaMapMarkerAlt, FaCalendarAlt } from 
 import { RootState } from '../../redux/store.tsx';
 import { useAuth } from '../../context/AuthContext';
 import bookingService from '../../services/bookingService';
+import routeService from '../../services/routeService';
 import './Cart.css';
+
+interface RouteDetails {
+  _id: string;
+  origin: string;
+  destination: string;
+}
 
 const Cart = () => {
   const [isCartVisible, setCartVisibility] = useState(false);
@@ -13,11 +20,36 @@ const Cart = () => {
   const [error, setError] = useState<string | null>(null);
   const [showPassportForm, setShowPassportForm] = useState(false);
   const [passportNumber, setPassportNumber] = useState('');
+  const [routeDetails, setRouteDetails] = useState<{ [key: string]: RouteDetails }>({});
   const bookings = useSelector((state: RootState) => state.cart.bookings);
   const dispatch = useDispatch();
   const { isLoggedIn, user } = useAuth();
 
   const totalBookings = bookings.length;
+
+  // Fetch route details for all bookings
+  useEffect(() => {
+    const fetchRouteDetails = async () => {
+      const uniqueRouteIds = [...new Set(bookings.map(booking => booking.routeId))];
+      const routeDetailsPromises = uniqueRouteIds.map(async (routeId) => {
+        try {
+          const route = await routeService.getRouteById(routeId);
+          return { [routeId]: route };
+        } catch (error) {
+          console.error(`Error fetching route details for ${routeId}:`, error);
+          return { [routeId]: { _id: routeId, origin: 'Unknown', destination: 'Unknown' } };
+        }
+      });
+
+      const results = await Promise.all(routeDetailsPromises);
+      const combinedRouteDetails = results.reduce((acc, curr) => ({ ...acc, ...curr }), {});
+      setRouteDetails(combinedRouteDetails);
+    };
+
+    if (bookings.length > 0) {
+      fetchRouteDetails();
+    }
+  }, [bookings]);
 
   // Close cart when clicking outside
   useEffect(() => {
@@ -213,56 +245,57 @@ const Cart = () => {
             ) : totalBookings > 0 ? (
               <>
                 <ul>
-                  {bookings.map((booking) => (
-                    <li key={booking.seatNumber} className="cart-item">
-                      <div className="cart-item-details">
-                        <div className="passenger-info">
-                          <span className="passenger-name">
-                            {booking.passengerName}
-                          </span>
-                          <span className="seat-number">
-                            Seat {booking.seatNumber}
-                          </span>
-                        </div>
-                        <div className="route-info">
-                          <div className="route">
-                            <FaMapMarkerAlt className="route-icon" />
-                            <span>{booking.routeId}</span>
+                  {bookings.map((booking) => {
+                    const route = routeDetails[booking.routeId];
+                    return (
+                      <li key={booking.seatNumber} className="cart-item">
+                        <div className="cart-item-details">
+                          <div className="passenger-info">
+                            <span className="passenger-name">
+                              {booking.passengerName}
+                            </span>
+                            <span className="seat-number">
+                              Seat {booking.seatNumber}
+                            </span>
                           </div>
-                          <div className="date">
-                            <FaCalendarAlt className="date-icon" />
-                            <span>Departure: {formatDate(booking.travelDate)}</span>
-                          </div>
-                          {booking.isRoundTrip && booking.arrivalDate && (
-                            <div className="date return-date">
-                              <FaCalendarAlt className="date-icon" />
-                              <span>Return: {formatDate(booking.arrivalDate)}</span>
+                          <div className="route-info">
+                            <div className="route">
+                              <FaMapMarkerAlt className="route-icon" />
+                              <span>{route ? `${route.origin} → ${route.destination}` : 'Loading route...'}</span>
                             </div>
-                          )}
+                            <div className="date">
+                              <FaCalendarAlt className="date-icon" />
+                              <span>Departure: {formatDate(booking.travelDate)}</span>
+                            </div>
+                            {booking.isRoundTrip && booking.arrivalDate && (
+                              <div className="date return-date">
+                                <FaCalendarAlt className="date-icon" />
+                                <span>Return: {formatDate(booking.arrivalDate)}</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="price">
+                            <span className="ticket-price">€{booking.totalPrice.toFixed(2)}</span>
+                          </div>
                         </div>
-                        <div className="price">
-                          <span className="ticket-price">€{booking.totalPrice.toFixed(2)}</span>
-                        </div>
-                      </div>
-                      <button
-                        className="remove-btn"
-                        onClick={() =>
-                          dispatch(removeBooking({ seatNumber: booking.seatNumber }))
-                        }
-                        title="Remove item"
-                      >
-                        <FaTrash />
-                      </button>
-                    </li>
-                  ))}
+                        <button
+                          className="remove-btn"
+                          onClick={() =>
+                            dispatch(removeBooking({ seatNumber: booking.seatNumber }))
+                          }
+                        >
+                          <FaTrash />
+                        </button>
+                      </li>
+                    );
+                  })}
                 </ul>
-
                 <div className="cart-total">
-                  <span>Total: €{calculateTotal()}</span>
+                  <span>Total:</span>
+                  <span className="total-price">€{calculateTotal()}</span>
                 </div>
-
                 <button
-                  className="checkout-btn"
+                  className="checkout-button"
                   onClick={handleCheckout}
                   disabled={isProcessing}
                 >
@@ -271,7 +304,7 @@ const Cart = () => {
               </>
             ) : (
               <div className="empty-cart">
-                Your cart is empty
+                <p>Your cart is empty</p>
               </div>
             )}
           </div>
