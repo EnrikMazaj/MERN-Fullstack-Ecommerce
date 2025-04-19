@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeTicket } from '../../features/cartSlice.tsx';
+import { removeBooking } from '../../features/cartSlice.tsx';
 import { FaShoppingCart, FaTrash } from 'react-icons/fa';
 import { RootState } from '../../redux/store.tsx';
 import './Cart.css';
 
 const Cart = () => {
   const [isCartVisible, setCartVisibility] = useState(false);
-  const tickets = useSelector((state: RootState) => state.cart.tickets);
+  const bookings = useSelector((state: RootState) => state.cart.bookings);
   const dispatch = useDispatch();
 
-  const totalTickets = tickets.length;
+  const totalBookings = bookings.length;
 
   // Close cart when clicking outside
   useEffect(() => {
@@ -40,9 +40,8 @@ const Cart = () => {
 
   // Calculate total price
   const calculateTotal = () => {
-    return tickets.reduce((total, ticket) => {
-      const price = typeof ticket.price === 'number' ? ticket.price : 0;
-      return total + price;
+    return bookings.reduce((total, booking) => {
+      return total + booking.totalPrice;
     }, 0).toFixed(2);
   };
 
@@ -53,13 +52,13 @@ const Cart = () => {
 
   return (
     <div className="cart-container">
-      {/* Shopping Cart Icon with Ticket Count */}
+      {/* Shopping Cart Icon with Booking Count */}
       <div
         className="cart-icon-container"
         onClick={toggleCart}
       >
         <FaShoppingCart className="shoppingCart" />
-        {totalTickets > 0 && <span className="cart-count">{totalTickets}</span>}
+        {totalBookings > 0 && <span className="cart-count">{totalBookings}</span>}
       </div>
 
       {/* Cart Details */}
@@ -67,19 +66,19 @@ const Cart = () => {
         <div className="cart-details">
           <h3>Your Cart</h3>
 
-          {totalTickets > 0 ? (
+          {totalBookings > 0 ? (
             <>
               <ul>
-                {tickets.map((ticket) => (
-                  <li key={ticket.seatNumber} className="cart-item">
+                {bookings.map((booking) => (
+                  <li key={booking.seatNumber} className="cart-item">
                     <span>
-                      Seat {ticket.seatNumber} - {ticket.ticketType}
-                      {ticket.price && <span className="ticket-price"> (€{ticket.price.toFixed(2)})</span>}
+                      Seat {booking.seatNumber} - {booking.passengerName}
+                      <span className="ticket-price"> (€{booking.totalPrice.toFixed(2)})</span>
                     </span>
                     <button
                       className="remove-btn"
                       onClick={() =>
-                        dispatch(removeTicket({ seatNumber: ticket.seatNumber }))
+                        dispatch(removeBooking({ seatNumber: booking.seatNumber }))
                       }
                       title="Remove item"
                     >
