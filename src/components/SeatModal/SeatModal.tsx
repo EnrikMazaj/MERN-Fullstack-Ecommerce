@@ -79,9 +79,6 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate }: SeatM
     }
   };
 
-  const basePrice = getBasePrice(selectedSeat);
-  const finalPrice = getFinalPrice(basePrice, ticketType);
-
   // Modal view for smaller screens
   if (isModal) {
     return (
@@ -132,7 +129,7 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate }: SeatM
   return (
     <div className="seat-details">
       <div className="seat-details-header">
-        <h2>Passenger Details for Seat {selectedSeat}</h2>
+        <h2>Passenger Details</h2>
         <button className="close-btn" onClick={handleCloseModal}>
           <span>&times;</span>
         </button>
@@ -158,14 +155,10 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate }: SeatM
             onChange={(e) => setTicketType(e.target.value as TicketType)}
             required
           >
-            <option value="adult">Adult (Full Price)</option>
-            <option value="student">Student (20% Off)</option>
-            <option value="child">Child (50% Off)</option>
+            <option value="adult">Adult - 20 €</option>
+            <option value="student">Student - 13 €</option>
+            <option value="child">Child - 10 €</option>
           </select>
-        </div>
-        <div className="price-display">
-          <p>Base Price: €{basePrice.toFixed(2)}</p>
-          <p>Final Price: €{finalPrice.toFixed(2)}</p>
         </div>
         <button type="submit">Add to Cart</button>
       </form>
