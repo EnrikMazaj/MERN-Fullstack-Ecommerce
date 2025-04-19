@@ -1,7 +1,14 @@
-// Define a type for each ticket
-export interface Ticket {
+// Define a type for each booking
+export interface Booking {
+  id?: string;
   seatNumber: number;
-  ticketType: string;
-  price: number;
-  ticketId?: string; // Optional because it's added after backend creation
+  totalPrice: number;
+  passengerName: string;
+  passengerPassport: string;
+  userId: string;
+  routeId: string;
+  status: 'confirmed' | 'cancelled';
+  bookingDate: Date;
+  travelDate: Date;
+  paymentStatus: 'pending' | 'completed' | 'failed';
 }

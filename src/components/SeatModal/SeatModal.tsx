@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import './SeatModal.css';
-import { addTicket } from '../../features/cartSlice.tsx';
 import { useDispatch } from 'react-redux';
+import { addBooking } from '../../features/cartSlice';
+import { Booking } from '../../features/types';
 
-function SeatModal({ selectedSeat, setSelectedSeat }) {
+interface SeatModalProps {
+  selectedSeat: number;
+  setSelectedSeat: (seat: number | null) => void;
+  routeId: string;
+  travelDate: Date;
+}
+
+function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate }: SeatModalProps) {
   const dispatch = useDispatch();
-  const [ticketType, setTicketType] = useState('');
+  const [passengerName, setPassengerName] = useState('');
+  const [passportNumber, setPassportNumber] = useState('');
   const [isModal, setIsModal] = useState(false);
 
   // Check if we should use modal view based on screen size
@@ -28,31 +37,27 @@ function SeatModal({ selectedSeat, setSelectedSeat }) {
     setSelectedSeat(null);
   };
 
-  // Get price based on ticket type
-  const getTicketPrice = (type: string) => {
-    switch (type) {
-      case 'student':
-        return 11;
-      case 'standard':
-        return 16;
-      case 'kids':
-        return 6;
-      default:
-        return 0;
-    }
+  // Get price based on seat type (you can modify this based on your pricing logic)
+  const getSeatPrice = (seatNumber: number) => {
+    // Example pricing logic - you can modify this based on your requirements
+    if (seatNumber <= 10) return 20; // Premium seats
+    if (seatNumber <= 20) return 16; // Standard seats
+    return 12; // Economy seats
   };
 
-  // ADD TICKET FUNCTION
-  const handleAddToCart = (e) => {
+  // ADD BOOKING FUNCTION
+  const handleAddToCart = (e: React.FormEvent) => {
     e.preventDefault();
-    if (ticketType && selectedSeat) {
-      dispatch(
-        addTicket({
-          seatNumber: selectedSeat,
-          ticketType: ticketType,
-          price: getTicketPrice(ticketType),
-        })
-      );
+    if (selectedSeat) {
+      const booking: Omit<Booking, 'id' | 'userId' | 'status' | 'bookingDate' | 'paymentStatus'> = {
+        seatNumber: selectedSeat,
+        totalPrice: getSeatPrice(selectedSeat),
+        passengerName,
+        passengerPassport: passportNumber,
+        routeId,
+        travelDate
+      };
+      dispatch(addBooking(booking));
       handleCloseModal();
     }
   };
@@ -70,21 +75,22 @@ function SeatModal({ selectedSeat, setSelectedSeat }) {
               </button>
             </div>
             <form className="seatForm" onSubmit={handleAddToCart}>
-              <input required type="text" placeholder="Full Name" />
-              <input required type="text" placeholder="Passport Number" />
-              <div className="custom-select">
-                <select
-                  required
-                  value={ticketType}
-                  onChange={(e) => setTicketType(e.target.value)}
-                >
-                  <option value="" disabled selected>
-                    Select a ticket type
-                  </option>
-                  <option value="student">Student - €11</option>
-                  <option value="standard">Standard - €16</option>
-                  <option value="kids">Kids under 12 - €6</option>
-                </select>
+              <input
+                required
+                type="text"
+                placeholder="Full Name"
+                value={passengerName}
+                onChange={(e) => setPassengerName(e.target.value)}
+              />
+              <input
+                required
+                type="text"
+                placeholder="Passport Number"
+                value={passportNumber}
+                onChange={(e) => setPassportNumber(e.target.value)}
+              />
+              <div className="price-display">
+                <p>Seat Price: €{getSeatPrice(selectedSeat)}</p>
               </div>
               <button type="submit">Add to Cart</button>
             </form>
@@ -104,21 +110,22 @@ function SeatModal({ selectedSeat, setSelectedSeat }) {
         </button>
       </div>
       <form className="seatForm" onSubmit={handleAddToCart}>
-        <input required type="text" placeholder="Full Name" />
-        <input required type="text" placeholder="Passport Number" />
-        <div className="custom-select">
-          <select
-            required
-            value={ticketType}
-            onChange={(e) => setTicketType(e.target.value)}
-          >
-            <option value="" disabled selected>
-              Select a ticket type
-            </option>
-            <option value="student">Student - €11</option>
-            <option value="standard">Standard - €16</option>
-            <option value="kids">Kids under 12 - €6</option>
-          </select>
+        <input
+          required
+          type="text"
+          placeholder="Full Name"
+          value={passengerName}
+          onChange={(e) => setPassengerName(e.target.value)}
+        />
+        <input
+          required
+          type="text"
+          placeholder="Passport Number"
+          value={passportNumber}
+          onChange={(e) => setPassportNumber(e.target.value)}
+        />
+        <div className="price-display">
+          <p>Seat Price: €{getSeatPrice(selectedSeat)}</p>
         </div>
         <button type="submit">Add to Cart</button>
       </form>

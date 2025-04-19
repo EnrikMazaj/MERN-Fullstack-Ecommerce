@@ -1,28 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Ticket } from './types';
+import { Booking } from './types';
 
 interface CartState {
-  tickets: Ticket[];
+  bookings: Booking[];
 }
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
-    tickets: [],
+    bookings: [],
   } as CartState,
   reducers: {
-    addTicket: (state, action) => {
-      state.tickets.push(action.payload);
+    addBooking: (state, action) => {
+      state.bookings.push(action.payload);
     },
-    removeTicket: (state, action) => {
-      state.tickets = state.tickets.filter(
-        (ticket) => ticket.seatNumber !== action.payload.seatNumber
+    removeBooking: (state, action) => {
+      state.bookings = state.bookings.filter(
+        (booking) => booking.seatNumber !== action.payload.seatNumber
       );
     },
     clearCart: (state) => {
-      state.tickets = [];
+      state.bookings = [];
     },
   },
 });
 
-export const { addTicket, removeTicket, clearCart } = cartSlice.actions;
+export const { addBooking, removeBooking, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
