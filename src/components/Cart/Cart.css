@@ -214,7 +214,7 @@
 }
 
 .checkout-btn:hover {
-  background-color: #27ae60;
+  background-color: #1d8649;
 }
 
 /* Empty cart message */
@@ -243,7 +243,7 @@
 }
 
 .close-cart:hover {
-  color: #333;
+  color: #efeaea;
 }
 
 /* Responsive adjustments */

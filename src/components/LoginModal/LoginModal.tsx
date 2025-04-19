@@ -168,7 +168,7 @@ const LoginModal = () => {
             <span className="closeBtn" onClick={handleCloseLogin}>
               &times;
             </span>
-            <h2>Login Form</h2>
+            <h2>Login</h2>
             <form onSubmit={handleLoginSubmit}>
               <input
                 type="email"
@@ -199,7 +199,7 @@ const LoginModal = () => {
             <span className="closeBtn" onClick={handleCloseRegister}>
               &times;
             </span>
-            <h2>Register Form</h2>
+            <h2>Register</h2>
             <form onSubmit={handleRegisterSubmit}>
               <input
                 type="text"
