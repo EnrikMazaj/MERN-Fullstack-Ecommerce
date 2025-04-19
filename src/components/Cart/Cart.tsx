@@ -101,8 +101,14 @@ const Cart = () => {
                           </div>
                           <div className="date">
                             <FaCalendarAlt className="date-icon" />
-                            <span>{formatDate(booking.travelDate)}</span>
+                            <span>Departure: {formatDate(booking.travelDate)}</span>
                           </div>
+                          {booking.isRoundTrip && booking.arrivalDate && (
+                            <div className="date return-date">
+                              <FaCalendarAlt className="date-icon" />
+                              <span>Return: {formatDate(booking.arrivalDate)}</span>
+                            </div>
+                          )}
                         </div>
                         <div className="price">
                           <span className="ticket-price">€{booking.totalPrice.toFixed(2)}</span>

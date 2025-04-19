@@ -158,6 +158,33 @@
 .route-icon, .date-icon {
   color: #4a90e2;
   font-size: 14px;
+  min-width: 16px;
+}
+
+.date span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.date span:first-child {
+  color: #666;
+  font-size: 12px;
+}
+
+.date span:last-child {
+  color: #333;
+  font-weight: 500;
+}
+
+.return-date {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed #eee;
+}
+
+.return-date .date-icon {
+  color: #e67e22;
 }
 
 .price {

@@ -18,7 +18,19 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <ToastContainer />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          style={{ zIndex: 99999 }}
+          theme="light"
+        />
         <div className="App">
           <Navbar />
           <Routes>

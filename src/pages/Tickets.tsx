@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import './styles/Tickets.css';
 import 'react-calendar/dist/Calendar.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+
+type ValuePiece = Date | null;
+type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const Tickets = () => {
   const [selectedRoute, setSelectedRoute] = useState('');
   const [isRoundTrip, setIsRoundTrip] = useState(false);
-  const [selectedDates, setSelectedDates] = useState<
-    Date | [Date, Date] | null
-  >(new Date());
+  const [selectedDates, setSelectedDates] = useState<Value>(new Date());
   const navigate = useNavigate();
 
   const locations = [
@@ -39,10 +40,8 @@ const Tickets = () => {
     setIsRoundTrip(e.target.checked);
   };
 
-  const handleDateChange = (value: Date | [Date, Date] | null) => {
-    if (value !== null) {
-      setSelectedDates(value);
-    }
+  const handleDateChange = (value: Value) => {
+    setSelectedDates(value);
   };
 
   const handleConfirm = () => {
@@ -101,7 +100,7 @@ const Tickets = () => {
           <div className="departure-calendar-container">
             <h3>Departure Date</h3>
             <Calendar
-              onChange={(value) => handleDateChange(value)}
+              onChange={handleDateChange}
               tileDisabled={({ date }) => date <= yesterday}
               selectRange={isRoundTrip}
               value={selectedDates}
@@ -113,8 +112,6 @@ const Tickets = () => {
           Confirm
         </button>
       </div>
-
-      <ToastContainer />
     </div>
   );
 };

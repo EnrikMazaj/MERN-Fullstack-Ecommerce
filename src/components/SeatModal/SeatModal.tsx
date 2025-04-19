@@ -8,17 +8,22 @@ interface SeatModalProps {
   selectedSeat: number;
   setSelectedSeat: (seat: number | null) => void;
   routeId: string;
-  travelDate: Date;
+  travelDate: Date | [Date, Date];
+  isRoundTrip?: boolean;
 }
 
 type TicketType = 'adult' | 'student' | 'child';
 
-function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate }: SeatModalProps) {
+function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRoundTrip }: SeatModalProps) {
   const dispatch = useDispatch();
   const [passengerName, setPassengerName] = useState('');
   const [passportNumber, setPassportNumber] = useState('');
   const [ticketType, setTicketType] = useState<TicketType>('adult');
   const [isModal, setIsModal] = useState(false);
+
+  // Get the departure and arrival dates
+  const departureDate = Array.isArray(travelDate) ? travelDate[0] : travelDate;
+  const arrivalDate = Array.isArray(travelDate) ? travelDate[1] : undefined;
 
   // Check if we should use modal view based on screen size
   useEffect(() => {
@@ -72,7 +77,9 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate }: SeatM
         passengerName,
         passengerPassport: passportNumber,
         routeId,
-        travelDate
+        travelDate: departureDate,
+        arrivalDate,
+        isRoundTrip: !!isRoundTrip && !!arrivalDate
       };
       dispatch(addBooking(booking));
       handleCloseModal();

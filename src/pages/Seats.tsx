@@ -8,12 +8,13 @@ import { RootState } from '../redux/store.tsx';
 interface LocationState {
   selectedRoute: string;
   selectedDates: Date | [Date, Date];
+  isRoundTrip: boolean;
 }
 
 const Seats = () => {
   const [selectedSeat, setSelectedSeat] = useState<number | null>(null);
   const location = useLocation();
-  const { selectedRoute, selectedDates } = location.state as LocationState;
+  const { selectedRoute, selectedDates, isRoundTrip } = location.state as LocationState;
 
   const bookings = useSelector((state: RootState) => state.cart.bookings);
 
@@ -22,9 +23,6 @@ const Seats = () => {
       setSelectedSeat(seatNumber);
     }
   };
-
-  // Get the travel date from selectedDates
-  const travelDate = Array.isArray(selectedDates) ? selectedDates[0] : selectedDates;
 
   return (
     <div className="content">
@@ -50,7 +48,8 @@ const Seats = () => {
               selectedSeat={selectedSeat}
               setSelectedSeat={setSelectedSeat}
               routeId={selectedRoute}
-              travelDate={travelDate}
+              travelDate={selectedDates}
+              isRoundTrip={isRoundTrip}
             />
           ) : (
             <div className="no-seat-selected">
