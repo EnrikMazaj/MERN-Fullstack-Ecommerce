@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import LoginModal from '../LoginModal/LoginModal.tsx';
 import { useAuth } from '../../context/AuthContext';
@@ -7,6 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const { isLoggedIn } = useAuth();
+  const location = useLocation();
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   const hamburgerRef = useRef<HTMLDivElement | null>(null);
@@ -37,9 +38,13 @@ const Navbar = () => {
     };
   }, []);
 
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
   return (
-    <div className="navbar">
-      <Link to={'/'}>
+    <nav className="navbar">
+      <Link to="/" className="logo-container">
         <img
           className="logo"
           src={`${process.env.PUBLIC_URL}/assets/ktel.png`}
@@ -50,28 +55,48 @@ const Navbar = () => {
       <div ref={menuRef} className={`menu ${isMenuOpen ? 'active' : ''}`}>
         <ul className="list">
           <li>
-            <Link to="/" onClick={handleLinkClick}>
+            <Link
+              to="/"
+              onClick={handleLinkClick}
+              className={isActive('/') ? 'active' : ''}
+            >
               Home
             </Link>
           </li>
           <li>
-            <Link to="/Routes" onClick={handleLinkClick}>
+            <Link
+              to="/routes"
+              onClick={handleLinkClick}
+              className={isActive('/routes') ? 'active' : ''}
+            >
               Routes
             </Link>
           </li>
           <li>
-            <Link to="/Tickets" onClick={handleLinkClick}>
+            <Link
+              to="/tickets"
+              onClick={handleLinkClick}
+              className={isActive('/tickets') ? 'active' : ''}
+            >
               Tickets
             </Link>
           </li>
           <li>
-            <Link to="/Contact" onClick={handleLinkClick}>
+            <Link
+              to="/contact"
+              onClick={handleLinkClick}
+              className={isActive('/contact') ? 'active' : ''}
+            >
               Contact
             </Link>
           </li>
           {isLoggedIn && (
             <li>
-              <Link to="/my-bookings" onClick={handleLinkClick}>
+              <Link
+                to="/my-bookings"
+                onClick={handleLinkClick}
+                className={isActive('/my-bookings') ? 'active' : ''}
+              >
                 My Bookings
               </Link>
             </li>
@@ -90,7 +115,7 @@ const Navbar = () => {
         <div className="bar"></div>
         <div className="bar"></div>
       </div>
-    </div>
+    </nav>
   );
 };
 

@@ -4,20 +4,37 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 0.5rem 2rem;
   background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  margin-right: 3rem;
 }
 
 .logo {
-  height: 80px;
-  width: 120px;
+  height: 60px;
+  width: 90px;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
 }
 
 .list {
   list-style-type: none;
   display: flex;
-  gap: 34px;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
 }
 
 .list li {
@@ -26,16 +43,41 @@
 
 .list li a {
   text-decoration: none;
-  color: #000;
-  font-size: 20px;
-  display: inline-block;
-  font-family: "Roboto", sans-serif;
-  transition: color 0.3s ease, transform 0.3s ease;
+  color: #4a5568;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Underline animation on hover */
+.list li a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #4299e1;
+  transition: width 0.3s ease;
 }
 
 .list li a:hover {
-  color: var(--primary-color);
-  transform: scale(1.2);
+  color: #4299e1;
+}
+
+.list li a:hover::after {
+  width: 100%;
+}
+
+.list li a.active {
+  color: #4299e1;
+}
+
+.list li a.active::after {
+  width: 100%;
+  background-color: #4299e1;
 }
 
 /* Login Modal Button (for reference) */
@@ -62,57 +104,77 @@
   width: 30px;
   height: 25px;
   cursor: pointer;
-  transition: transform 0.3s ease-in-out; /* Smooth transition for the hamburger */
+  transition: transform 0.3s ease-in-out;
 }
 
 .hamburger .bar {
   width: 30px;
-  height: 5px;
-  background-color: #333;
-  border-radius: 5px;
-  transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out; /* Smooth transition for each bar */
+  height: 3px;
+  background-color: #4a5568;
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
 }
 
-/* Transform the hamburger bars into an 'X' when active */
 .hamburger.active .bar:nth-child(1) {
-  transform: translateY(10px) rotate(45deg); /* Move first bar down and rotate */
+  transform: translateY(11px) rotate(45deg);
 }
 
 .hamburger.active .bar:nth-child(2) {
-  opacity: 0; /* Hide the middle bar */
+  opacity: 0;
 }
 
 .hamburger.active .bar:nth-child(3) {
-  transform: translateY(-10px) rotate(-45deg); /* Move third bar up and rotate */
+  transform: translateY(-11px) rotate(-45deg);
 }
 
 /* Responsive Navbar */
 @media (max-width: 768px) {
-  .menu {
-    position: absolute;
-    top: 80px;
-    right: 20px;
-    background-color: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    z-index: 999;
-    display: none;
-    .list {
-      display: flex;
-      flex-direction: column;
-      padding: 10px 30px 20px 30px;
-      height: auto;
-      min-width: 100px;
-      li a {
-        font-size: 18px;
-      }
-    }
+  .navbar {
+    padding: 0.5rem 1rem;
   }
 
+  .logo-container {
+    margin-right: 0;
+  }
 
+  .menu {
+    position: absolute;
+    top: 70px;
+    right: 1rem;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    z-index: 999;
+    display: none;
+    min-width: 200px;
+  }
 
   .menu.active {
-    display: flex;
+    display: block;
+  }
+
+  .list {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .list li a {
+    display: block;
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+  }
+
+  .list li a::after {
+    display: none;
+  }
+
+  .list li a:hover {
+    background-color: #f7fafc;
+  }
+
+  .list li a.active {
+    background-color: #ebf8ff;
   }
 
   .hamburger {
