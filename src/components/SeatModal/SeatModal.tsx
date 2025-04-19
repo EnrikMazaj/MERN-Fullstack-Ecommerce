@@ -64,7 +64,7 @@ function SeatModal({ selectedSeat, setSelectedSeat }) {
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <div className="seat-details">
             <div className="seat-details-header">
-              <h2>Passenger Details for Seat {selectedSeat}</h2>
+              <h2>Passenger Details</h2>
               <button className="close-btn" onClick={handleCloseModal}>
                 <span>&times;</span>
               </button>

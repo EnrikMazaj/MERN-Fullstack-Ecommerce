@@ -47,4 +47,18 @@
     font-size: 18px;
     color: #666;
   }
+
+  @media (max-width: 768px) {
+    .slideshow-container {
+      width: 95%;
+      margin: 30px auto;
+    }
+    .next {
+      margin-right: -3%;
+    }
+    .prev {
+      margin-left: -3%;
+    }
+  }
+  
   
