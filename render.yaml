@@ -2,8 +2,9 @@ services:
   - type: web
     name: bus-ecommerce-backend
     runtime: node
-    buildCommand: cd backend && npm install && npm run build
-    startCommand: cd backend && npm start
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
     envVars:
       - key: PORT
         value: 3000
