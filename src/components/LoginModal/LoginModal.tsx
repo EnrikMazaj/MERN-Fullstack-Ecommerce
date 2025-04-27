@@ -70,7 +70,7 @@ const LoginModal = () => {
     console.log('Submitting login form:', loginFormData);
 
     try {
-      const response = await fetch('http://localhost:3000/api/users/login', {
+      const response = await fetch('https://bus-ecommerce.onrender.com/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -114,7 +114,7 @@ const LoginModal = () => {
     console.log('Submitting registration form:', registerFormData);
 
     try {
-      const response = await fetch('http://localhost:3000/api/users/register', {
+      const response = await fetch('https://bus-ecommerce.onrender.com/api/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
