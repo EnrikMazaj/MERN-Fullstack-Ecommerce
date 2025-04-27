@@ -1,11 +1,7 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
-// Load environment variables from .env file
 dotenv.config();
-
 const MONGODB_URL = process.env.MONGODB_URL;
-
 export const connectDB = async () => {
     try {
         if (!MONGODB_URL) {
@@ -13,8 +9,9 @@ export const connectDB = async () => {
         }
         await mongoose.connect(MONGODB_URL);
         console.log('Connected to MongoDB successfully!');
-    } catch (error) {
+    }
+    catch (error) {
         console.error('MongoDB connection error:', error);
         process.exit(1);
     }
-}; 
+};

@@ -5,23 +5,35 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon",
-    "seed:routes": "node --loader ts-node/esm src/scripts/seedRoutes.ts",
-    "seed:bus-routes": "node --loader ts-node/esm src/scripts/seedBusRoutes.ts"
+    "dev": "cross-env NODE_OPTIONS=\"--loader ts-node/esm\" nodemon",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "start:dev": "cross-env NODE_OPTIONS=\"--loader ts-node/esm\" node src/server.ts",
+    "seed:bus-routes": "cross-env NODE_OPTIONS=\"--loader ts-node/esm\" node src/scripts/seedBusRoutes.ts",
+    "test:server": "node server-test.js",
+    "test:ts": "cross-env NODE_OPTIONS=\"--loader ts-node/esm\" node src/server-test.ts"
   },
   "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.21.2",
     "mongodb": "^6.15.0",
     "mongoose": "^8.13.2"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
     "@types/node": "^20.11.24",
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.0.1",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
   }
 }

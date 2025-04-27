@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: bus-ecommerce-backend
+    runtime: node
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm start
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: MONGODB_URL
+        fromDatabase:
+          name: bus-ecommerce-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /healthcheck
+    autoDeploy: true
+
+databases:
+  - name: bus-ecommerce-db
+    type: mongodb
+    plan: free 

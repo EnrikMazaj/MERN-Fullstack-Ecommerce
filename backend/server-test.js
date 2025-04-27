@@ -1,30 +1,22 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
-import { connectDB } from './config/database.js';
-import routes from './routes/index.js';
-
-// Load environment variables from .env file
-dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Routes
-app.use('/api', routes);
 
 // Healthcheck endpoint
 app.get('/healthcheck', (req, res) => {
     res.status(200).json({ message: 'Server is running' });
 });
 
-// Connect to database
-connectDB();
+// Simple test route
+app.get('/api/test', (req, res) => {
+    res.json({ message: 'API is working!' });
+});
 
 // Start the server
 app.listen(port, () => {
