@@ -29,10 +29,26 @@ const bookingSchema = new mongoose.Schema({
         ref: 'BusRoute',
         required: true
     },
+    routeInfo: {
+        origin: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        destination: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        departureTime: {
+            type: String,
+            required: true
+        }
+    },
     status: {
         type: String,
-        enum: ['confirmed', 'cancelled'],
-        default: 'confirmed'
+        enum: ['active', 'cancelled'],
+        default: 'active'
     },
     bookingDate: {
         type: Date,
@@ -46,6 +62,18 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         enum: ['pending', 'completed', 'failed'],
         default: 'pending'
+    },
+    refundRequested: {
+        type: Boolean,
+        default: false
+    },
+    refundStatus: {
+        type: String,
+        enum: ['pending', 'approved', 'rejected', 'completed'],
+        default: 'pending'
+    },
+    refundDate: {
+        type: Date
     }
 });
 

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Booking } from '../models/Booking.js';
 import mongoose from 'mongoose';
+import { BusRoute } from '../models/BusRoute.js';
 
 // Create a new booking
 export const createBooking = async (req: Request, res: Response) => {
@@ -70,6 +71,15 @@ export const createBooking = async (req: Request, res: Response) => {
 
         console.log('Creating booking with validated data');
 
+        // Get route information
+        const route = await BusRoute.findById(routeIdObj);
+        if (!route) {
+            return res.status(404).json({
+                success: false,
+                error: 'Route not found'
+            });
+        }
+
         const booking = await Booking.create({
             seatNumber,
             totalPrice,
@@ -77,7 +87,12 @@ export const createBooking = async (req: Request, res: Response) => {
             passengerPassport,
             userId: userIdObj,
             routeId: routeIdObj,
-            travelDate: new Date(travelDate)
+            travelDate: new Date(travelDate),
+            routeInfo: {
+                origin: route.origin,
+                destination: route.destination,
+                departureTime: route.departureTime
+            }
         });
 
         console.log('Booking created successfully:', booking);
@@ -252,6 +267,55 @@ export const cancelBooking = async (req: Request, res: Response) => {
         res.status(500).json({
             success: false,
             error: 'Failed to cancel booking'
+        });
+    }
+};
+
+// Request refund for a cancelled booking
+export const requestRefund = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        console.log(`Requesting refund for booking ID: ${id}`);
+
+        const booking = await Booking.findById(id);
+
+        if (!booking) {
+            console.log(`Booking with ID ${id} not found`);
+            return res.status(404).json({
+                success: false,
+                error: 'Booking not found'
+            });
+        }
+
+        if (booking.status !== 'cancelled') {
+            return res.status(400).json({
+                success: false,
+                error: 'Only cancelled bookings can request refunds'
+            });
+        }
+
+        if (booking.refundRequested) {
+            return res.status(400).json({
+                success: false,
+                error: 'Refund already requested for this booking'
+            });
+        }
+
+        booking.refundRequested = true;
+        booking.refundStatus = 'pending';
+        await booking.save();
+
+        console.log(`Refund requested for booking: ${booking._id}`);
+
+        res.status(200).json({
+            success: true,
+            data: booking
+        });
+    } catch (error) {
+        console.error('Error requesting refund:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to request refund'
         });
     }
 }; 

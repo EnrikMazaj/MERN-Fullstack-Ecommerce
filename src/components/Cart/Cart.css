@@ -66,24 +66,19 @@
 
 /* Cart details container */
 .cart-details {
-  position: relative;
-  background-color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  padding: 20px;
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: 1000;
 }
 
 .cart-details h3 {
@@ -93,49 +88,115 @@
 }
 
 /* Cart items list */
-.cart-details ul {
+.cart-items-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 15px 0;
-  max-height: 300px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-height: calc(80vh - 200px);
   overflow-y: auto;
+  padding-right: 8px;
+  padding-bottom: 8px;
+}
+
+/* Custom scrollbar for cart items */
+.cart-items-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cart-items-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.cart-items-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.cart-items-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 /* Cart item styling */
 .cart-item {
+  width: 100%;
+  position: relative;
+}
+
+.cart-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+}
+
+.ticket-card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.ticket-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #d0d0d0;
+}
+
+.ticket-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
+  align-items: center;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.cart-item:last-child {
-  border-bottom: none;
+.ticket-body {
+  padding: 16px;
+  background-color: #ffffff;
 }
 
-.cart-item-details {
-  flex: 1;
-  margin-right: 10px;
+.ticket-footer {
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Add a subtle background color to alternate tickets */
+.cart-item:nth-child(odd) .ticket-card {
+  background-color: #ffffff;
+}
+
+.cart-item:nth-child(even) .ticket-card {
+  background-color: #fafafa;
 }
 
 .passenger-info {
-  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .passenger-name {
   font-weight: 600;
   font-size: 16px;
   color: #333;
-  display: block;
-  margin-bottom: 4px;
 }
 
 .seat-number {
   font-size: 14px;
   color: #666;
-  background-color: #f5f5f5;
-  padding: 2px 8px;
+  background-color: #e9ecef;
+  padding: 4px 8px;
   border-radius: 4px;
   display: inline-block;
 }
@@ -143,63 +204,125 @@
 .route-info {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: #555;
+  gap: 12px;
 }
 
-.route, .date {
+.route {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
-.route-icon, .date-icon {
-  color: #4a90e2;
+.route-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.origin, .destination {
+  font-weight: 500;
+  color: #333;
+}
+
+.arrow {
+  color: #666;
   font-size: 14px;
-  min-width: 16px;
 }
 
-.date span {
+.journey-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+}
+
+.date.departure {
+  border-left: 3px solid #4a90e2;
+}
+
+.date.return {
+  border-left: 3px solid #e67e22;
+}
+
+.journey-separator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+}
+
+.separator-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #ddd, transparent);
+}
+
+.round-trip-label {
+  font-size: 12px;
+  color: #666;
+  background-color: #f8f9fa;
+  padding: 2px 8px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+.date-details {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.date span:first-child {
-  color: #666;
+.departure-label, .return-label {
   font-size: 12px;
+  color: #666;
 }
 
-.date span:last-child {
+.departure-date, .return-date {
+  font-size: 14px;
   color: #333;
   font-weight: 500;
 }
 
-.return-date {
-  margin-top: 4px;
-  padding-top: 4px;
-  border-top: 1px dashed #eee;
+.date-icon {
+  color: #4a90e2;
+  font-size: 14px;
+  min-width: 16px;
 }
 
-.return-date .date-icon {
+.date.return .date-icon {
   color: #e67e22;
 }
 
 .price {
-  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-label {
+  font-size: 14px;
+  color: #666;
 }
 
 .ticket-price {
   font-weight: 600;
   color: #2ecc71;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 /* Cart total */
 .cart-total {
-  margin: 15px 0;
+  margin: 20px 0;
   padding-top: 15px;
   border-top: 1px solid #eee;
   font-weight: bold;
@@ -208,40 +331,83 @@
   text-align: right;
 }
 
+.total-price {
+  color: #2ecc71;
+  font-size: 20px;
+  margin-left: 8px;
+}
+
 /* Remove button */
 .remove-btn {
   background: none;
   border: none;
   color: #e74c3c;
   cursor: pointer;
-  padding: 5px;
+  padding: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  border-radius: 4px;
 }
 
 .remove-btn:hover {
-  transform: scale(1.1);
-  color: #e5e6e8;
+  background-color: #e74c3c;
+  color: white;
+  transform: scale(1.05);
 }
 
 /* Checkout button */
-.checkout-btn {
+.checkout-button {
   width: 100%;
-  padding: 12px;
+  padding: 16px;
   background-color: #2ecc71;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 16px;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.checkout-btn:hover {
-  background-color: #1d8649;
+.checkout-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.checkout-button:hover {
+  background-color: #27ae60;
+}
+
+.checkout-button:hover::before {
+  left: 100%;
+}
+
+.checkout-button:active {
+  transform: scale(0.98);
+}
+
+.checkout-button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.checkout-button:disabled::before {
+  display: none;
 }
 
 /* Empty cart message */
@@ -353,4 +519,20 @@
 .form-buttons button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.return-route {
+  margin: 8px 0;
+  padding: 8px;
+  background-color: #fff5f0;
+  border-radius: 6px;
+  border-left: 3px solid #e67e22;
+}
+
+.return-route .route-icon {
+  color: #e67e22;
+}
+
+.return-route .route-details {
+  color: #e67e22;
 }

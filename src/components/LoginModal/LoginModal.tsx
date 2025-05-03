@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import './LoginModal.css';
 import { useAuth } from '../../context/AuthContext';
+import { successToastConfig, errorToastConfig } from '../../config/toastConfig';
 
 interface RegisterFormData {
   username: string;
@@ -18,6 +19,8 @@ const LoginModal = () => {
   const { isLoggedIn, login, logout } = useAuth();
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isRegisterOpen, setRegisterOpen] = useState(false);
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
+  const [isRegisterLoading, setIsRegisterLoading] = useState(false);
   const [registerFormData, setRegisterFormData] = useState<RegisterFormData>({
     username: '',
     email: '',
@@ -48,7 +51,6 @@ const LoginModal = () => {
 
   const handleLogout = () => {
     logout();
-    toast.success('Logged out successfully!');
   };
 
   const handleRegisterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +69,7 @@ const LoginModal = () => {
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoginLoading(true);
     console.log('Submitting login form:', loginFormData);
 
     try {
@@ -87,30 +90,19 @@ const LoginModal = () => {
       }
 
       login(data.user);
-      toast.success('Login successful!', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      toast.success('Login successful!', successToastConfig);
       handleCloseLogin();
     } catch (error) {
       console.error('Login error:', error);
-      toast.error(error instanceof Error ? error.message : 'Login failed', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      toast.error(error instanceof Error ? error.message : 'Login failed', errorToastConfig);
+    } finally {
+      setIsLoginLoading(false);
     }
   };
 
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsRegisterLoading(true);
     console.log('Submitting registration form:', registerFormData);
 
     try {
@@ -135,12 +127,14 @@ const LoginModal = () => {
         throw new Error(data.message || 'Registration failed');
       }
 
-      toast.success('Registration successful!');
+      toast.success('Registration successful!', successToastConfig);
       handleCloseRegister();
       setLoginOpen(true);
     } catch (error) {
       console.error('Registration error:', error);
-      toast.error(error instanceof Error ? error.message : 'Registration failed');
+      toast.error(error instanceof Error ? error.message : 'Registration failed', errorToastConfig);
+    } finally {
+      setIsRegisterLoading(false);
     }
   };
 
@@ -177,6 +171,7 @@ const LoginModal = () => {
                 value={loginFormData.email}
                 onChange={handleLoginChange}
                 required
+                disabled={isLoginLoading}
               />
               <input
                 type="password"
@@ -185,8 +180,15 @@ const LoginModal = () => {
                 value={loginFormData.password}
                 onChange={handleLoginChange}
                 required
+                disabled={isLoginLoading}
               />
-              <button type="submit">Login</button>
+              <button type="submit" disabled={isLoginLoading}>
+                {isLoginLoading ? (
+                  <span className="loading-spinner">Loading...</span>
+                ) : (
+                  'Login'
+                )}
+              </button>
             </form>
           </div>
         </div>
@@ -208,6 +210,7 @@ const LoginModal = () => {
                 value={registerFormData.username}
                 onChange={handleRegisterChange}
                 required
+                disabled={isRegisterLoading}
               />
               <input
                 type="email"
@@ -216,6 +219,7 @@ const LoginModal = () => {
                 value={registerFormData.email}
                 onChange={handleRegisterChange}
                 required
+                disabled={isRegisterLoading}
               />
               <input
                 type="password"
@@ -224,8 +228,15 @@ const LoginModal = () => {
                 value={registerFormData.password}
                 onChange={handleRegisterChange}
                 required
+                disabled={isRegisterLoading}
               />
-              <button type="submit">Register</button>
+              <button type="submit" disabled={isRegisterLoading}>
+                {isRegisterLoading ? (
+                  <span className="loading-spinner">Loading...</span>
+                ) : (
+                  'Register'
+                )}
+              </button>
             </form>
           </div>
         </div>

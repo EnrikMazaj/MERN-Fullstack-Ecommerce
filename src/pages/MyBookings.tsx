@@ -15,10 +15,11 @@ interface Booking {
     userId: string;
     travelDate: Date;
     status: 'active' | 'completed' | 'cancelled';
-    route?: {
+    routeInfo?: {
         origin: string;
         destination: string;
     };
+    refundRequested?: boolean;
 }
 
 const MyBookings = () => {
@@ -26,6 +27,7 @@ const MyBookings = () => {
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchBookings = async () => {
@@ -41,7 +43,7 @@ const MyBookings = () => {
                             const routeData = await routeService.getRouteById(booking.routeId);
                             return {
                                 ...booking,
-                                route: {
+                                routeInfo: {
                                     origin: routeData.origin,
                                     destination: routeData.destination
                                 }
@@ -67,7 +69,6 @@ const MyBookings = () => {
     const handleCancelBooking = async (bookingId: string) => {
         try {
             await bookingService.cancelBooking(bookingId);
-            // Update the local state to reflect the cancellation
             setBookings(bookings.map(booking =>
                 booking._id === bookingId
                     ? { ...booking, status: 'cancelled' as const }
@@ -78,6 +79,38 @@ const MyBookings = () => {
             setError('Failed to cancel booking. Please try again later.');
         }
     };
+
+    const handleRequestRefund = async (bookingId: string) => {
+        if (window.confirm('Are you sure you want to request a refund for this cancelled booking?')) {
+            try {
+                await bookingService.requestRefund(bookingId);
+                setBookings(bookings.map(booking =>
+                    booking._id === bookingId
+                        ? { ...booking, refundRequested: true }
+                        : booking
+                ));
+            } catch (error) {
+                console.error('Error requesting refund:', error);
+                setError('Failed to request refund. Please try again later.');
+            }
+        }
+    };
+
+    const handleMenuClick = (bookingId: string) => {
+        setOpenMenuId(openMenuId === bookingId ? null : bookingId);
+    };
+
+    // Close menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (openMenuId && !(event.target as Element).closest('.ticket-actions-menu')) {
+                setOpenMenuId(null);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, [openMenuId]);
 
     // If user is not logged in, redirect to home page
     if (!isLoggedIn) {
@@ -111,29 +144,80 @@ const MyBookings = () => {
                 ) : (
                     bookings.map((booking) => (
                         <div key={booking._id} className="booking-card">
-                            <div className="booking-header">
-                                <h3>{booking.route
-                                    ? `${booking.route.origin} - ${booking.route.destination}`
-                                    : `Booking #${booking._id}`}</h3>
+                            <div className="ticket-status">
                                 <span className={`status ${booking.status}`}>
                                     {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                                 </span>
-                            </div>
-                            <div className="booking-details">
-                                <p><strong>Date:</strong> {new Date(booking.travelDate).toLocaleDateString()}</p>
-                                <p><strong>Passenger:</strong> {booking.passengerName}</p>
-                                <p><strong>Seat:</strong> {booking.seatNumber}</p>
-                                <p><strong>Price:</strong> €{booking.totalPrice.toFixed(2)}</p>
-                            </div>
-                            <div className="booking-actions">
-                                {booking.status === 'active' && (
+                                <div className="ticket-actions-menu">
                                     <button
-                                        className="cancel-btn"
-                                        onClick={() => handleCancelBooking(booking._id)}
+                                        className="menu-trigger"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleMenuClick(booking._id);
+                                        }}
                                     >
-                                        Cancel Booking
+                                        <span className="menu-dots">...</span>
                                     </button>
+                                    <div className={`menu-dropdown ${openMenuId === booking._id ? 'show' : ''}`}>
+                                        {booking.status === 'cancelled' && !booking.refundRequested && (
+                                            <button
+                                                className="menu-item"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleRequestRefund(booking._id);
+                                                    setOpenMenuId(null);
+                                                }}
+                                            >
+                                                Request Refund
+                                            </button>
+                                        )}
+                                        {booking.status === 'cancelled' && booking.refundRequested && (
+                                            <div className="menu-item disabled">
+                                                Refund Requested
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="ticket-content">
+                                <div className="ticket-header">
+                                    <h3>Route</h3>
+                                </div>
+                                <div className="route-display">
+                                    <div className="route-origin">{booking.routeInfo?.origin || 'Unknown'}</div>
+                                    <div className="route-dots"></div>
+                                    <div className="route-destination">{booking.routeInfo?.destination || 'Unknown'}</div>
+                                </div>
+                                <div className="ticket-separator">
+                                    <div className="ticket-separator-line"></div>
+                                </div>
+                                <div className="ticket-details">
+                                    <div className="detail-row">
+                                        <span className="detail-label">Passenger</span>
+                                        <span className="detail-value">{booking.passengerName}</span>
+                                    </div>
+                                    <div className="detail-row">
+                                        <span className="detail-label">Seat</span>
+                                        <span className="detail-value">{booking.seatNumber}</span>
+                                    </div>
+                                    <div className="detail-row">
+                                        <span className="detail-label">Price</span>
+                                        <span className="detail-value">€{booking.totalPrice.toFixed(2)}</span>
+                                    </div>
+                                </div>
+                                {booking.status === 'active' && (
+                                    <div className="ticket-actions">
+                                        <button
+                                            className="cancel-btn"
+                                            onClick={() => handleCancelBooking(booking._id)}
+                                        >
+                                            Cancel Booking
+                                        </button>
+                                    </div>
                                 )}
+                                <div className="ticket-footer">
+                                    <span className="booking-id">ID: {booking._id}</span>
+                                </div>
                             </div>
                         </div>
                     ))

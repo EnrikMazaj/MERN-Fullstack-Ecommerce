@@ -244,48 +244,84 @@ const Cart = () => {
               </div>
             ) : totalBookings > 0 ? (
               <>
-                <ul>
+                <ul className="cart-items-list">
                   {bookings.map((booking) => {
                     const route = routeDetails[booking.routeId];
                     return (
                       <li key={booking.seatNumber} className="cart-item">
-                        <div className="cart-item-details">
-                          <div className="passenger-info">
-                            <span className="passenger-name">
-                              {booking.passengerName}
-                            </span>
-                            <span className="seat-number">
-                              Seat {booking.seatNumber}
-                            </span>
+                        <div className="ticket-card">
+                          <div className="ticket-header">
+                            <div className="passenger-info">
+                              <span className="passenger-name">
+                                {booking.passengerName}
+                              </span>
+                              <span className="seat-number">
+                                Seat {booking.seatNumber}
+                              </span>
+                            </div>
+                            <button
+                              className="remove-btn"
+                              onClick={() =>
+                                dispatch(removeBooking({ seatNumber: booking.seatNumber }))
+                              }
+                            >
+                              <FaTrash />
+                            </button>
                           </div>
-                          <div className="route-info">
-                            <div className="route">
-                              <FaMapMarkerAlt className="route-icon" />
-                              <span>{route ? `${route.origin} → ${route.destination}` : 'Loading route...'}</span>
-                            </div>
-                            <div className="date">
-                              <FaCalendarAlt className="date-icon" />
-                              <span>Departure: {formatDate(booking.travelDate)}</span>
-                            </div>
-                            {booking.isRoundTrip && booking.arrivalDate && (
-                              <div className="date return-date">
-                                <FaCalendarAlt className="date-icon" />
-                                <span>Return: {formatDate(booking.arrivalDate)}</span>
+
+                          <div className="ticket-body">
+                            <div className="route-info">
+                              <div className="route">
+                                <FaMapMarkerAlt className="route-icon" />
+                                <div className="route-details">
+                                  <span className="origin">{route?.origin || 'Loading...'}</span>
+                                  <span className="arrow">→</span>
+                                  <span className="destination">{route?.destination || 'Loading...'}</span>
+                                </div>
                               </div>
-                            )}
+                              <div className="journey-dates">
+                                <div className="date departure">
+                                  <FaCalendarAlt className="date-icon" />
+                                  <div className="date-details">
+                                    <span className="departure-label">Departure</span>
+                                    <span className="departure-date">{formatDate(booking.travelDate)}</span>
+                                  </div>
+                                </div>
+                                {booking.isRoundTrip && booking.arrivalDate && (
+                                  <>
+                                    <div className="journey-separator">
+                                      <div className="separator-line"></div>
+                                      <div className="round-trip-label">Round Trip</div>
+                                      <div className="separator-line"></div>
+                                    </div>
+                                    <div className="route return-route">
+                                      <FaMapMarkerAlt className="route-icon" />
+                                      <div className="route-details">
+                                        <span className="origin">{route?.destination || 'Loading...'}</span>
+                                        <span className="arrow">→</span>
+                                        <span className="destination">{route?.origin || 'Loading...'}</span>
+                                      </div>
+                                    </div>
+                                    <div className="date return">
+                                      <FaCalendarAlt className="date-icon" />
+                                      <div className="date-details">
+                                        <span className="return-label">Return</span>
+                                        <span className="return-date">{formatDate(booking.arrivalDate)}</span>
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            </div>
                           </div>
-                          <div className="price">
-                            <span className="ticket-price">€{booking.totalPrice.toFixed(2)}</span>
+
+                          <div className="ticket-footer">
+                            <div className="price">
+                              <span className="price-label">Price</span>
+                              <span className="ticket-price">€{booking.totalPrice.toFixed(2)}</span>
+                            </div>
                           </div>
                         </div>
-                        <button
-                          className="remove-btn"
-                          onClick={() =>
-                            dispatch(removeBooking({ seatNumber: booking.seatNumber }))
-                          }
-                        >
-                          <FaTrash />
-                        </button>
                       </li>
                     );
                   })}

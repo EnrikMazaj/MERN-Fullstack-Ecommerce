@@ -70,7 +70,7 @@ const Seats = () => {
       <h1>Seats</h1>
       <div className="route-info">
         <h2>{routeDetails.origin} → {routeDetails.destination}</h2>
-        <p>Departure: {new Date(selectedDates as Date).toLocaleDateString()}</p>
+        <p>Departure: {Array.isArray(selectedDates) ? new Date(selectedDates[0]).toLocaleDateString() : new Date(selectedDates).toLocaleDateString()}</p>
         {isRoundTrip && Array.isArray(selectedDates) && selectedDates[1] && (
           <p>Return: {new Date(selectedDates[1]).toLocaleDateString()}</p>
         )}

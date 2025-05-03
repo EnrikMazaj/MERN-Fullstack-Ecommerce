@@ -1,12 +1,12 @@
 .my-bookings-container {
   font-family: 'Roboto', sans-serif;
   line-height: 1.6;
-  padding: 40px 20px;
+  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
   color: #333;
   padding-bottom: 100px;
-  background-color: rgba(248, 249, 250, 0.92);
+  background-color: #f5f5f5;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -68,47 +68,69 @@
 
 .bookings-list {
   display: grid;
-  gap: 20px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  margin-top: 30px;
+  gap: 30px;
+  margin-top: 20px;
 }
 
 .booking-card {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  border-left: 4px solid var(--primary-color);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 400px;
+  padding: 0 20px;
+  border: 1px solid #e0e0e0;
+}
+
+/* Add side perforations */
+.booking-card::before,
+.booking-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background-image: radial-gradient(circle at 10px 10px, #f5f5f5 2px, transparent 2px);
+  background-size: 20px 20px;
+}
+
+.booking-card::before {
+  left: 0;
+  transform: rotate(90deg);
+}
+
+.booking-card::after {
+  right: 0;
+  transform: rotate(-90deg);
 }
 
 .booking-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-.booking-header {
+.ticket-status {
+  background: #f8f9fa;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-}
-
-.booking-header h3 {
-  font-family: "Ubuntu", sans-serif;
-  color: #2c3e50;
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
+  position: relative;
 }
 
 .status {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .status.active {
@@ -126,112 +148,286 @@
   color: #c62828;
 }
 
-.booking-details {
+.ticket-content {
+  padding: 20px;
+  margin-bottom: 20px; /* Add margin to account for the perforations */
+}
+
+.ticket-header {
   margin-bottom: 20px;
+  position: relative;
 }
 
-.booking-details p {
-  margin: 8px 0;
-  font-family: "Roboto", sans-serif;
-  color: #555;
-}
-
-.booking-details strong {
+.ticket-header h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
   color: #2c3e50;
   font-weight: 600;
+  background: linear-gradient(45deg, #2c3e50, #3498db);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
 }
 
-.booking-actions {
+.route-display {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+  position: relative;
+  padding: 0 20px;
+}
+
+.route-origin,
+.route-destination {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  padding: 8px 0;
+  text-align: center;
+}
+
+.route-dots {
+  width: 2px;
+  height: 40px;
+  background: repeating-linear-gradient(to bottom, #3498db 0, #3498db 4px, transparent 4px, transparent 8px);
+  margin: 10px 0;
+  position: relative;
+}
+
+.route-dots::before,
+.route-dots::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #3498db;
+  border-radius: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.route-dots::before {
+  top: -4px;
+}
+
+.route-dots::after {
+  bottom: -4px;
+}
+
+.ticket-footer {
+  text-align: center;
+  padding: 15px 0 0;
+  border-top: 1px dashed #e0e0e0;
   margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.view-details-btn, .cancel-btn {
-  padding: 8px 16px;
+.booking-id {
+  font-size: 10px;
+  color: #95a5a6;
+  letter-spacing: 0.5px;
+  display: block;
+  font-family: monospace;
+}
+
+.refund-btn {
+  background-color: #e3f2fd;
+  color: #1976d2;
   border: none;
-  border-radius: 5px;
+  padding: 6px 12px;
+  border-radius: 4px;
   cursor: pointer;
-  font-family: "Roboto", sans-serif;
+  font-size: 12px;
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+}
+
+.refund-btn:hover {
+  background-color: #bbdefb;
+  transform: translateY(-1px);
+}
+
+.refund-requested {
+  font-size: 12px;
+  color: #2e7d32;
+  font-weight: 500;
+  padding: 6px 12px;
+  background-color: #e8f5e9;
+  border-radius: 4px;
+}
+
+.ticket-date {
+  color: #666;
+  font-size: 14px;
+  display: block;
+  text-align: right;
+}
+
+.ticket-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+  position: relative;
+}
+
+.ticket-separator::before,
+.ticket-separator::after {
+  content: '';
+  height: 4px;
+  width: 8px;
+  background: #3498db;
+  border-radius: 10px;
+  margin: 0 5px;
+}
+
+.ticket-separator-line {
   flex: 1;
+  height: 1px;
+  background: repeating-linear-gradient(to right, #3498db 0, #3498db 4px, transparent 4px, transparent 8px);
 }
 
-.view-details-btn {
-  background-color: var(--primary-color);
-  color: white;
+.ticket-details {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
 }
 
-.view-details-btn:hover {
-  background-color: rgb(6, 33, 77);
-  transform: translateY(-2px);
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  color: #7f8c8d;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.detail-value {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.ticket-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .cancel-btn {
-  background-color: #ff6b6b;
-  color: white;
+  background-color: #ffebee;
+  color: #c62828;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .cancel-btn:hover {
-  background-color: #ff5252;
-  transform: translateY(-2px);
+  background-color: #ffcdd2;
+  transform: translateY(-1px);
 }
 
-.loading {
+.loading, .error, .no-bookings {
   text-align: center;
-  font-family: "Roboto", sans-serif;
-  color: #666;
   padding: 40px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
+  color: #666;
+  font-size: 16px;
 }
 
 .error {
-  text-align: center;
-  font-family: "Roboto", sans-serif;
   color: #c62828;
-  padding: 40px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
-  border-left: 4px solid #ff5252;
 }
 
-.no-bookings {
-  text-align: center;
-  font-family: "Roboto", sans-serif;
+.ticket-actions-menu {
+  position: relative;
+}
+
+.menu-trigger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.menu-trigger:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.menu-dots {
+  font-size: 20px;
   color: #666;
-  grid-column: 1 / -1;
-  padding: 40px;
+  line-height: 1;
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
   background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 150px;
+  z-index: 10;
+  display: none;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.menu-dropdown.show {
+  display: block;
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  text-align: left;
+  border: none;
+  background: none;
+  color: #2c3e50;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.menu-item:hover {
+  background-color: #f5f5f5;
+}
+
+.menu-item.disabled {
+  color: #95a5a6;
+  cursor: not-allowed;
+  background-color: #f8f9fa;
 }
 
 @media (max-width: 768px) {
-  .my-bookings-container {
-    margin: 20px auto;
-    padding: 30px 15px;
-  }
-
-  .my-bookings-container h1 {
-    font-size: 28px;
-  }
-
   .bookings-list {
     grid-template-columns: 1fr;
   }
-
-  .booking-actions {
-    flex-direction: column;
-  }
-
-  .view-details-btn, .cancel-btn {
-    width: 100%;
+  
+  .booking-card {
+    width: 95%;
   }
 }
 
