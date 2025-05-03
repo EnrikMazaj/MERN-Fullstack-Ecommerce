@@ -9,60 +9,60 @@
 }
 
 #login {
-  padding: 11px;
-  font-size: 18px;
+  padding: 10px 24px;
+  font-size: 16px;
   font-family: "Roboto", sans-serif;
   font-weight: 500;
   cursor: pointer;
   border: none;
-  border-radius: 20px;
-  transition: all 0.3s ease-in-out;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background-color: #4299e1;
+  color: white;
 }
 
 #signin {
-  padding: 10px;
-  font-size: 18px;
-  font-family: "Ubuntu", sans-serif;
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  transition: all 0.3s ease-in-out;
-}
-
-#logout {
-  padding: 11px;
-  font-size: 18px;
+  padding: 10px 24px;
+  font-size: 16px;
   font-family: "Roboto", sans-serif;
   font-weight: 500;
   cursor: pointer;
   border: none;
-  border-radius: 20px;
-  transition: all 0.3s ease-in-out;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background-color: #48bb78;
+  color: white;
+}
+
+#logout {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  margin: 0 30px;
+  cursor: pointer;
+  border: 2px solid #ff6b6b;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background-color: white;
+  color: #ff6b6b;
+}
+
+#login:hover {
+  background-color: #3182ce;
+}
+
+#signin:hover {
+  background-color: #38a169;
+}
+
+#logout:hover {
   background-color: #ff6b6b;
   color: white;
 }
 
-#login {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-#signin {
-  background-color: rgb(11, 96, 81);
-  color: white;
-}
-
-#login:hover {
-  background-color: rgb(6, 33, 77);
-}
-
-#signin:hover {
-  background-color: rgb(6, 33, 77);
-}
-
-#logout:hover {
-  background-color: #ff5252;
+#logout:active {
+  transform: translateY(0);
 }
 
 /* Modal container */

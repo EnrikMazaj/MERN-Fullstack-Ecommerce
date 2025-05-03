@@ -77,16 +77,17 @@ const bookingService = {
         }
     },
 
-    // Cancel booking
-    cancelBooking: async (bookingId: string) => {
+    // Request refund for a booking
+    requestRefund: async (bookingId: string) => {
         try {
-            const response = await axios.patch(`${API_URL}/bookings/${bookingId}/cancel`);
+            const response = await axios.put(`${API_URL}/bookings/${bookingId}/refund`);
             return response.data;
         } catch (error) {
-            console.error('Error cancelling booking:', error);
+            console.error('Error requesting refund:', error);
             throw error;
         }
-    }
+    },
+
 };
 
 export default bookingService; 

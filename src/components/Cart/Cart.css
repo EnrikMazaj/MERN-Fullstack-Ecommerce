@@ -307,34 +307,58 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+  border-radius: 8px;
+  margin: 8px 0;
 }
 
 .price-label {
   font-size: 14px;
-  color: #666;
+  color: #4a5568;
+  font-weight: 500;
 }
 
 .ticket-price {
-  font-weight: 600;
+  font-weight: 700;
   color: #2ecc71;
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ticket-price::before {
+  
+  font-size: 14px;
+  opacity: 0.8;
 }
 
 /* Cart total */
 .cart-total {
-  margin: 20px 0;
-  padding-top: 15px;
-  border-top: 1px solid #eee;
-  font-weight: bold;
-  color: #333;
-  font-size: 18px;
-  text-align: right;
+  margin: 24px 0;
+  padding: 16px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 20px;
 }
 
 .total-price {
   color: #2ecc71;
-  font-size: 20px;
-  margin-left: 8px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.total-price::before {
+  font-size: 16px;
+  opacity: 0.8;
 }
 
 /* Remove button */

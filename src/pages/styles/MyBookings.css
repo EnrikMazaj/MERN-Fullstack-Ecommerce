@@ -6,7 +6,7 @@
   margin: 0 auto;
   color: #333;
   padding-bottom: 100px;
-  background-color: #f5f5f5;
+  background-color: #f0f7ff;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -35,7 +35,7 @@
   text-align: center;
   margin-bottom: 30px;
   font-weight: 800;
-  color: #2c3e50;
+  color: #1a365d;
   position: relative;
   padding-bottom: 15px;
   letter-spacing: -0.5px;
@@ -75,28 +75,16 @@
 
 .booking-card {
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   position: relative;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin: 20px auto;
   width: 90%;
   max-width: 400px;
-  padding: 0 20px;
+  padding: 0;
   border: 1px solid #e0e0e0;
-}
-
-/* Add side perforations */
-.booking-card::before,
-.booking-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 20px;
-  background-image: radial-gradient(circle at 10px 10px, #f5f5f5 2px, transparent 2px);
-  background-size: 20px 20px;
 }
 
 .booking-card::before {
@@ -111,15 +99,15 @@
 
 .booking-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .ticket-status {
-  background: #f8f9fa;
-  padding: 15px 20px;
-  border-bottom: 1px solid #eee;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
 }
@@ -127,46 +115,57 @@
 .status {
   padding: 6px 12px;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .status.active {
-  background-color: #e3f2fd;
-  color: #1976d2;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  color: #1565c0;
 }
 
 .status.completed {
-  background-color: #e8f5e9;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
   color: #2e7d32;
 }
 
 .status.cancelled {
-  background-color: #ffebee;
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
   color: #c62828;
+}
+
+.status.confirmed {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  color: #2e7d32;
+  border: 1px solid #81c784;
+}
+
+.status.refunded {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  color: #e65100;
+  border: 1px solid #ffb74d;
 }
 
 .ticket-content {
   padding: 20px;
-  margin-bottom: 20px; /* Add margin to account for the perforations */
+  background: white;
 }
 
 .ticket-header {
   margin-bottom: 20px;
-  position: relative;
+  text-align: center;
 }
 
 .ticket-header h3 {
-  margin: 0 0 4px 0;
+  margin: 0;
   font-size: 18px;
-  color: #2c3e50;
   font-weight: 600;
-  background: linear-gradient(45deg, #2c3e50, #3498db);
+  background: linear-gradient(45deg, #1a365d, #2b6cb0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-align: center;
 }
 
 .route-display {
@@ -190,7 +189,7 @@
 .route-dots {
   width: 2px;
   height: 40px;
-  background: repeating-linear-gradient(to bottom, #3498db 0, #3498db 4px, transparent 4px, transparent 8px);
+  background: repeating-linear-gradient(to bottom, #2b6cb0 0, #2b6cb0 4px, transparent 4px, transparent 8px);
   margin: 10px 0;
   position: relative;
 }
@@ -201,14 +200,14 @@
   position: absolute;
   width: 8px;
   height: 8px;
-  background: #3498db;
+  background: #2b6cb0;
   border-radius: 50%;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .route-dots::before {
-  top: -4px;
+  top: -10px;
 }
 
 .route-dots::after {
@@ -220,43 +219,15 @@
   padding: 15px 0 0;
   border-top: 1px dashed #e0e0e0;
   margin-top: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
 }
 
 .booking-id {
   font-size: 10px;
-  color: #95a5a6;
+  color: #718096;
   letter-spacing: 0.5px;
   display: block;
   font-family: monospace;
-}
-
-.refund-btn {
-  background-color: #e3f2fd;
-  color: #1976d2;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.refund-btn:hover {
-  background-color: #bbdefb;
-  transform: translateY(-1px);
-}
-
-.refund-requested {
-  font-size: 12px;
-  color: #2e7d32;
-  font-weight: 500;
-  padding: 6px 12px;
-  background-color: #e8f5e9;
-  border-radius: 4px;
 }
 
 .ticket-date {
@@ -270,30 +241,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 15px 0;
+  margin: 20px 0;
   position: relative;
-}
-
-.ticket-separator::before,
-.ticket-separator::after {
-  content: '';
-  height: 4px;
-  width: 8px;
-  background: #3498db;
-  border-radius: 10px;
-  margin: 0 5px;
 }
 
 .ticket-separator-line {
   flex: 1;
   height: 1px;
-  background: repeating-linear-gradient(to right, #3498db 0, #3498db 4px, transparent 4px, transparent 8px);
+  background: repeating-linear-gradient(to right, #2b6cb0 0, #2b6cb0 4px, transparent 4px, transparent 8px);
 }
 
 .ticket-details {
-  background: #f8f9fa;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
   border-radius: 8px;
-  padding: 15px;
+  padding: 16px;
   margin-bottom: 20px;
   border: 1px solid #e0e0e0;
 }
@@ -303,7 +264,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .detail-row:last-child {
@@ -311,7 +272,7 @@
 }
 
 .detail-label {
-  color: #7f8c8d;
+  color: #4a5568;
   font-size: 14px;
   text-transform: uppercase;
   font-weight: 500;
@@ -324,26 +285,56 @@
 }
 
 .ticket-actions {
+  margin-top: 20px;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
 }
 
-.cancel-btn {
-  background-color: #ffebee;
-  color: #c62828;
+.refund-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+  color: white;
   border: none;
-  padding: 8px 20px;
-  border-radius: 6px;
-  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 600;
   font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 71, 87, 0.2);
 }
 
-.cancel-btn:hover {
-  background-color: #ffcdd2;
-  transform: translateY(-1px);
+.refund-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 71, 87, 0.3);
+  background: linear-gradient(135deg, #ff4757 0%, #ff6b6b 100%);
+}
+
+.refund-btn:active {
+  transform: translateY(0);
+}
+
+.refund-icon {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: rotate 0.3s ease;
+}
+
+.refund-text {
+  letter-spacing: 0.5px;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-180deg);
+  }
 }
 
 .loading, .error, .no-bookings {
@@ -359,66 +350,6 @@
 
 .ticket-actions-menu {
   position: relative;
-}
-
-.menu-trigger {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-}
-
-.menu-trigger:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.menu-dots {
-  font-size: 20px;
-  color: #666;
-  line-height: 1;
-}
-
-.menu-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  min-width: 150px;
-  z-index: 10;
-  display: none;
-  overflow: hidden;
-  margin-top: 5px;
-}
-
-.menu-dropdown.show {
-  display: block;
-}
-
-.menu-item {
-  display: block;
-  width: 100%;
-  padding: 10px 15px;
-  text-align: left;
-  border: none;
-  background: none;
-  color: #2c3e50;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.menu-item:hover {
-  background-color: #f5f5f5;
-}
-
-.menu-item.disabled {
-  color: #95a5a6;
-  cursor: not-allowed;
-  background-color: #f8f9fa;
 }
 
 @media (max-width: 768px) {
@@ -441,6 +372,15 @@
   }
 
   .booking-card {
-    padding: 15px;
+    padding: 0;
+  }
+
+  .refund-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+  
+  .refund-icon {
+    font-size: 14px;
   }
 } 

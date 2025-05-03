@@ -9,28 +9,17 @@ import Footer from './components/Footer/Footer.tsx';
 import Seats from './pages/Seats.tsx';
 import React from 'react';
 import Cart from './components/Cart/Cart.tsx';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './context/AuthContext';
 import MyBookings from './pages/MyBookings.tsx';
+import ScrollToTop from './components/ScrollToTop.tsx';
+import ToastConfig from './components/ToastConfig.tsx';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          style={{ zIndex: 99999 }}
-          theme="light"
-        />
+        <ScrollToTop />
+        <ToastConfig />
         <div className="App">
           <Navbar />
           <Routes>

@@ -14,12 +14,13 @@ interface Booking {
     passengerPassport: string;
     userId: string;
     travelDate: Date;
-    status: 'active' | 'completed' | 'cancelled';
+    status: 'active' | 'completed' | 'cancelled' | 'refunded';
     routeInfo?: {
         origin: string;
         destination: string;
     };
     refundRequested?: boolean;
+    refundStatus?: 'pending' | 'approved' | 'rejected';
 }
 
 const MyBookings = () => {
@@ -27,7 +28,6 @@ const MyBookings = () => {
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchBookings = async () => {
@@ -68,49 +68,31 @@ const MyBookings = () => {
 
     const handleCancelBooking = async (bookingId: string) => {
         try {
-            await bookingService.cancelBooking(bookingId);
+            // First update the status to cancelled
+            await bookingService.updateBookingStatus(bookingId, 'cancelled', 'completed');
+
+            // Then request the refund
+            await bookingService.requestRefund(bookingId);
+
+            // Update status in frontend
             setBookings(bookings.map(booking =>
                 booking._id === bookingId
-                    ? { ...booking, status: 'cancelled' as const }
+                    ? {
+                        ...booking,
+                        status: 'cancelled' as const,
+                        refundRequested: true,
+                        refundStatus: 'pending'
+                    }
                     : booking
             ));
+
+            // Show success message
+            alert('Refund requested successfully! The refund process will be completed shortly.');
         } catch (error) {
-            console.error('Error cancelling booking:', error);
-            setError('Failed to cancel booking. Please try again later.');
+            console.error('Error processing refund request:', error);
+            setError('Failed to process refund request. Please try again later.');
         }
     };
-
-    const handleRequestRefund = async (bookingId: string) => {
-        if (window.confirm('Are you sure you want to request a refund for this cancelled booking?')) {
-            try {
-                await bookingService.requestRefund(bookingId);
-                setBookings(bookings.map(booking =>
-                    booking._id === bookingId
-                        ? { ...booking, refundRequested: true }
-                        : booking
-                ));
-            } catch (error) {
-                console.error('Error requesting refund:', error);
-                setError('Failed to request refund. Please try again later.');
-            }
-        }
-    };
-
-    const handleMenuClick = (bookingId: string) => {
-        setOpenMenuId(openMenuId === bookingId ? null : bookingId);
-    };
-
-    // Close menu when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (openMenuId && !(event.target as Element).closest('.ticket-actions-menu')) {
-                setOpenMenuId(null);
-            }
-        };
-
-        document.addEventListener('click', handleClickOutside);
-        return () => document.removeEventListener('click', handleClickOutside);
-    }, [openMenuId]);
 
     // If user is not logged in, redirect to home page
     if (!isLoggedIn) {
@@ -148,36 +130,6 @@ const MyBookings = () => {
                                 <span className={`status ${booking.status}`}>
                                     {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                                 </span>
-                                <div className="ticket-actions-menu">
-                                    <button
-                                        className="menu-trigger"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleMenuClick(booking._id);
-                                        }}
-                                    >
-                                        <span className="menu-dots">...</span>
-                                    </button>
-                                    <div className={`menu-dropdown ${openMenuId === booking._id ? 'show' : ''}`}>
-                                        {booking.status === 'cancelled' && !booking.refundRequested && (
-                                            <button
-                                                className="menu-item"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleRequestRefund(booking._id);
-                                                    setOpenMenuId(null);
-                                                }}
-                                            >
-                                                Request Refund
-                                            </button>
-                                        )}
-                                        {booking.status === 'cancelled' && booking.refundRequested && (
-                                            <div className="menu-item disabled">
-                                                Refund Requested
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
                             </div>
                             <div className="ticket-content">
                                 <div className="ticket-header">
@@ -208,10 +160,11 @@ const MyBookings = () => {
                                 {booking.status === 'active' && (
                                     <div className="ticket-actions">
                                         <button
-                                            className="cancel-btn"
+                                            className="refund-btn"
                                             onClick={() => handleCancelBooking(booking._id)}
                                         >
-                                            Cancel Booking
+                                            <span className="refund-icon">↩</span>
+                                            <span className="refund-text">Request Refund</span>
                                         </button>
                                     </div>
                                 )}

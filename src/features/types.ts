@@ -7,10 +7,13 @@ export interface Booking {
   passengerPassport: string;
   userId: string;
   routeId: string;
-  status: 'confirmed' | 'cancelled';
+  status: 'confirmed' | 'cancelled' | 'refunded';
   bookingDate: Date;
   travelDate: Date;
   arrivalDate?: Date; // Optional arrival date for round trips
   paymentStatus: 'pending' | 'completed' | 'failed';
   isRoundTrip?: boolean; // Flag to indicate if this is a round trip
+  refundRequested?: boolean;
+  refundStatus?: 'pending' | 'approved' | 'rejected' | 'completed';
+  refundDate?: Date;
 }
