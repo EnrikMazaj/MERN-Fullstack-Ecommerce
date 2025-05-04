@@ -3,11 +3,11 @@ services:
     name: bus-ecommerce-backend
     runtime: node
     rootDir: backend
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    buildCommand: NODE_ENV=production npm install && NODE_ENV=production npm run build && cp -r src/config dist/
+    startCommand: NODE_ENV=production npm start
     envVars:
       - key: PORT
-        value: 3000
+        value: 10000
       - key: MONGODB_URL
         fromDatabase:
           name: bus-ecommerce-db

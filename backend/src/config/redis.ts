@@ -2,6 +2,9 @@ import { createClient } from 'redis';
 import { RedisClientType } from '@redis/client';
 import { RedisStore } from 'connect-redis';
 import { Store } from 'express-session';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Create Redis client with retry strategy
 const redisClient: RedisClientType = createClient({
@@ -9,7 +12,6 @@ const redisClient: RedisClientType = createClient({
     socket: {
         reconnectStrategy: (retries) => {
             if (retries > 3) {
-                console.log('Max retries reached. Could not connect to Redis.');
                 return new Error('Max retries reached');
             }
             return Math.min(retries * 100, 3000);
@@ -17,26 +19,21 @@ const redisClient: RedisClientType = createClient({
     }
 });
 
-redisClient.on('error', (err: Error) => {
-    console.error('Redis Client Error:', err.message);
-});
+// Only connect to Redis if we're not in a test environment
+if (process.env.NODE_ENV !== 'test') {
+    redisClient.on('connect', () => {
+        // Connection success is handled silently
+    });
 
-redisClient.on('connect', () => {
-    console.log('Successfully connected to Redis');
-});
+    redisClient.on('error', () => {
+        // Errors are handled by the application's error handling
+    });
 
-// Connect to Redis with retry logic
-const connectToRedis = async () => {
-    try {
-        await redisClient.connect();
-    } catch (err) {
-        console.error('Failed to connect to Redis:', err);
-        // Don't throw here, let the application continue without Redis
-    }
-};
-
-// Initialize the connection
-connectToRedis();
+    // Connect to Redis
+    redisClient.connect().catch(() => {
+        // Connection errors are handled by the application's error handling
+    });
+}
 
 // Configure session store
 const store: Store = new RedisStore({
@@ -51,9 +48,8 @@ export const sessionConfig = {
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: false, // This will be overridden in server.ts based on environment
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        sameSite: 'lax'
+        maxAge: 1000 * 60 * 60 * 24 // 1 day
     }
 };

@@ -11,7 +11,8 @@
     "rootDir": "src",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "isolatedModules": true
   },
   "ts-node": {
     "esm": true,
@@ -19,4 +20,4 @@
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
-} 
+}

@@ -9,8 +9,8 @@ import session from 'express-session';
 // Load environment variables from .env file
 dotenv.config();
 
-const app = express();
-const port = process.env.PORT || 3000;
+export const app = express();
+const port = parseInt(process.env.PORT || '10000', 10);
 
 // CORS configuration
 app.use(cors({
@@ -42,11 +42,48 @@ app.get('/healthcheck', (req, res) => {
     res.status(200).json({ message: 'Server is running' });
 });
 
-// Connect to database
-connectDB();
+// Only connect to database and start server if this is the main module
+if (process.argv[1] === import.meta.url) {
+    // Connect to database
+    connectDB();
 
-// Start the server
-app.listen(port, () => {
-    // Use process.stdout.write for server startup message
-    process.stdout.write(`Server is running on port ${port}\n`);
-}); 
+    // Start the server
+    const server = app.listen(port, '0.0.0.0', () => {
+        console.log(`Server is running on port ${port}`);
+        console.log(`Environment: ${process.env.NODE_ENV}`);
+        console.log(`Process ID: ${process.pid}`);
+    });
+
+    // Handle server errors
+    server.on('error', (error: NodeJS.ErrnoException) => {
+        console.error('Server error:', error);
+        if (error.syscall !== 'listen') {
+            throw error;
+        }
+
+        const bind = 'Port ' + port;
+
+        // Handle specific listen errors with friendly messages
+        switch (error.code) {
+            case 'EACCES':
+                console.error(bind + ' requires elevated privileges');
+                process.exit(1);
+                break;
+            case 'EADDRINUSE':
+                console.error(bind + ' is already in use');
+                process.exit(1);
+                break;
+            default:
+                throw error;
+        }
+    });
+
+    // Handle process termination
+    process.on('SIGTERM', () => {
+        console.log('SIGTERM received. Shutting down gracefully...');
+        server.close(() => {
+            console.log('Server closed');
+            process.exit(0);
+        });
+    });
+} 
