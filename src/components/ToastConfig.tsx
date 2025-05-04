@@ -23,7 +23,7 @@ const ToastConfig = () => {
                     style={{
                         background: 'transparent',
                         border: 'none',
-                        color: 'white',
+                        color: 'inherit',
                         cursor: 'pointer',
                         fontSize: '20px',
                         padding: '0 8px',
@@ -38,8 +38,6 @@ const ToastConfig = () => {
                 </button>
             )}
             toastStyle={{
-                background: '#4CAF50',
-                color: 'white',
                 borderRadius: '8px',
                 boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
                 padding: '12px 20px',

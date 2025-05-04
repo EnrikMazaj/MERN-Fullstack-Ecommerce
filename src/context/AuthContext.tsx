@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { API_URL } from '../config/api';
 
 interface User {
     id: string;
@@ -19,16 +20,54 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState<User | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const checkSession = async () => {
+            try {
+                const response = await fetch(`${API_URL}/api/users/check-auth`, {
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    login(data.user);
+                }
+            } catch (error) {
+                // Silently handle session check error
+                setIsLoggedIn(false);
+                setUser(null);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        checkSession();
+    }, []);
 
     const login = (userData: User) => {
         setIsLoggedIn(true);
         setUser(userData);
     };
 
-    const logout = () => {
-        setIsLoggedIn(false);
-        setUser(null);
+    const logout = async () => {
+        try {
+            await fetch(`${API_URL}/api/users/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            setIsLoggedIn(false);
+            setUser(null);
+        } catch (error) {
+            // Silently handle logout error
+            setIsLoggedIn(false);
+            setUser(null);
+        }
     };
+
+    if (isLoading) {
+        return null; // or a loading spinner
+    }
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>

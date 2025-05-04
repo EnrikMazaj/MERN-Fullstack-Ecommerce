@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import './LoginModal.css';
 import { useAuth } from '../../context/AuthContext';
 import { successToastConfig, errorToastConfig } from '../../config/toastConfig';
+import { API_URL } from '../../config/api';
 
 interface RegisterFormData {
   username: string;
@@ -70,20 +71,18 @@ const LoginModal = () => {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoginLoading(true);
-    console.log('Submitting login form:', loginFormData);
 
     try {
-      const response = await fetch('https://bus-ecommerce.onrender.com/api/users/login', {
+      const response = await fetch(`${API_URL}/api/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(loginFormData)
       });
 
-      console.log('Response status:', response.status);
       const data = await response.json();
-      console.log('Response data:', data);
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
@@ -93,8 +92,11 @@ const LoginModal = () => {
       toast.success('Login successful!', successToastConfig);
       handleCloseLogin();
     } catch (error) {
-      console.error('Login error:', error);
-      toast.error(error instanceof Error ? error.message : 'Login failed', errorToastConfig);
+      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        toast.error('Could not connect to the server. Please check if the server is running.', errorToastConfig);
+      } else {
+        toast.error(error instanceof Error ? error.message : 'Login failed', errorToastConfig);
+      }
     } finally {
       setIsLoginLoading(false);
     }
@@ -103,7 +105,6 @@ const LoginModal = () => {
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsRegisterLoading(true);
-    console.log('Submitting registration form:', registerFormData);
 
     try {
       const response = await fetch('https://bus-ecommerce.onrender.com/api/users/register', {
@@ -111,6 +112,7 @@ const LoginModal = () => {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
           firstName: registerFormData.username,
           lastName: registerFormData.username,
@@ -119,9 +121,7 @@ const LoginModal = () => {
         })
       });
 
-      console.log('Response status:', response.status);
       const data = await response.json();
-      console.log('Response data:', data);
 
       if (!response.ok) {
         throw new Error(data.message || 'Registration failed');
@@ -131,7 +131,6 @@ const LoginModal = () => {
       handleCloseRegister();
       setLoginOpen(true);
     } catch (error) {
-      console.error('Registration error:', error);
       toast.error(error instanceof Error ? error.message : 'Registration failed', errorToastConfig);
     } finally {
       setIsRegisterLoading(false);

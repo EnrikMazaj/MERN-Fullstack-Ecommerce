@@ -1,12 +1,20 @@
 .custom-toast-container {
-    --toastify-color-success: #4CAF50 !important;
-    --toastify-icon-color-success: #4CAF50 !important;
+    --toastify-color-success: #4CAF50;
+    --toastify-icon-color-success: #4CAF50;
+    --toastify-color-error: #c62828;
+    --toastify-icon-color-error: #c62828;
 }
 
-.Toastify__toast {
-    background: #4CAF50 !important;
+.Toastify__toast--success {
+    background: #e8f5e9 !important;
+    color: #2e7d32 !important;
+}
+
+.Toastify__toast--error {
+    background: #ffebee !important;
+    color: #c62828 !important;
 }
 
 .Toastify__toast-body {
-    color: white !important;
+    color: inherit !important;
 } 

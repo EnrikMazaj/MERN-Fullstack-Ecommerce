@@ -7,7 +7,7 @@ export const toastConfig: ToastOptions = {
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
-    theme: "colored",
+    theme: "light",
     style: {
         fontFamily: "'Roboto', sans-serif",
         fontSize: "14px",
@@ -20,20 +20,22 @@ export const toastConfig: ToastOptions = {
 
 export const successToastConfig: ToastOptions = {
     ...toastConfig,
+    theme: "light",
     style: {
         ...toastConfig.style,
-        background: "white",
-        color: "#4CAF50",
-        border: "1px solid #4CAF50",
+        background: "#e8f5e9",
+        color: "#2e7d32",
+        border: "1px solid #2e7d32",
     },
 };
 
 export const errorToastConfig: ToastOptions = {
     ...toastConfig,
+    theme: "light",
     style: {
         ...toastConfig.style,
-        background: "white",
-        color: "#f44336",
-        border: "1px solid #f44336",
+        background: "#c62828",
+        color: "#c62828",
+        border: "1px solid #c62828",
     },
 }; 

@@ -15,9 +15,12 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/express-session": "^1.18.1",
     "axios": "^1.8.4",
+    "connect-redis": "^8.0.3",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "leaflet": "^1.9.4",
     "mongoose": "^8.13.2",
     "react": "^18.3.1",
@@ -29,6 +32,7 @@
     "react-router-dom": "^6.28.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^10.0.6",
+    "redis": "^5.0.0",
     "redux-persist": "^6.0.0",
     "web-vitals": "^2.1.4"
   },
@@ -43,7 +47,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "eslint . --ext .ts,.tsx --fix",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "eslintConfig": {
     "extends": [
@@ -64,6 +68,7 @@
     ]
   },
   "devDependencies": {
+    "@redis/client": "^5.0.0",
     "@types/bcryptjs": "^3.0.0",
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^8.2.3",
