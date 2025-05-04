@@ -14,7 +14,12 @@ const port = parseInt(process.env.PORT || '10000', 10);
 
 // CORS configuration
 app.use(cors({
-    origin: ['http://localhost:3001', 'http://localhost:3000', 'https://bus-ecommerce.vercel.app'],
+    origin: [
+        'http://localhost:3001',
+        'http://localhost:3000',
+        'https://bus-ecommerce.vercel.app',
+        process.env.RENDER_EXTERNAL_URL || ''
+    ].filter(Boolean),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -44,14 +49,25 @@ app.get('/healthcheck', (req, res) => {
 
 // Only connect to database and start server if this is the main module
 if (process.argv[1] === import.meta.url) {
+    console.log('Starting server initialization...');
+    console.log('Current working directory:', process.cwd());
+    console.log('Environment variables:', {
+        PORT: process.env.PORT,
+        NODE_ENV: process.env.NODE_ENV,
+        MONGODB_URL: process.env.MONGODB_URL ? 'Set' : 'Not set',
+        REDIS_URL: process.env.REDIS_URL ? 'Set' : 'Not set'
+    });
+
     // Connect to database
     connectDB();
 
     // Start the server
+    console.log(`Attempting to start server on port ${port}...`);
     const server = app.listen(port, '0.0.0.0', () => {
         console.log(`Server is running on port ${port}`);
         console.log(`Environment: ${process.env.NODE_ENV}`);
         console.log(`Process ID: ${process.pid}`);
+        console.log(`Server address: ${server.address()}`);
     });
 
     // Handle server errors
