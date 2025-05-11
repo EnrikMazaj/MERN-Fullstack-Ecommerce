@@ -1,10 +1,10 @@
 import { app } from './server.js';
 import dotenv from 'dotenv';
-import { jest } from '@jest/globals';
+import { describe, expect, test, afterAll, jest } from '@jest/globals';
 import { RequestHandler } from 'express';
 
-// Mock Redis module before importing server
-jest.unstable_mockModule('./config/redis.js', () => ({
+// Mock Redis module
+jest.mock('./config/redis.js', () => ({
     sessionConfig: {
         secret: 'test-secret',
         resave: false,
