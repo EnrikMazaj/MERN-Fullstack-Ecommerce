@@ -18,11 +18,14 @@ app.use(cors({
         'http://localhost:3001',
         'http://localhost:3000',
         'https://bus-ecommerce.vercel.app',
-        process.env.RENDER_EXTERNAL_URL || ''
+        'https://bus-ecommerce-frontend.vercel.app',
+        process.env.RENDER_EXTERNAL_URL || '',
+        process.env.FRONTEND_URL || ''
     ].filter(Boolean),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['set-cookie']
 }));
 
 // Middleware
@@ -35,17 +38,13 @@ app.use(session({
     cookie: {
         ...sessionConfig.cookie,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
     }
 }));
 
 // Routes
 app.use('/api', routes);
-
-// Healthcheck endpoint
-app.get('/healthcheck', (req, res) => {
-    res.status(200).json({ message: 'Server is running' });
-});
 
 // Start the server
 console.log('Starting server initialization...');

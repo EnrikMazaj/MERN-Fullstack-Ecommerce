@@ -1,6 +1,14 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://bus-ecommerce.onrender.com/api';
+const API_URL = process.env.REACT_APP_API_URL || 'https://bus-ecommerce.onrender.com';
+
+// Create axios instance with default config
+const axiosInstance = axios.create({
+    withCredentials: true,
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
 
 export interface Route {
     _id: string;
@@ -16,7 +24,7 @@ const routeService = {
     // Get all routes
     getAllRoutes: async (): Promise<Route[]> => {
         try {
-            const response = await axios.get(`${API_URL}/routes`);
+            const response = await axiosInstance.get(`${API_URL}/api/routes`);
             return response.data.data;
         } catch (error) {
             console.error('Error fetching routes:', error);
@@ -27,7 +35,7 @@ const routeService = {
     // Get route by ID
     getRouteById: async (routeId: string): Promise<Route> => {
         try {
-            const response = await axios.get(`${API_URL}/routes/${routeId}`);
+            const response = await axiosInstance.get(`${API_URL}/api/routes/${routeId}`);
             return response.data.data;
         } catch (error) {
             console.error(`Error fetching route with ID ${routeId}:`, error);

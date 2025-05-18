@@ -52,6 +52,6 @@ export const sessionConfig = {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24, // 1 day
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-        domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined
+        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
     }
 };
