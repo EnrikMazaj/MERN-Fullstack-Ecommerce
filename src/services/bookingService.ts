@@ -1,6 +1,14 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://bus-ecommerce.onrender.com/api';
+const API_URL = process.env.REACT_APP_API_URL || 'https://bus-ecommerce.onrender.com';
+
+// Create axios instance with default config
+const axiosInstance = axios.create({
+    withCredentials: true,
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
 
 export interface BookingData {
     seatNumber: number;
@@ -17,7 +25,7 @@ const bookingService = {
     createBooking: async (bookingData: BookingData) => {
         try {
             console.log('Sending booking data to server:', JSON.stringify(bookingData, null, 2));
-            const response = await axios.post(`${API_URL}/bookings`, bookingData);
+            const response = await axiosInstance.post(`${API_URL}/api/bookings`, bookingData);
             console.log('Booking response:', response.data);
             return response.data;
         } catch (error) {
@@ -44,7 +52,7 @@ const bookingService = {
     // Get all bookings for a user
     getUserBookings: async (userId: string) => {
         try {
-            const response = await axios.get(`${API_URL}/bookings/user/${userId}`);
+            const response = await axiosInstance.get(`${API_URL}/api/bookings/user/${userId}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching user bookings:', error);
@@ -55,7 +63,7 @@ const bookingService = {
     // Get a specific booking by ID
     getBookingById: async (bookingId: string) => {
         try {
-            const response = await axios.get(`${API_URL}/bookings/${bookingId}`);
+            const response = await axiosInstance.get(`${API_URL}/api/bookings/${bookingId}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching booking:', error);
@@ -66,7 +74,7 @@ const bookingService = {
     // Update booking status
     updateBookingStatus: async (bookingId: string, status: string, paymentStatus: string) => {
         try {
-            const response = await axios.patch(`${API_URL}/bookings/${bookingId}/status`, {
+            const response = await axiosInstance.patch(`${API_URL}/api/bookings/${bookingId}/status`, {
                 status,
                 paymentStatus
             });
@@ -80,14 +88,13 @@ const bookingService = {
     // Request refund for a booking
     requestRefund: async (bookingId: string) => {
         try {
-            const response = await axios.put(`${API_URL}/bookings/${bookingId}/refund`);
+            const response = await axiosInstance.put(`${API_URL}/api/bookings/${bookingId}/refund`);
             return response.data;
         } catch (error) {
             console.error('Error requesting refund:', error);
             throw error;
         }
     },
-
 };
 
 export default bookingService; 

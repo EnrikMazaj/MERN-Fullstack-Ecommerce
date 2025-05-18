@@ -48,8 +48,10 @@ export const sessionConfig = {
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false, // This will be overridden in server.ts based on environment
+        secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 // 1 day
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined
     }
 };
