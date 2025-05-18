@@ -107,7 +107,7 @@ const LoginModal = () => {
     setIsRegisterLoading(true);
 
     try {
-      const response = await fetch('https://bus-ecommerce.onrender.com/api/users/register', {
+      const response = await fetch(`${API_URL}/api/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
