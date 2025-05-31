@@ -46,7 +46,7 @@ export const sessionConfig = {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24, // 1 day
-        sameSite: 'none',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' as const : 'lax' as const,
         domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined,
         path: '/'
     }
