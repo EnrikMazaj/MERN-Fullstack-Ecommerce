@@ -39,7 +39,6 @@ const Footer = () => {
           draggable: true,
           progress: undefined,
         });
-        // Clear form fields
         setFormData({
           name: '',
           email: '',

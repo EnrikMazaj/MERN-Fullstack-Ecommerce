@@ -26,7 +26,6 @@ const Tickets = () => {
         const fetchedRoutes = await routeService.getAllRoutes();
         setRoutes(fetchedRoutes);
       } catch (error) {
-        console.error('Error fetching routes:', error);
         toast.error('Failed to load routes. Please try again later.');
       } finally {
         setLoading(false);

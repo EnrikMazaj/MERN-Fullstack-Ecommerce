@@ -21,8 +21,7 @@ const Seats = () => {
   const { selectedRoute, selectedDates, isRoundTrip } = location.state as LocationState;
 
   const bookings = useSelector((state: RootState) => state.cart.bookings);
-
-  // Fetch route details
+  
   useEffect(() => {
     const fetchRouteDetails = async () => {
       try {
@@ -30,7 +29,6 @@ const Seats = () => {
         const route = await routeService.getRouteById(selectedRoute);
         setRouteDetails(route);
       } catch (error) {
-        console.error('Error fetching route details:', error);
         toast.error('Failed to load route details. Please try again later.');
       } finally {
         setLoading(false);

@@ -2,13 +2,50 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://bus-ecommerce.onrender.com';
 
-// Create axios instance with default config
 const axiosInstance = axios.create({
+    baseURL: API_URL,
     withCredentials: true,
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    },
+    timeout: 10000,
+    validateStatus: function (status) {
+        return status >= 200 && status < 500;
     }
 });
+
+axiosInstance.interceptors.request.use(
+    config => {
+        if (config.method === 'get') {
+            config.params = { ...config.params, _t: Date.now() };
+        }
+        return config;
+    },
+    error => Promise.reject(error)
+);
+
+axiosInstance.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response) {
+            if (error.response.status === 401) {
+                window.location.href = '/login';
+                return Promise.reject(error);
+            }
+            console.error('API Error Response:', {
+                status: error.response.status,
+                data: error.response.data,
+                headers: error.response.headers
+            });
+        } else if (error.request) {
+            console.error('API Error Request:', error.request);
+        } else {
+            console.error('API Error:', error.message);
+        }
+        return Promise.reject(error);
+    }
+);
 
 export interface Route {
     _id: string;
@@ -21,26 +58,14 @@ export interface Route {
 }
 
 const routeService = {
-    // Get all routes
     getAllRoutes: async (): Promise<Route[]> => {
-        try {
-            const response = await axiosInstance.get(`${API_URL}/api/routes`);
-            return response.data.data;
-        } catch (error) {
-            console.error('Error fetching routes:', error);
-            throw error;
-        }
+        const response = await axiosInstance.get('/api/routes');
+        return response.data.data;
     },
 
-    // Get route by ID
     getRouteById: async (routeId: string): Promise<Route> => {
-        try {
-            const response = await axiosInstance.get(`${API_URL}/api/routes/${routeId}`);
-            return response.data.data;
-        } catch (error) {
-            console.error(`Error fetching route with ID ${routeId}:`, error);
-            throw error;
-        }
+        const response = await axiosInstance.get(`/api/routes/${routeId}`);
+        return response.data.data;
     }
 };
 

@@ -27,7 +27,6 @@ const Cart = () => {
 
   const totalBookings = bookings.length;
 
-  // Fetch route details for all bookings
   useEffect(() => {
     const fetchRouteDetails = async () => {
       const uniqueRouteIds = [...new Set(bookings.map(booking => booking.routeId))];
@@ -36,7 +35,6 @@ const Cart = () => {
           const route = await routeService.getRouteById(routeId);
           return { [routeId]: route };
         } catch (error) {
-          console.error(`Error fetching route details for ${routeId}:`, error);
           return { [routeId]: { _id: routeId, origin: 'Unknown', destination: 'Unknown' } };
         }
       });
@@ -51,7 +49,6 @@ const Cart = () => {
     }
   }, [bookings]);
 
-  // Close cart when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const cartElement = document.querySelector('.cart-details');
@@ -71,20 +68,17 @@ const Cart = () => {
     };
   }, [isCartVisible]);
 
-  // Toggle cart visibility
   const toggleCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     setCartVisibility(!isCartVisible);
   };
 
-  // Calculate total price
   const calculateTotal = () => {
     return bookings.reduce((total, booking) => {
       return total + booking.totalPrice;
     }, 0).toFixed(2);
   };
 
-  // Format date to a readable string
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString('en-US', {
       weekday: 'short',
@@ -95,20 +89,16 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
-    // Check if user is logged in
     if (!isLoggedIn || !user) {
       setError('Please log in to complete your booking');
-      // You might want to redirect to login page or show login modal here
       return;
     }
 
-    // Check if cart is empty
     if (totalBookings === 0) {
       setError('Your cart is empty');
       return;
     }
 
-    // Check if passport information is needed
     if (!bookings[0].passengerPassport || bookings[0].passengerPassport === 'N/A') {
       setShowPassportForm(true);
       return;
@@ -122,47 +112,34 @@ const Cart = () => {
       setIsProcessing(true);
       setError(null);
 
-      console.log('Starting checkout process with bookings:', bookings);
-      console.log('User information:', user);
-
       if (!user?.id) {
         throw new Error('User ID not found. Please log in again.');
       }
 
-      // Create bookings for each item in the cart
       const bookingPromises = bookings.map(booking => {
         const bookingData = {
           seatNumber: booking.seatNumber,
           totalPrice: booking.totalPrice,
           passengerName: booking.passengerName,
           passengerPassport: passportNumber || booking.passengerPassport,
-          userId: user.id, // Using the MongoDB _id from the user object
+          userId: user.id,
           routeId: booking.routeId,
           travelDate: booking.travelDate
         };
 
-        console.log('Creating booking with data:', bookingData);
         return bookingService.createBooking(bookingData);
       });
 
-      console.log('Waiting for all booking promises to resolve...');
       await Promise.all(bookingPromises);
-      console.log('All bookings created successfully');
 
-      // Clear the cart after successful booking
       bookings.forEach(booking => {
         dispatch(removeBooking({ seatNumber: booking.seatNumber }));
       });
 
-      // Close the cart modal
       setCartVisibility(false);
 
-      // Show success message
       alert('Bookings created successfully!');
     } catch (error) {
-      console.error('Error in checkout process:', error);
-
-      // Extract error message from different error types
       let errorMessage = 'Failed to create bookings. Please try again.';
 
       if (error instanceof Error) {
@@ -170,14 +147,10 @@ const Cart = () => {
       } else if (typeof error === 'object' && error !== null) {
         const axiosError = error as any;
         if (axiosError.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
           errorMessage = `Server error (${axiosError.response.status}): ${JSON.stringify(axiosError.response.data)}`;
         } else if (axiosError.request) {
-          // The request was made but no response was received
           errorMessage = 'No response from server. Please check your connection.';
         } else {
-          // Something happened in setting up the request that triggered an Error
           errorMessage = `Request error: ${axiosError.message}`;
         }
       }
@@ -200,7 +173,6 @@ const Cart = () => {
 
   return (
     <div className="cart-container">
-      {/* Shopping Cart Icon with Booking Count */}
       <div
         className="cart-icon-container"
         onClick={toggleCart}
@@ -208,8 +180,7 @@ const Cart = () => {
         <FaShoppingCart className="shoppingCart" />
         {totalBookings > 0 && <span className="cart-count">{totalBookings}</span>}
       </div>
-
-      {/* Cart Overlay and Details */}
+        
       {isCartVisible && (
         <div className="cart-overlay" onClick={() => setCartVisibility(false)}>
           <div className="cart-details" onClick={(e) => e.stopPropagation()}>

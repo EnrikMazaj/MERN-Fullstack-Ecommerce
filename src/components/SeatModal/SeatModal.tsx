@@ -21,23 +21,18 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
   const [ticketType, setTicketType] = useState<TicketType>('adult');
   const [isModal, setIsModal] = useState(false);
 
-  // Get the departure and arrival dates
   const departureDate = Array.isArray(travelDate) ? travelDate[0] : travelDate;
   const arrivalDate = Array.isArray(travelDate) ? travelDate[1] : undefined;
 
-  // Check if we should use modal view based on screen size
   useEffect(() => {
     const checkScreenSize = () => {
       setIsModal(window.innerWidth <= 900);
     };
 
-    // Initial check
     checkScreenSize();
 
-    // Add event listener for window resize
     window.addEventListener('resize', checkScreenSize);
 
-    // Cleanup
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
@@ -45,14 +40,12 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
     setSelectedSeat(null);
   };
 
-  // Get base price based on seat type
   const getBasePrice = (seatNumber: number) => {
     if (seatNumber <= 10) return 20; // Premium seats
     if (seatNumber <= 20) return 16; // Standard seats
     return 12; // Economy seats
   };
 
-  // Get final price based on ticket type
   const getFinalPrice = (basePrice: number, type: TicketType) => {
     switch (type) {
       case 'student':
@@ -64,7 +57,6 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
     }
   };
 
-  // ADD BOOKING FUNCTION
   const handleAddToCart = (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedSeat) {
@@ -86,7 +78,6 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
     }
   };
 
-  // Modal view for smaller screens
   if (isModal) {
     return (
       <div className="overlay" onClick={handleCloseModal}>
@@ -132,7 +123,6 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
     );
   }
 
-  // Side panel view for larger screens
   return (
     <div className="seat-details">
       <div className="seat-details-header">

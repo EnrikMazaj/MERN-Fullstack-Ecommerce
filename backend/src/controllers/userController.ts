@@ -16,17 +16,14 @@ export const register = async (req: CustomRequest, res: Response) => {
     try {
         const { firstName, lastName, email, password } = req.body;
 
-        // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        // Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Create new user
         const user = new User({
             firstName,
             lastName,
@@ -36,7 +33,6 @@ export const register = async (req: CustomRequest, res: Response) => {
 
         await user.save();
 
-        // Set session
         req.session.userId = user._id.toString();
         req.session.email = user.email;
 
@@ -65,23 +61,19 @@ export const login = async (req: CustomRequest, res: Response) => {
     try {
         const { email, password } = req.body;
 
-        // Find user by email
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        // Check password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        // Set session
         req.session.userId = user._id.toString();
         req.session.email = user.email;
-
-        // Save session before sending response
+            
         req.session.save((err) => {
             if (err) {
                 res.status(500).json({

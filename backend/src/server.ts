@@ -19,12 +19,13 @@ app.use(cors({
         'http://localhost:3000',
         'https://bus-ecommerce.vercel.app',
         'https://bus-ecommerce-frontend.vercel.app',
+        'https://bus-ecommerce.onrender.com',
         process.env.RENDER_EXTERNAL_URL || '',
         process.env.FRONTEND_URL || ''
     ].filter(Boolean),
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
     exposedHeaders: ['set-cookie']
 }));
 
@@ -37,9 +38,10 @@ app.use(session({
     ...sessionConfig,
     cookie: {
         ...sessionConfig.cookie,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
+        secure: true,
+        sameSite: 'none',
+        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined,
+        path: '/'
     }
 }));
 
@@ -68,16 +70,13 @@ const server = app.listen(port, '0.0.0.0', () => {
     console.log(`Server address: ${server.address()}`);
 });
 
-// Handle server errors
 server.on('error', (error: NodeJS.ErrnoException) => {
-    console.error('Server error:', error);
     if (error.syscall !== 'listen') {
         throw error;
     }
 
     const bind = 'Port ' + port;
 
-    // Handle specific listen errors with friendly messages
     switch (error.code) {
         case 'EACCES':
             console.error(bind + ' requires elevated privileges');
@@ -92,7 +91,6 @@ server.on('error', (error: NodeJS.ErrnoException) => {
     }
 });
 
-// Handle process termination
 process.on('SIGTERM', () => {
     console.log('SIGTERM received. Shutting down gracefully...');
     server.close(() => {

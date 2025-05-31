@@ -34,7 +34,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     login(data.user);
                 }
             } catch (error) {
-                // Silently handle session check error
                 setIsLoggedIn(false);
                 setUser(null);
             } finally {
@@ -59,14 +58,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setIsLoggedIn(false);
             setUser(null);
         } catch (error) {
-            // Silently handle logout error
             setIsLoggedIn(false);
             setUser(null);
         }
     };
 
     if (isLoading) {
-        return null; // or a loading spinner
+        return null;
     }
 
     return (
