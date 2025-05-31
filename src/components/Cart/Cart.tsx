@@ -180,7 +180,7 @@ const Cart = () => {
         <FaShoppingCart className="shoppingCart" />
         {totalBookings > 0 && <span className="cart-count">{totalBookings}</span>}
       </div>
-        
+
       {isCartVisible && (
         <div className="cart-overlay" onClick={() => setCartVisibility(false)}>
           <div className="cart-details" onClick={(e) => e.stopPropagation()}>

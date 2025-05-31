@@ -20,12 +20,15 @@ const redisClient: RedisClientType = createClient({
 
 if (process.env.NODE_ENV !== 'test') {
     redisClient.on('connect', () => {
+        console.log('Redis client connected');
     });
 
-    redisClient.on('error', () => {
+    redisClient.on('error', (error) => {
+        console.error('Redis client error:', error);
     });
 
-    redisClient.connect().catch(() => {
+    redisClient.connect().catch((error) => {
+        console.error('Redis connection error:', error);
     });
 }
 
