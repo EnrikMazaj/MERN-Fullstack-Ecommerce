@@ -18,8 +18,7 @@ const Tickets = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Fetch routes from the backend
-  useEffect(() => {
+    useEffect(() => {
     const fetchRoutes = async () => {
       try {
         setLoading(true);
@@ -74,7 +73,6 @@ const Tickets = () => {
       <h1>Tickets</h1>
 
       <div>
-        <h3>Route</h3>
         <div className="selection">
           <select
             className="route-dropdown"

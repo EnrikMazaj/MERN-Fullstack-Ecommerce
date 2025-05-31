@@ -45,6 +45,13 @@ const bookingSchema = new mongoose.Schema({
             required: true
         }
     },
+    isRoundTrip: {
+        type: Boolean,
+        default: false
+    },
+    arrivalDate: {
+        type: Date
+    },
     status: {
         type: String,
         enum: ['active', 'completed', 'cancelled', 'refunded'],

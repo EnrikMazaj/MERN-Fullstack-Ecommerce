@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { successToastConfig, errorToastConfig } from '../config/toastConfig';
 import './styles/MyBookings.css';
 import axios from 'axios';
+import { FaBus, FaCalendarAlt, FaMapMarkerAlt, FaUser, FaTicketAlt, FaEuroSign } from 'react-icons/fa';
 
 interface Booking {
     _id: string;
@@ -17,6 +18,8 @@ interface Booking {
     passengerPassport: string;
     userId: string;
     travelDate: Date;
+    arrivalDate?: Date;
+    isRoundTrip: boolean;
     status: 'active' | 'completed' | 'cancelled' | 'refunded';
     routeInfo?: {
         origin: string;
@@ -40,25 +43,32 @@ const MyBookings = () => {
                 setLoading(true);
                 setError(null);
                 const response = await bookingService.getUserBookings(user.id);
+                console.log('Raw bookings from API:', response.data);
                 const bookingsWithRoutes = await Promise.all(
                     response.data.map(async (booking: Booking) => {
                         try {
-                                if (typeof booking.routeId === 'string') {
+                            if (typeof booking.routeId === 'string') {
                                 const routeData = await routeService.getRouteById(booking.routeId);
-                                return {
+                                const processedBooking = {
                                     ...booking,
                                     routeInfo: {
                                         origin: routeData.origin,
                                         destination: routeData.destination
-                                    }
+                                    },
+                                    isRoundTrip: booking.isRoundTrip,
+                                    arrivalDate: booking.arrivalDate
                                 };
+                                console.log('Processed booking:', processedBooking);
+                                return processedBooking;
                             }
                             return booking;
                         } catch (error) {
+                            console.error('Error fetching route data:', error);
                             return booking;
                         }
                     })
                 );
+                console.log('Final bookings with routes:', bookingsWithRoutes);
                 setBookings(bookingsWithRoutes);
             } catch (error) {
                 setError('Failed to load bookings. Please try again later.');
@@ -89,7 +99,7 @@ const MyBookings = () => {
             ));
 
             toast.success('Refund requested successfully! Booking has been cancelled.', successToastConfig);
-        } catch (error) {   
+        } catch (error) {
             let errorMessage = 'Failed to process refund request. ';
 
             if (axios.isAxiosError(error)) {
@@ -100,6 +110,15 @@ const MyBookings = () => {
             setError(errorMessage);
             toast.error(errorMessage, errorToastConfig);
         }
+    };
+
+    const formatDate = (date: Date) => {
+        return new Date(date).toLocaleDateString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
     };
 
     if (!isLoggedIn) {
@@ -131,56 +150,110 @@ const MyBookings = () => {
                 {bookings.length === 0 ? (
                     <p className="no-bookings">You don't have any bookings yet.</p>
                 ) : (
-                    bookings.map((booking) => (
-                        <div key={booking._id} className="booking-card">
-                            <div className="ticket-status">
-                                <span className={`status ${booking.status}`}>
-                                    {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-                                </span>
+                    bookings.map((booking) => {
+                        console.log('Rendering booking:', booking._id, {
+                            isRoundTrip: booking.isRoundTrip,
+                            arrivalDate: booking.arrivalDate,
+                            routeInfo: booking.routeInfo
+                        });
+                        return (
+                            <div key={booking._id} className="booking-card">
+                                <div className="ticket-status">
+                                    <span className={`status ${booking.status}`}>
+                                        {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                                    </span>
+                                    {booking.refundRequested && (
+                                        <span className={`refund-status ${booking.refundStatus}`}>
+                                            Refund {booking.refundStatus}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="ticket-content">
+                                    <div className="ticket-header">
+                                        <FaUser className="detail-icon" />
+                                        <span className="passenger-name">{booking.passengerName}</span>
+                                    </div>
+                                    <div className="route-display">
+                                        <div className="route-section">
+                                            <div className="route-header">
+                                                <span>Outbound Journey</span>
+                                            </div>
+                                            <div className="route-details">
+                                                <FaMapMarkerAlt className="route-icon" />
+                                                <div className="route-origin">{booking.routeInfo?.origin || 'Unknown'}</div>
+                                                <div className="route-arrow">→</div>
+                                                <div className="route-destination">{booking.routeInfo?.destination || 'Unknown'}</div>
+                                            </div>
+                                            <div className="route-date">
+                                                <FaCalendarAlt className="date-icon" />
+                                                <span>{formatDate(booking.travelDate)}</span>
+                                            </div>
+                                        </div>
+                                        {booking.isRoundTrip && booking.arrivalDate && (
+                                            <>
+                                                <div className="route-separator">
+                                                    <div className="separator-line"></div>
+                                                    <span className="round-trip-label">Return Journey</span>
+                                                    <div className="separator-line"></div>
+                                                </div>
+                                                <div className="route-section">
+                                                    <div className="route-header">
+                                                        <span>Return Journey</span>
+                                                    </div>
+                                                    <div className="route-details">
+                                                        <FaMapMarkerAlt className="route-icon" />
+                                                        <div className="route-origin">{booking.routeInfo?.destination || 'Unknown'}</div>
+                                                        <div className="route-arrow">→</div>
+                                                        <div className="route-destination">{booking.routeInfo?.origin || 'Unknown'}</div>
+                                                    </div>
+                                                    <div className="route-date">
+                                                        <FaCalendarAlt className="date-icon" />
+                                                        <span>{formatDate(booking.arrivalDate)}</span>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                    <div className="ticket-separator">
+                                        <div className="ticket-separator-line"></div>
+                                    </div>
+                                    <div className="ticket-details">
+                                        <div className="detail-row">
+                                            <span className="detail-label">
+                                                <FaBus className="detail-icon" />
+                                                Seat:
+                                                <span className="detail-value">{booking.seatNumber}</span>
+                                            </span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="detail-label">
+                                                <FaEuroSign className="detail-icon" />
+                                                Total Price:
+                                                <span className="detail-value">€{booking.totalPrice.toFixed(2)}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    {booking.status === 'active' && (
+                                        <div className="ticket-actions">
+                                            <button
+                                                className="refund-btn"
+                                                onClick={() => handleCancelBooking(booking._id)}
+                                            >
+                                                <span className="refund-icon">↩</span>
+                                                <span className="refund-text">Request Refund</span>
+                                            </button>
+                                        </div>
+                                    )}
+                                    <div className="ticket-footer">
+                                        <span className="booking-id">
+                                            <FaTicketAlt className="detail-icon" />
+                                            ID: {booking._id}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="ticket-content">
-                                <div className="ticket-header">
-                                    <h3>Route</h3>
-                                </div>
-                                <div className="route-display">
-                                    <div className="route-origin">{booking.routeInfo?.origin || 'Unknown'}</div>
-                                    <div className="route-dots"></div>
-                                    <div className="route-destination">{booking.routeInfo?.destination || 'Unknown'}</div>
-                                </div>
-                                <div className="ticket-separator">
-                                    <div className="ticket-separator-line"></div>
-                                </div>
-                                <div className="ticket-details">
-                                    <div className="detail-row">
-                                        <span className="detail-label">Passenger</span>
-                                        <span className="detail-value">{booking.passengerName}</span>
-                                    </div>
-                                    <div className="detail-row">
-                                        <span className="detail-label">Seat</span>
-                                        <span className="detail-value">{booking.seatNumber}</span>
-                                    </div>
-                                    <div className="detail-row">
-                                        <span className="detail-label">Price</span>
-                                        <span className="detail-value">€{booking.totalPrice.toFixed(2)}</span>
-                                    </div>
-                                </div>
-                                {booking.status === 'active' && (
-                                    <div className="ticket-actions">
-                                        <button
-                                            className="refund-btn"
-                                            onClick={() => handleCancelBooking(booking._id)}
-                                        >
-                                            <span className="refund-icon">↩</span>
-                                            <span className="refund-text">Request Refund</span>
-                                        </button>
-                                    </div>
-                                )}
-                                <div className="ticket-footer">
-                                    <span className="booking-id">ID: {booking._id}</span>
-                                </div>
-                            </div>
-                        </div>
-                    ))
+                        );
+                    })
                 )}
             </div>
         </div>

@@ -12,7 +12,9 @@ export const createBooking = async (req: Request, res: Response) => {
             passengerPassport,
             userId,
             routeId,
-            travelDate
+            travelDate,
+            isRoundTrip,
+            arrivalDate
         } = req.body;
 
         if (!seatNumber || !totalPrice || !passengerName || !passengerPassport || !userId || !routeId || !travelDate) {
@@ -66,6 +68,8 @@ export const createBooking = async (req: Request, res: Response) => {
             userId: userIdObj,
             routeId: routeIdObj,
             travelDate: new Date(travelDate),
+            isRoundTrip: isRoundTrip || false,
+            arrivalDate: arrivalDate ? new Date(arrivalDate) : undefined,
             routeInfo: {
                 origin: route.origin,
                 destination: route.destination,
@@ -123,7 +127,7 @@ export const getBookingById = async (req: Request, res: Response) => {
             success: true,
             data: booking
         });
-    } catch (error) {   
+    } catch (error) {
         res.status(500).json({
             success: false,
             error: 'Failed to fetch booking'
@@ -136,7 +140,8 @@ export const getBookingsByUserId = async (req: Request, res: Response) => {
         const { userId } = req.params;
 
         const bookings = await Booking.find({ userId })
-            .populate('routeId', 'from to departureTime arrivalTime');
+            .select('seatNumber totalPrice passengerName passengerPassport userId routeId travelDate arrivalDate isRoundTrip status routeInfo refundRequested refundStatus')
+            .populate('routeId', 'origin destination departureTime');
 
         res.status(200).json({
             success: true,
@@ -223,7 +228,7 @@ export const cancelBooking = async (req: Request, res: Response) => {
         });
     }
 };
-    
+
 export const requestRefund = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;

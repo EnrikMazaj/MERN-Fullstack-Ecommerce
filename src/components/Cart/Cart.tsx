@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeBooking } from '../../features/cartSlice.tsx';
+import { removeBooking, clearCart } from '../../features/cartSlice.tsx';
 import { FaShoppingCart, FaTrash, FaTimes, FaMapMarkerAlt, FaCalendarAlt, FaChevronDown, FaBus } from 'react-icons/fa';
 import { RootState } from '../../redux/store.tsx';
 import { useAuth } from '../../context/AuthContext';
 import bookingService from '../../services/bookingService';
 import routeService from '../../services/routeService';
 import './Cart.css';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 interface RouteDetails {
   _id: string;
@@ -25,6 +27,7 @@ const Cart = () => {
   const bookings = useSelector((state: RootState) => state.cart.bookings);
   const dispatch = useDispatch();
   const { isLoggedIn, user } = useAuth();
+  const navigate = useNavigate();
 
   const totalBookings = bookings.length;
 
@@ -125,7 +128,9 @@ const Cart = () => {
           passengerPassport: passportNumber || booking.passengerPassport,
           userId: user.id,
           routeId: booking.routeId,
-          travelDate: booking.travelDate
+          travelDate: booking.travelDate,
+          isRoundTrip: booking.isRoundTrip,
+          arrivalDate: booking.arrivalDate
         };
 
         return bookingService.createBooking(bookingData);
@@ -139,7 +144,11 @@ const Cart = () => {
 
       setCartVisibility(false);
 
-      alert('Bookings created successfully!');
+      toast.success('Ticket purchased successfully!');
+
+      dispatch(clearCart());
+
+      navigate('/');
     } catch (error) {
       let errorMessage = 'Failed to create bookings. Please try again.';
 
@@ -248,6 +257,7 @@ const Cart = () => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 dispatch(removeBooking({ seatNumber: booking.seatNumber }));
+                                toast.info('Ticket removed from cart');
                               }}
                             >
                               <FaTrash />

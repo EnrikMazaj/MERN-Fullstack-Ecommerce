@@ -26,14 +26,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const checkSession = async () => {
             try {
                 const response = await fetch(`${API_URL}/api/users/check-auth`, {
-                    credentials: 'include'
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
                 });
 
                 if (response.ok) {
                     const data = await response.json();
-                    login(data.user);
+                    if (data.user) {
+                        login(data.user);
+                    } else {
+                        setIsLoggedIn(false);
+                        setUser(null);
+                    }
+                } else {
+                    setIsLoggedIn(false);
+                    setUser(null);
                 }
             } catch (error) {
+                console.error('Session check error:', error);
                 setIsLoggedIn(false);
                 setUser(null);
             } finally {
@@ -51,13 +64,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const logout = async () => {
         try {
-            await fetch(`${API_URL}/api/users/logout`, {
+            const response = await fetch(`${API_URL}/api/users/logout`, {
                 method: 'POST',
-                credentials: 'include'
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
             });
-            setIsLoggedIn(false);
-            setUser(null);
+
+            if (response.ok) {
+                setIsLoggedIn(false);
+                setUser(null);
+            } else {
+                console.error('Logout failed:', await response.text());
+            }
         } catch (error) {
+            console.error('Logout error:', error);
             setIsLoggedIn(false);
             setUser(null);
         }
