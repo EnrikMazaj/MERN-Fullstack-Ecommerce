@@ -3,11 +3,14 @@ import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
 import bookingService from '../services/bookingService';
 import routeService from '../services/routeService';
+import { toast } from 'react-toastify';
+import { successToastConfig, errorToastConfig } from '../config/toastConfig';
 import './styles/MyBookings.css';
+import axios from 'axios';
 
 interface Booking {
     _id: string;
-    routeId: string;
+    routeId: string | { _id: string; origin: string; destination: string };
     seatNumber: number;
     totalPrice: number;
     passengerName: string;
@@ -40,23 +43,24 @@ const MyBookings = () => {
                 const bookingsWithRoutes = await Promise.all(
                     response.data.map(async (booking: Booking) => {
                         try {
-                            const routeData = await routeService.getRouteById(booking.routeId);
-                            return {
-                                ...booking,
-                                routeInfo: {
-                                    origin: routeData.origin,
-                                    destination: routeData.destination
-                                }
-                            };
+                                if (typeof booking.routeId === 'string') {
+                                const routeData = await routeService.getRouteById(booking.routeId);
+                                return {
+                                    ...booking,
+                                    routeInfo: {
+                                        origin: routeData.origin,
+                                        destination: routeData.destination
+                                    }
+                                };
+                            }
+                            return booking;
                         } catch (error) {
-                            console.error(`Error fetching route for booking ${booking._id}:`, error);
                             return booking;
                         }
                     })
                 );
                 setBookings(bookingsWithRoutes);
             } catch (error) {
-                console.error('Error fetching bookings:', error);
                 setError('Failed to load bookings. Please try again later.');
             } finally {
                 setLoading(false);
@@ -68,33 +72,36 @@ const MyBookings = () => {
 
     const handleCancelBooking = async (bookingId: string) => {
         try {
-            // First update the status to cancelled
-            await bookingService.updateBookingStatus(bookingId, 'cancelled', 'completed');
+            setError(null);
 
-            // Then request the refund
+            await bookingService.updateBookingStatus(bookingId, 'cancelled', 'completed');
             await bookingService.requestRefund(bookingId);
 
-            // Update status in frontend
             setBookings(bookings.map(booking =>
                 booking._id === bookingId
                     ? {
                         ...booking,
-                        status: 'cancelled' as const,
+                        status: 'cancelled',
                         refundRequested: true,
                         refundStatus: 'pending'
                     }
                     : booking
             ));
 
-            // Show success message
-            alert('Refund requested successfully! The refund process will be completed shortly.');
-        } catch (error) {
-            console.error('Error processing refund request:', error);
-            setError('Failed to process refund request. Please try again later.');
+            toast.success('Refund requested successfully! Booking has been cancelled.', successToastConfig);
+        } catch (error) {   
+            let errorMessage = 'Failed to process refund request. ';
+
+            if (axios.isAxiosError(error)) {
+                const errorData = error.response?.data;
+                errorMessage += errorData?.error || errorData?.details || error.message;
+            }
+
+            setError(errorMessage);
+            toast.error(errorMessage, errorToastConfig);
         }
     };
 
-    // If user is not logged in, redirect to home page
     if (!isLoggedIn) {
         return <Navigate to="/" replace />;
     }
