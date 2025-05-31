@@ -62,10 +62,11 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
     if (selectedSeat) {
       const basePrice = getBasePrice(selectedSeat);
       const finalPrice = getFinalPrice(basePrice, ticketType);
+      const totalPrice = isRoundTrip && arrivalDate ? finalPrice * 2 : finalPrice;
 
       const booking: Omit<Booking, 'id' | 'userId' | 'status' | 'bookingDate' | 'paymentStatus'> = {
         seatNumber: selectedSeat,
-        totalPrice: finalPrice,
+        totalPrice,
         passengerName,
         passengerPassport: passportNumber,
         routeId,
