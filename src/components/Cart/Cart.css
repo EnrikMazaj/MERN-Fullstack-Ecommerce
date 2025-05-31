@@ -493,56 +493,36 @@
 }
 
 /* Checkout button */
-.checkout-button {
+.checkout-btn {
   width: 100%;
-  padding: 16px;
-  background-color: #2ecc71;
+  padding: 1rem;
+  background: linear-gradient(135deg, #4a90e2, #357abd);
   color: white;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
+  font-size: 1.1rem;
   font-weight: 600;
-  font-size: 16px;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.checkout-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: 0.5s;
+.checkout-btn:hover {
+  background: linear-gradient(135deg, #357abd, #2a5f9e);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.checkout-button:hover {
-  background-color: #27ae60;
+.checkout-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.checkout-button:hover::before {
-  left: 100%;
-}
-
-.checkout-button:active {
-  transform: scale(0.98);
-}
-
-.checkout-button:disabled {
-  background-color: #95a5a6;
+.checkout-btn:disabled {
+  background: #ccc;
   cursor: not-allowed;
-}
-
-.checkout-button:disabled::before {
-  display: none;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Empty cart message */

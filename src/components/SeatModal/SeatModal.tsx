@@ -3,6 +3,8 @@ import './SeatModal.css';
 import { useDispatch } from 'react-redux';
 import { addBooking } from '../../features/cartSlice';
 import { Booking } from '../../features/types';
+import { useTheme } from '../../context/ThemeContext';
+import { translations } from '../../translations';
 
 interface SeatModalProps {
   selectedSeat: number;
@@ -20,6 +22,8 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
   const [passportNumber, setPassportNumber] = useState('');
   const [ticketType, setTicketType] = useState<TicketType>('adult');
   const [isModal, setIsModal] = useState(false);
+  const { language } = useTheme();
+  const t = translations[language].seats.passengerDetails;
 
   const departureDate = Array.isArray(travelDate) ? travelDate[0] : travelDate;
   const arrivalDate = Array.isArray(travelDate) ? travelDate[1] : undefined;
@@ -81,11 +85,15 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
 
   if (isModal) {
     return (
-      <div className="overlay" onClick={handleCloseModal}>
+      <div className="overlay" onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          handleCloseModal();
+        }
+      }}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <div className="seat-details">
             <div className="seat-details-header">
-              <h2>Passenger Details</h2>
+              <h2>{t.title}</h2>
               <button className="close-btn" onClick={handleCloseModal}>
                 <span>&times;</span>
               </button>
@@ -94,14 +102,14 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
               <input
                 required
                 type="text"
-                placeholder="Full Name"
+                placeholder={t.fullName}
                 value={passengerName}
                 onChange={(e) => setPassengerName(e.target.value)}
               />
               <input
                 required
                 type="text"
-                placeholder="Passport Number"
+                placeholder={t.passportNumber}
                 value={passportNumber}
                 onChange={(e) => setPassportNumber(e.target.value)}
               />
@@ -111,12 +119,12 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
                   onChange={(e) => setTicketType(e.target.value as TicketType)}
                   required
                 >
-                  <option value="adult">Adult - 20 €</option>
-                  <option value="student">Student - 13 €</option>
-                  <option value="child">Child - 10 €</option>
+                  <option value="adult">{t.ticketTypes.adult}</option>
+                  <option value="student">{t.ticketTypes.student}</option>
+                  <option value="child">{t.ticketTypes.child}</option>
                 </select>
               </div>
-              <button type="submit">Add to Cart</button>
+              <button type="submit">{t.addToCart}</button>
             </form>
           </div>
         </div>
@@ -127,7 +135,7 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
   return (
     <div className="seat-details">
       <div className="seat-details-header">
-        <h2>Passenger Details</h2>
+        <h2>{t.title}</h2>
         <button className="close-btn" onClick={handleCloseModal}>
           <span>&times;</span>
         </button>
@@ -136,14 +144,14 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
         <input
           required
           type="text"
-          placeholder="Full Name"
+          placeholder={t.fullName}
           value={passengerName}
           onChange={(e) => setPassengerName(e.target.value)}
         />
         <input
           required
           type="text"
-          placeholder="Passport Number"
+          placeholder={t.passportNumber}
           value={passportNumber}
           onChange={(e) => setPassportNumber(e.target.value)}
         />
@@ -153,12 +161,12 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
             onChange={(e) => setTicketType(e.target.value as TicketType)}
             required
           >
-            <option value="adult">Adult - 20 €</option>
-            <option value="student">Student - 13 €</option>
-            <option value="child">Child - 10 €</option>
+            <option value="adult">{t.ticketTypes.adult}</option>
+            <option value="student">{t.ticketTypes.student}</option>
+            <option value="child">{t.ticketTypes.child}</option>
           </select>
         </div>
-        <button type="submit">Add to Cart</button>
+        <button type="submit">{t.addToCart}</button>
       </form>
     </div>
   );

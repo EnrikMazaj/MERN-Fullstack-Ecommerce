@@ -6,6 +6,8 @@ import './styles/Seats.css';
 import { RootState } from '../redux/store.tsx';
 import routeService, { Route } from '../services/routeService';
 import { toast } from 'react-toastify';
+import { useTheme } from '../context/ThemeContext';
+import { translations } from '../translations';
 
 interface LocationState {
   selectedRoute: string;
@@ -20,6 +22,8 @@ const Seats = () => {
   const [bookedSeats, setBookedSeats] = useState<number[]>([]);
   const location = useLocation();
   const { selectedRoute, selectedDates, isRoundTrip } = location.state as LocationState;
+  const { language } = useTheme();
+  const t = translations[language].seats;
 
   const bookings = useSelector((state: RootState) => state.cart.bookings);
 
@@ -30,7 +34,7 @@ const Seats = () => {
         const route = await routeService.getRouteById(selectedRoute);
         setRouteDetails(route);
       } catch (error) {
-        toast.error('Failed to load route details. Please try again later.');
+        toast.error(t.errors.loadRoute);
       } finally {
         setLoading(false);
       }
@@ -39,7 +43,7 @@ const Seats = () => {
     if (selectedRoute) {
       fetchRouteDetails();
     }
-  }, [selectedRoute]);
+  }, [selectedRoute, t.errors.loadRoute]);
 
   // Load booked seats from localStorage on component mount
   useEffect(() => {
@@ -76,7 +80,7 @@ const Seats = () => {
   if (loading) {
     return (
       <div className="content">
-        <h1>Loading...</h1>
+        <h1>{t.loading}</h1>
       </div>
     );
   }
@@ -84,20 +88,20 @@ const Seats = () => {
   if (!routeDetails) {
     return (
       <div className="content">
-        <h1>Route not found</h1>
-        <p>The selected route could not be found. Please go back and try again.</p>
+        <h1>{t.routeNotFound}</h1>
+        <p>{t.routeNotFoundMessage}</p>
       </div>
     );
   }
 
   return (
     <div className="content">
-      <h1>Seats</h1>
+      <h1>{t.title}</h1>
       <div className="route-info">
         <h2>{routeDetails.origin} → {routeDetails.destination}</h2>
         <div className="dates-container">
           <div className="date-info departure">
-            <span className="date-label">Departure:</span>
+            <span className="date-label">{t.routeInfo.departure}</span>
             <span className="date-value">
               {Array.isArray(selectedDates) ? new Date(selectedDates[0]).toLocaleDateString() : new Date(selectedDates).toLocaleDateString()}
             </span>
@@ -106,7 +110,7 @@ const Seats = () => {
             <>
               <div className="round-trip-separator">→</div>
               <div className="date-info return">
-                <span className="date-label">Return:</span>
+                <span className="date-label">{t.routeInfo.return}</span>
                 <span className="date-value">
                   {new Date(selectedDates[1]).toLocaleDateString()}
                 </span>
@@ -144,8 +148,8 @@ const Seats = () => {
             />
           ) : (
             <div className="no-seat-selected">
-              <h2>Select a Seat</h2>
-              <p>Click on an available seat to book it</p>
+              <h2>{t.selectSeat.title}</h2>
+              <p>{t.selectSeat.message}</p>
             </div>
           )}
         </div>

@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import './Slideshow.css';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { useTheme } from '../../context/ThemeContext';
+import { translations } from '../../translations';
 
 const Slideshow = () => {
+  const { language } = useTheme();
+  const t = translations[language].home.slideshow;
+
   const images = [
     {
       url: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/cc/8d/2a/the-beautiful-mylopotamos.jpg?w=700&h=-1&s=1',
-      title: 'Mylopotamos Beach',
-      description: 'Crystal clear waters and golden sands'
+      title: t.mylopotamos.title,
+      description: t.mylopotamos.description
     },
     {
       url: 'https://wowiwalkers.com/wp-content/uploads/2021/10/Thessaloniki-Photoshop.jpg',
-      title: 'Thessaloniki',
-      description: 'The cultural capital of Northern Greece'
+      title: t.thessaloniki.title,
+      description: t.thessaloniki.description
     },
     {
       url: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      title: 'Mykonos',
-      description: 'Ancient history meets modern city life'
+      title: t.mykonos.title,
+      description: t.mykonos.description
     },
     {
       url: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      title: 'Santorini',
-      description: 'Breathtaking views of the Aegean Sea'
+      title: t.santorini.title,
+      description: t.santorini.description
     }
   ];
 

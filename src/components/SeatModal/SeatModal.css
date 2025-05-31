@@ -1,19 +1,10 @@
 /* Side Panel Styling */
 .seat-details {
-  background-color: #ffffff;
-  border-radius: 16px;
-  width: 100%;
-  height: 100%;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
 }
 
 .seat-details-header {
@@ -56,27 +47,26 @@
 .seatForm {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-  flex: 1;
+  gap: 1rem;
 }
 
-.seatForm input {
+.seatForm input,
+.seatForm select {
   width: 100%;
-  padding: 14px 16px;
-  font-size: 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  background-color: #f9f9f9;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background: white;
+  color: #333;
   transition: all 0.2s ease;
-  outline: none;
-  box-sizing: border-box;
 }
 
-.seatForm input:focus {
-  border-color: #4CAF50;
-  background-color: #fff;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+.seatForm input:focus,
+.seatForm select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
 .seatForm input::placeholder {
@@ -90,69 +80,46 @@
 
 .custom-select select {
   width: 100%;
-  padding: 14px 16px;
-  font-size: 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  appearance: none;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.2s ease;
+  padding: 0.75rem;
+  padding-right: 2.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background: white;
   color: #333;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 16px center;
-  background-size: 16px;
-  padding-right: 45px;
-  box-sizing: border-box;
-}
-
-.custom-select select:hover {
-  border-color: #4CAF50;
+  background-position: right 0.75rem center;
+  background-size: 1em;
+  cursor: pointer;
 }
 
 .custom-select select:focus {
-  border-color: #4CAF50;
-  background-color: #fff;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-}
-
-.custom-select select option {
-  padding: 14px;
-  background-color: #ffffff;
-  color: #333;
-  font-size: 16px;
-}
-
-.custom-select select option:disabled {
-  color: #999;
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
 .seatForm button {
   width: 100%;
-  padding: 16px;
-  background-color: #4CAF50;
+  padding: 0.75rem;
+  background: #3498db;
   color: white;
   border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 4px;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-top: auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .seatForm button:hover {
-  background-color: #43A047;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background: #2980b9;
 }
 
-.seatForm button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.seatForm button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
 /* No seat selected state */

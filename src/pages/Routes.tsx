@@ -1,7 +1,12 @@
 import React from 'react';
 import './styles/Routes.css';
+import { useTheme } from '../context/ThemeContext';
+import { translations } from '../translations';
 
 const Routes = () => {
+  const { language } = useTheme();
+  const t = translations[language].routes;
+
   const busRoutes = [
     {
       time: '08:00 AM',
@@ -44,12 +49,12 @@ const Routes = () => {
   return (
     <div className="content">
       <div className="routes-container">
-        <h1>Available Routes</h1>
+        <h1>{t.title}</h1>
         <div className="grid-container">
-          <div className="grid-header">Time</div>
-          <div className="grid-header">Bus</div>
-          <div className="grid-header">Destination</div>
-          <div className="grid-header">Price</div>
+          <div className="grid-header">{t.gridHeaders.time}</div>
+          <div className="grid-header">{t.gridHeaders.bus}</div>
+          <div className="grid-header">{t.gridHeaders.destination}</div>
+          <div className="grid-header">{t.gridHeaders.price}</div>
           {busRoutes.map((route, index) => (
             <React.Fragment key={index}>
               <div className="grid-item">{route.time}</div>
