@@ -1,20 +1,225 @@
 /* Contact.css */
-.map-container-wrapper {
-    height: 460px;
-    width: 80%;    
-    margin: 0 auto; 
-    padding: 40px;
-  }
-  
-  .map-container {
-    height: 100%;
-    width: 100%;  
-    border: 2px solid #ddd; 
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 30px;
+  align-items: start;
 }
-  
 
+.contact-info-section {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
 
+.contact-info-section h1 {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 25px;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contact-details {
+  display: grid;
+  gap: 20px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.contact-item:hover {
+  transform: translateY(-3px);
+}
+
+.contact-icon {
+  font-size: 20px;
+  color: #3498db;
+  margin-top: 3px;
+}
+
+.contact-item h3 {
+  color: #2c3e50;
+  margin-bottom: 5px;
+  font-size: 1.1rem;
+}
+
+.contact-item p {
+  color: #666;
+  margin: 3px 0;
+  font-size: 0.95rem;
+}
+
+.map-section {
+  height: 500px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.map-container {
+  height: 100%;
+  width: 100%;
+}
+
+.station-facilities {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.station-facilities h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.facilities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.facility-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.facility-card:hover {
+  transform: translateY(-5px);
+}
+
+.facility-icon {
+  font-size: 24px;
+  color: #3498db;
+  margin-bottom: 15px;
+}
+
+.facility-card h3 {
+  color: #2c3e50;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.facility-card p {
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.facility-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.facility-card li {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.facility-card li:before {
+  content: "•";
+  color: #3498db;
+  position: absolute;
+  left: 0;
+}
+
+@media (max-width: 1024px) {
+  .contact-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .map-section {
+    height: 400px;
+  }
+
+  .facilities-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 15px;
+  }
+
+  .contact-info-section {
+    padding: 20px;
+  }
+
+  .contact-info-section h1 {
+    font-size: 1.75rem;
+  }
+
+  .map-section {
+    height: 350px;
+  }
+
+  .station-facilities {
+    margin: 30px auto;
+  }
+
+  .station-facilities h2 {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-item {
+    padding: 12px;
+  }
+
+  .contact-icon {
+    font-size: 18px;
+  }
+
+  .contact-item h3 {
+    font-size: 1rem;
+  }
+
+  .contact-item p {
+    font-size: 0.9rem;
+  }
+
+  .map-section {
+    height: 300px;
+  }
+
+  .facility-card {
+    padding: 20px;
+  }
+
+  .facility-icon {
+    font-size: 20px;
+  }
+
+  .facility-card h3 {
+    font-size: 1.1rem;
+  }
+}
   

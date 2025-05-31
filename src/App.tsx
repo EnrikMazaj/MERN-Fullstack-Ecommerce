@@ -10,6 +10,7 @@ import Seats from './pages/Seats.tsx';
 import React from 'react';
 import Cart from './components/Cart/Cart.tsx';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import MyBookings from './pages/MyBookings.tsx';
 import ScrollToTop from './components/ScrollToTop.tsx';
 import ToastConfig from './components/ToastConfig.tsx';
@@ -17,23 +18,25 @@ import ToastConfig from './components/ToastConfig.tsx';
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <ScrollToTop />
-        <ToastConfig />
-        <div className="App">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/routes" element={<RoutesKtel />} />
-            <Route path="/tickets" element={<Tickets />} />
-            <Route path="/seats" element={<Seats />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/my-bookings" element={<MyBookings />} />
-          </Routes>
-          <Cart />
-          <Footer />
-        </div>
-      </Router>
+      <ThemeProvider>
+        <Router>
+          <ScrollToTop />
+          <ToastConfig />
+          <div className="App">
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/routes" element={<RoutesKtel />} />
+              <Route path="/tickets" element={<Tickets />} />
+              <Route path="/seats" element={<Seats />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/my-bookings" element={<MyBookings />} />
+            </Routes>
+            <Cart />
+            <Footer />
+          </div>
+        </Router>
+      </ThemeProvider>
     </AuthProvider>
   );
 }

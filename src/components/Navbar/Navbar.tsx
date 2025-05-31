@@ -3,10 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import LoginModal from '../LoginModal/LoginModal.tsx';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
+import { FaMoon, FaSun, FaGlobe } from 'react-icons/fa';
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const { isLoggedIn } = useAuth();
+  const { theme, language, toggleTheme, toggleLanguage } = useTheme();
   const location = useLocation();
 
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -60,7 +63,7 @@ const Navbar = () => {
               onClick={handleLinkClick}
               className={isActive('/') ? 'active' : ''}
             >
-              Home
+              {language === 'en' ? 'Home' : 'Αρχική'}
             </Link>
           </li>
           <li>
@@ -69,7 +72,7 @@ const Navbar = () => {
               onClick={handleLinkClick}
               className={isActive('/routes') ? 'active' : ''}
             >
-              Routes
+              {language === 'en' ? 'Routes' : 'Δρομολόγια'}
             </Link>
           </li>
           <li>
@@ -78,7 +81,7 @@ const Navbar = () => {
               onClick={handleLinkClick}
               className={isActive('/tickets') ? 'active' : ''}
             >
-              Tickets
+              {language === 'en' ? 'Tickets' : 'Εισιτήρια'}
             </Link>
           </li>
           <li>
@@ -87,7 +90,7 @@ const Navbar = () => {
               onClick={handleLinkClick}
               className={isActive('/contact') ? 'active' : ''}
             >
-              Contact
+              {language === 'en' ? 'Contact' : 'Επικοινωνία'}
             </Link>
           </li>
           {isLoggedIn && (
@@ -97,14 +100,23 @@ const Navbar = () => {
                 onClick={handleLinkClick}
                 className={isActive('/my-bookings') ? 'active' : ''}
               >
-                My Bookings
+                {language === 'en' ? 'My Bookings' : 'Οι Κρατήσεις μου'}
               </Link>
             </li>
           )}
         </ul>
       </div>
 
-      <LoginModal />
+      <div className="navbar-controls">
+        <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+          {theme === 'light' ? <FaMoon /> : <FaSun />}
+        </button>
+        <button className="language-toggle" onClick={toggleLanguage} aria-label="Toggle language">
+          <FaGlobe />
+          <span>{language.toUpperCase()}</span>
+        </button>
+        <LoginModal />
+      </div>
 
       <div
         ref={hamburgerRef}

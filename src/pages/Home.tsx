@@ -1,49 +1,79 @@
 import React from 'react';
-import Slideshow from '../components/Slideshow/Slideshow.tsx';
+import { useNavigate } from 'react-router-dom';
+import Slideshow from '../components/Slideshow/Slideshow';
 import './styles/Home.css';
-const Home = () => {
+
+const Home: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="content">
-      <h1>
-        Welcome to<strong> Ktel Attikis</strong>
-      </h1>
-      <p>
-        Ktel Attikis is your trusted partner for bus travel across the Attica
-        region. Whether you are commuting for business, exploring the beautiful
-        sights of Athens, or traveling with family and friends, we offer
-        affordable and reliable bus services to ensure a smooth journey.
-      </p>
-      <Slideshow></Slideshow>
-      <p>
-        With Ktel Attikis, you can easily find routes and schedules that match
-        your travel needs. We provide direct connections to major bus stations,
-        cultural sites, and tourist destinations, all with modern amenities to
-        ensure comfort and safety during your trip.
-      </p>
-      <p>
-        Booking your bus tickets is quick and convenient. Our user-friendly
-        platform allows you to purchase tickets online, check real-time
-        schedules, and plan your trip in advance. You can also manage your
-        bookings, view departure times, and find detailed information on our bus
-        routes.
-      </p>
-      <p>
-        As part of our commitment to providing high-quality services, we
-        continuously update our fleet to ensure the highest standards of safety
-        and comfort. Our buses are equipped with air conditioning, comfortable
-        seating, and free Wi-Fi to make your journey as pleasant as possible.
-      </p>
-      <p>
-        Explore the beauty of the Attica region with Ktel Attikis. From the
-        historical landmarks of Athens to the scenic coastal towns, there's a
-        bus route for every traveler. Our team is dedicated to providing
-        exceptional customer service, and we look forward to being part of your
-        next adventure.
-      </p>
-      <p>
-        Thank you for choosing Ktel Attikis for your travel needs. Book your
-        tickets today and start your journey with us!
-      </p>
+      <div className="hero-section">
+        <div className="hero-content">
+          <h1>Welcome to Ktel Attikis</h1>
+          <p className="hero-text">
+            Experience comfortable and reliable bus transportation services across Greece.
+            Book your journey with us and travel with confidence.
+          </p>
+          <button className="cta-button" onClick={() => navigate('/tickets')}>
+            Book Your Journey
+          </button>
+        </div>
+        <div className="hero-slideshow">
+          <h2>Explore Our Routes</h2>
+          <Slideshow />
+        </div>
+      </div>
+
+      <div className="features-section">
+        <div className="feature-card">
+          <div className="feature-icon">🚌</div>
+          <h3>Modern Fleet</h3>
+          <p>Travel in comfort with our modern, well-maintained buses.</p>
+        </div>
+        <div className="feature-card">
+          <div className="feature-icon">🎫</div>
+          <h3>Easy Booking</h3>
+          <p>Book your tickets online with our simple and secure booking system.</p>
+        </div>
+        <div className="feature-card">
+          <div className="feature-icon">🗺️</div>
+          <h3>Extensive Routes</h3>
+          <p>Connect to major cities and popular destinations across Greece.</p>
+        </div>
+        <div className="feature-card">
+          <div className="feature-icon">🛡️</div>
+          <h3>Safe Travel</h3>
+          <p>Your safety is our priority with professional drivers and regular maintenance.</p>
+        </div>
+      </div>
+
+      <div className="info-section">
+        <div className="info-content">
+          <h2>Why Choose Ktel Attikis?</h2>
+          <p>
+            At Ktel Attikis, we pride ourselves on providing reliable and comfortable bus transportation services.
+            Our modern fleet of buses is regularly maintained to ensure your safety and comfort throughout your journey.
+          </p>
+          <p>
+            With extensive routes connecting major cities and popular destinations across Greece,
+            we make it easy for you to explore this beautiful country. Our professional drivers
+            are experienced and committed to providing a smooth and enjoyable travel experience.
+          </p>
+          <p>
+            Book your tickets online through our user-friendly platform, and enjoy the convenience
+            of secure payments and instant confirmation. We're here to make your journey memorable
+            and hassle-free.
+          </p>
+        </div>
+        <div className="quick-book-section">
+          <h3>Ready to Travel?</h3>
+          <p>Book your tickets now and enjoy our comfortable bus services.</p>
+          <button className="secondary-button" onClick={() => navigate('/tickets')}>
+            Book Now
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

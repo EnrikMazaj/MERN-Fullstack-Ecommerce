@@ -4,47 +4,183 @@
   margin: 0 auto;
   padding: 2rem;
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+/* Decorative elements */
+.content::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, transparent 70%);
+  transform: rotate(-45deg);
+  z-index: 0;
+}
+
+/* Floating elements */
+.floating-element {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(46, 204, 113, 0.1) 100%);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+  z-index: 0;
+}
+
+.floating-element:nth-child(1) {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.floating-element:nth-child(2) {
+  top: 60%;
+  right: 15%;
+  animation-delay: -2s;
+}
+
+.floating-element:nth-child(3) {
+  bottom: 20%;
+  left: 20%;
+  animation-delay: -4s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
 }
 
 h1 {
   font-size: 2.5rem;
   margin-bottom: 2rem;
-  color: #2d3748;
-  font-weight: 700;
+  background: linear-gradient(45deg, #1a365d, #2b6cb0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
   text-align: center;
+  position: relative;
+  padding-bottom: 20px;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  border-radius: 4px;
+  animation: expandWidth 0.8s ease-out forwards;
+}
+
+@keyframes expandWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100px;
+  }
 }
 
 h3 {
   font-size: 1.25rem;
   margin-bottom: 1rem;
-  color: #4a5568;
+  color: #2c3e50;
   font-weight: 600;
 }
 
 .selection {
-  background: white;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   align-items: center;
   position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.8s ease-out;
+  backdrop-filter: blur(10px);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.selection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  border-radius: 4px 4px 0 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.selection:hover::before {
+  opacity: 1;
 }
 
 .route-dropdown {
   width: 100%;
   max-width: 400px;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.25rem;
   font-size: 1rem;
   border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  border-radius: 12px;
   background-color: white;
   color: #2d3748;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
@@ -56,13 +192,15 @@ h3 {
 }
 
 .route-dropdown:hover {
-  border-color: #4299e1;
+  border-color: #3498db;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.1);
+  transform: translateY(-2px);
 }
 
 .route-dropdown:focus {
   outline: none;
-  border-color: #4299e1;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
 }
 
 .route-dropdown option {
@@ -72,55 +210,85 @@ h3 {
   font-size: 1rem;
 }
 
-.trip-toggle-container {
+.trip-type-container {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  max-width: 350px;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+
+.trip-type-btn {
+  flex: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background: #f7fafc;
-  border-radius: 8px;
-  margin: 0.5rem 0;
-  width: 100%;
-  max-width: 400px;
-  justify-content: center;
+  background: white;
   border: 2px solid #e2e8f0;
-}
-
-.trip-toggle-container label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  user-select: none;
-  color: #2d3748;
+  border-radius: 10px;
+  color: #2c3e50;
   font-weight: 500;
-}
-
-input[type="checkbox"] {
-  width: 1.25rem;
-  height: 1.25rem;
-  border-radius: 4px;
-  border: 2px solid #e2e8f0;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  accent-color: #4299e1;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-input[type="checkbox"]:checked {
-  background-color: #4299e1;
-  border-color: #4299e1;
+.trip-type-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.trip-type-btn:hover::before {
+  transform: translateX(100%);
+}
+
+.trip-type-btn:hover {
+  border-color: #3498db;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.1);
+}
+
+.trip-type-btn.active {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  border-color: #3498db;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.trip-type-btn.active:hover {
+  background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+}
+
+.trip-icon {
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 
 .calendars-container {
-  background: white;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   margin: 2rem 0;
   width: 100%;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+  backdrop-filter: blur(10px);
 }
 
 .departure-calendar-container {
@@ -138,62 +306,122 @@ input[type="checkbox"]:checked {
   max-width: 400px;
   background: white;
   border: none;
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: 12px;
+  padding: 1.5rem;
   font-family: inherit;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.react-calendar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
 .react-calendar__tile {
   padding: 1rem;
-  border-radius: 4px;
-  transition: all 0.2s ease;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
-  background-color: #ebf8ff;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
   color: #2b6cb0;
+  transform: translateY(-2px);
 }
 
 .react-calendar__tile--active {
-  background: #4299e1 !important;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
   color: white !important;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
 }
 
 .react-calendar__tile--now {
-  background: #ebf8ff;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
   color: #2b6cb0;
+  font-weight: 600;
 }
 
 .confirm-button {
   width: 100%;
   max-width: 400px;
-  padding: 1rem 2rem;
-  background-color: #4299e1;
+  padding: 1.25rem 2rem;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   margin: 2rem auto;
   display: block;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.confirm-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.confirm-button:hover::before {
+  transform: translateX(100%);
 }
 
 .confirm-button:hover {
-  background-color: #3182ce;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.3);
 }
 
 .confirm-button:active {
   transform: translateY(0);
 }
 
+/* Loading animation */
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
+  .floating-element {
+    display: none;
+  }
+  
   .content {
-    padding: 1rem;
+    padding: 1.5rem;
   }
 
   .selection {
@@ -210,6 +438,34 @@ input[type="checkbox"]:checked {
 
   .react-calendar {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding: 1rem;
+  }
+
+  .selection {
+    padding: 1.25rem;
+  }
+
+  .calendars-container {
+    padding: 1.25rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  .route-dropdown,
+  .trip-type-container {
+    padding: 0.875rem 1rem;
+  }
+
+  .confirm-button {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
   }
 }
   

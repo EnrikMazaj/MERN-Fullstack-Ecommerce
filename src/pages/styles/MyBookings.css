@@ -1,10 +1,10 @@
 .my-bookings-container {
   font-family: 'Roboto', sans-serif;
   line-height: 1.6;
-  padding: 20px;
+  padding: 40px 20px;
   max-width: 1200px;
   margin: 0 auto;
-  color: #333;
+  color: #2c3e50;
   padding-bottom: 100px;
   background-color: #f0f7ff;
   border-radius: 16px;
@@ -31,95 +31,74 @@
 }
 
 .my-bookings-container h1 {
-  font-size: 36px;
+  font-size: 2rem;
   text-align: center;
-  margin-bottom: 30px;
-  font-weight: 800;
-  color: #1a365d;
-  position: relative;
-  padding-bottom: 15px;
-  letter-spacing: -0.5px;
-}
-
-.my-bookings-container h1::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 3px;
-  background: #3498db;
-  border-radius: 3px;
-}
-
-.my-bookings-container h1::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 3px;
-  background: #2ecc71;
-  border-radius: 3px;
-  margin-left: 60px;
+  margin-bottom: 40px;
+  color: #2c3e50;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .bookings-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 30px;
+  gap: 25px;
   margin-top: 20px;
 }
 
 .booking-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  background: white;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid rgba(52, 152, 219, 0.5);
   position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin: 20px auto;
-  width: 90%;
-  max-width: 400px;
-  padding: 0;
-  border: 1px solid #e0e0e0;
+}
+
+.booking-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px rgba(52, 152, 219, 0.3);
+  pointer-events: none;
 }
 
 .booking-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.25);
 }
 
 .ticket-status {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
-  padding: 12px 16px;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+  border-bottom: 2px solid rgba(52, 152, 219, 0.3);
 }
 
 .status {
   padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: capitalize;
 }
 
 .status.active {
-  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-  color: #1565c0;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  color: #2e7d32;
 }
 
 .status.completed {
-  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-  color: #2e7d32;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  color: #1565c0;
 }
 
 .status.cancelled {
@@ -134,76 +113,58 @@
 
 .refund-status {
   padding: 4px 10px;
-  border-radius: 16px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .refund-status.pending {
-  background: #fff3e0;
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
   color: #e65100;
 }
 
 .refund-status.approved {
-  background: #e8f5e9;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
   color: #2e7d32;
 }
 
 .refund-status.rejected {
-  background: #ffebee;
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
   color: #c62828;
 }
 
 .ticket-content {
-  padding: 20px;
+  padding: 25px;
   background: white;
+  position: relative;
+}
+
+.ticket-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  opacity: 0.7;
 }
 
 .ticket-header {
-  margin-bottom: 20px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 10px;
-  padding: 0 10px;
-}
-
-.ticket-header .detail-icon {
-  color: #3498db;
-  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .passenger-name {
-  font-size: 18px;
+  font-size: 1.1rem;
   font-weight: 600;
-  letter-spacing: 0.3px;
-}
-
-.ticket-header h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  background: linear-gradient(45deg, #1a365d, #2b6cb0);
-}
-
-.passenger-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   color: #2c3e50;
-  font-size: 15px;
-  font-weight: 500;
-  background: #f8f9fa;
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
-}
-
-.passenger-info .detail-icon {
-  color: #3498db;
-  font-size: 14px;
+  text-align: center;
+  width: 100%;
 }
 
 .route-display {
@@ -214,48 +175,35 @@
 }
 
 .route-section {
-  background: #f8f9fa;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
   border-radius: 8px;
-  padding: 15px;
-  border: 1px solid #e0e0e0;
+  padding: 20px;
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.15);
 }
 
 .route-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  color: #2c3e50;
-  font-weight: 600;
-}
-
-.route-icon {
-  color: #3498db;
-  font-size: 16px;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 10px;
 }
 
 .route-details {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin: 10px 0;
-  padding: 0 10px;
+  gap: 15px;
+  margin-bottom: 10px;
 }
 
 .route-origin,
 .route-destination {
-  font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: #2c3e50;
-  flex: 1;
-  text-align: center;
 }
 
 .route-arrow {
   color: #3498db;
-  font-size: 18px;
-  font-weight: bold;
-  margin: 0 10px;
+  font-size: 1.2rem;
 }
 
 .route-date {
@@ -263,12 +211,7 @@
   align-items: center;
   gap: 8px;
   color: #666;
-  font-size: 14px;
-  margin-top: 10px;
-}
-
-.date-icon {
-  color: #3498db;
+  font-size: 0.9rem;
 }
 
 .route-separator {
@@ -281,23 +224,13 @@
 .separator-line {
   flex: 1;
   height: 1px;
-  background: #e0e0e0;
+  background: rgba(52, 152, 219, 0.2);
 }
 
 .round-trip-label {
   color: #666;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 0.9rem;
   white-space: nowrap;
-}
-
-.ticket-separator {
-  margin: 20px 0;
-}
-
-.ticket-separator-line {
-  height: 1px;
-  background: linear-gradient(to right, transparent, #e0e0e0, transparent);
 }
 
 .ticket-details {
@@ -305,16 +238,14 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
   margin-top: 20px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 15px;
-  border: 1px solid #e0e0e0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(52, 152, 219, 0.1);
 }
 
 .detail-row {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  gap: 8px;
 }
 
 .detail-label {
@@ -322,20 +253,17 @@
   align-items: center;
   gap: 8px;
   color: #666;
-  font-size: 14px;
-  white-space: nowrap;
+  font-size: 0.9rem;
 }
 
 .detail-icon {
   color: #3498db;
-  font-size: 14px;
+  font-size: 1rem;
 }
 
 .detail-value {
-  font-weight: 600;
+  font-weight: 500;
   color: #2c3e50;
-  margin-left: 4px;
-  white-space: nowrap;
 }
 
 .ticket-actions {
@@ -349,63 +277,61 @@
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background: linear-gradient(135deg, #ff4757 0%, #ff6b6b 100%);
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
   color: white;
   border: none;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .refund-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 71, 87, 0.3);
+  box-shadow: 0 4px 8px rgba(231, 76, 60, 0.2);
 }
 
-.refund-btn:active {
-  transform: translateY(0);
+.ticket-footer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(52, 152, 219, 0.1);
+  text-align: center;
 }
 
-.refund-icon {
-  font-size: 16px;
+.booking-id {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: rotate 0.3s ease;
-}
-
-.refund-text {
-  letter-spacing: 0.5px;
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(-180deg);
-  }
+  gap: 8px;
+  color: #666;
+  font-size: 0.85rem;
 }
 
 .loading, .error, .no-bookings {
   text-align: center;
   padding: 40px;
   color: #666;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .error {
   color: #c62828;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .bookings-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
-  
-  .booking-card {
-    width: 95%;
+}
+
+@media (max-width: 768px) {
+  .my-bookings-container {
+    padding: 30px 15px;
+  }
+
+  .my-bookings-container h1 {
+    font-size: 1.75rem;
+    margin-bottom: 30px;
   }
 
   .ticket-details {
@@ -419,55 +345,19 @@
   }
 
   .my-bookings-container h1 {
-    font-size: 24px;
+    font-size: 1.5rem;
   }
 
   .booking-card {
-    padding: 0;
+    margin: 0;
+  }
+
+  .ticket-content {
+    padding: 20px;
   }
 
   .refund-btn {
-    padding: 10px 20px;
-    font-size: 13px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
-  
-  .refund-icon {
-    font-size: 14px;
-  }
-}
-
-.ticket-footer {
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px solid #e0e0e0;
-  text-align: center;
-}
-
-.booking-id {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #666;
-  font-size: 12px;
-  font-family: monospace;
-  padding: 4px 8px;
-  background: #f8f9fa;
-  border-radius: 4px;
-  border: 1px solid #e0e0e0;
-}
-
-.booking-id .detail-icon {
-  font-size: 12px;
-  opacity: 0.7;
-}
-
-.passenger-name {
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-}
-
-.ticket-header .detail-icon {
-  color: #3498db;
-  font-size: 18px;
 } 

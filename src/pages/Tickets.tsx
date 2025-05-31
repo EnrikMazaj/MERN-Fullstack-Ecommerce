@@ -18,7 +18,7 @@ const Tickets = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchRoutes = async () => {
       try {
         setLoading(true);
@@ -40,10 +40,6 @@ const Tickets = () => {
 
   const handleRouteChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRoute(e.target.value);
-  };
-
-  const handleTripTypeToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsRoundTrip(e.target.checked);
   };
 
   const handleDateChange = (value: Value) => {
@@ -70,6 +66,9 @@ const Tickets = () => {
 
   return (
     <div className="content">
+      <div className="floating-element"></div>
+      <div className="floating-element"></div>
+      <div className="floating-element"></div>
       <h1>Tickets</h1>
 
       <div>
@@ -90,15 +89,27 @@ const Tickets = () => {
             ))}
           </select>
 
-          <div className="trip-toggle-container">
-            <label>
-              <input
-                type="checkbox"
-                checked={isRoundTrip}
-                onChange={handleTripTypeToggle}
-              />
-              <span>{isRoundTrip ? 'Round Trip' : 'One-Way'}</span>
-            </label>
+          <div className="trip-type-container">
+            <button
+              className={`trip-type-btn ${!isRoundTrip ? 'active' : ''}`}
+              onClick={() => {
+                setIsRoundTrip(false);
+                setSelectedDates(new Date());
+              }}
+            >
+              <span className="trip-icon">→</span>
+              One-Way
+            </button>
+            <button
+              className={`trip-type-btn ${isRoundTrip ? 'active' : ''}`}
+              onClick={() => {
+                setIsRoundTrip(true);
+                setSelectedDates(new Date());
+              }}
+            >
+              <span className="trip-icon">↔</span>
+              Round Trip
+            </button>
           </div>
         </div>
 
