@@ -4,12 +4,12 @@ import './Navbar.css';
 import LoginModal from '../LoginModal/LoginModal.tsx';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
-import { FaMoon, FaSun, FaGlobe } from 'react-icons/fa';
+import { FaGlobe } from 'react-icons/fa';
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const { isLoggedIn } = useAuth();
-  const { theme, language, toggleTheme, toggleLanguage } = useTheme();
+  const { language, toggleLanguage } = useTheme();
   const location = useLocation();
 
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -105,17 +105,19 @@ const Navbar = () => {
             </li>
           )}
         </ul>
+        <div className="mobile-login">
+          <LoginModal />
+        </div>
       </div>
 
       <div className="navbar-controls">
-        <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
-          {theme === 'light' ? <FaMoon /> : <FaSun />}
-        </button>
         <button className="language-toggle" onClick={toggleLanguage} aria-label="Toggle language">
           <FaGlobe />
           <span>{language.toUpperCase()}</span>
         </button>
-        <LoginModal />
+        <div className="desktop-login">
+          <LoginModal />
+        </div>
       </div>
 
       <div

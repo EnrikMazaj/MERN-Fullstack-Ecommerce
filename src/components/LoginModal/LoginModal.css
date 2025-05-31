@@ -2,14 +2,14 @@
 
 .buttons {
   display: flex;
-  gap: 10px;
+  gap: 5px;
   align-items: center;
   margin-right: 10px;
   margin-left: auto;
 }
 
 #login {
-  padding: 10px 24px;
+  padding: 10px 20px;
   font-size: 16px;
   font-family: "Roboto", sans-serif;
   font-weight: 500;
@@ -22,7 +22,7 @@
 }
 
 #signin {
-  padding: 10px 24px;
+  padding: 10px 20px;
   font-size: 16px;
   font-family: "Roboto", sans-serif;
   font-weight: 500;

@@ -16,7 +16,6 @@ const ToastConfig = () => {
             draggable
             pauseOnHover
             style={{ zIndex: 99999 }}
-            theme="light"
             closeButton={({ closeToast }) => (
                 <button
                     onClick={closeToast}

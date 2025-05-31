@@ -4,6 +4,8 @@ import './LoginModal.css';
 import { useAuth } from '../../context/AuthContext';
 import { successToastConfig, errorToastConfig } from '../../config/toastConfig';
 import { API_URL } from '../../config/api';
+import { useTheme } from '../../context/ThemeContext';
+import { translations } from '../../translations';
 
 interface RegisterFormData {
   username: string;
@@ -18,6 +20,8 @@ interface LoginFormData {
 
 const LoginModal = () => {
   const { isLoggedIn, login, logout } = useAuth();
+  const { language } = useTheme();
+  const t = translations[language].auth;
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isRegisterOpen, setRegisterOpen] = useState(false);
   const [isLoginLoading, setIsLoginLoading] = useState(false);
@@ -85,17 +89,17 @@ const LoginModal = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(data.message || t.errors.login);
       }
 
       login(data.user);
-      toast.success('Login successful!', successToastConfig);
+      toast.success(t.loginSuccess, successToastConfig);
       handleCloseLogin();
     } catch (error) {
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
         toast.error('Could not connect to the server. Please check if the server is running.', errorToastConfig);
       } else {
-        toast.error(error instanceof Error ? error.message : 'Login failed', errorToastConfig);
+        toast.error(error instanceof Error ? error.message : t.errors.login, errorToastConfig);
       }
     } finally {
       setIsLoginLoading(false);
@@ -124,14 +128,14 @@ const LoginModal = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Registration failed');
+        throw new Error(data.message || t.errors.register);
       }
 
-      toast.success('Registration successful!', successToastConfig);
+      toast.success(t.registerSuccess, successToastConfig);
       handleCloseRegister();
       setLoginOpen(true);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Registration failed', errorToastConfig);
+      toast.error(error instanceof Error ? error.message : t.errors.register, errorToastConfig);
     } finally {
       setIsRegisterLoading(false);
     }
@@ -142,15 +146,15 @@ const LoginModal = () => {
       {!isLoggedIn ? (
         <>
           <button id="login" onClick={handleLoginClick}>
-            Login
+            {t.login}
           </button>
           <button id="signin" onClick={handleRegisterClick}>
-            Register
+            {t.register}
           </button>
         </>
       ) : (
         <button id="logout" onClick={handleLogout}>
-          Logout
+          {t.logout}
         </button>
       )}
 
@@ -161,7 +165,7 @@ const LoginModal = () => {
             <span className="closeBtn" onClick={handleCloseLogin}>
               &times;
             </span>
-            <h2>Login</h2>
+            <h2>{t.login}</h2>
             <form onSubmit={handleLoginSubmit}>
               <input
                 type="email"
@@ -185,7 +189,7 @@ const LoginModal = () => {
                 {isLoginLoading ? (
                   <span className="loading-spinner">Loading...</span>
                 ) : (
-                  'Login'
+                  t.login
                 )}
               </button>
             </form>
@@ -200,7 +204,7 @@ const LoginModal = () => {
             <span className="closeBtn" onClick={handleCloseRegister}>
               &times;
             </span>
-            <h2>Register</h2>
+            <h2>{t.register}</h2>
             <form onSubmit={handleRegisterSubmit}>
               <input
                 type="text"
@@ -233,7 +237,7 @@ const LoginModal = () => {
                 {isRegisterLoading ? (
                   <span className="loading-spinner">Loading...</span>
                 ) : (
-                  'Register'
+                  t.register
                 )}
               </button>
             </form>

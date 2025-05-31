@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import routeService, { Route } from '../services/routeService';
+import { useTheme } from '../context/ThemeContext';
+import { translations } from '../translations';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -17,6 +19,8 @@ const Tickets = () => {
   const [routes, setRoutes] = useState<Route[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { language } = useTheme();
+  const t = translations[language].tickets;
 
   useEffect(() => {
     const fetchRoutes = async () => {
@@ -25,7 +29,7 @@ const Tickets = () => {
         const fetchedRoutes = await routeService.getAllRoutes();
         setRoutes(fetchedRoutes);
       } catch (error) {
-        toast.error('Failed to load routes. Please try again later.');
+        toast.error(t.errors.load);
       } finally {
         setLoading(false);
       }
@@ -48,10 +52,10 @@ const Tickets = () => {
 
   const handleConfirm = () => {
     if (!selectedRoute) {
-      toast.error('Please select a route before confirming!');
+      toast.error(t.errors.noRoute);
       return;
     } else if (!selectedDates) {
-      toast.error('Please select a date before confirming!');
+      toast.error(t.errors.noDate);
       return;
     }
 
@@ -69,7 +73,7 @@ const Tickets = () => {
       <div className="floating-element"></div>
       <div className="floating-element"></div>
       <div className="floating-element"></div>
-      <h1>Tickets</h1>
+      <h1>{t.title}</h1>
 
       <div>
         <div className="selection">
@@ -80,7 +84,7 @@ const Tickets = () => {
             disabled={loading}
           >
             <option value="" disabled>
-              {loading ? 'Loading routes...' : 'Select a route'}
+              {loading ? t.loading : t.selectRoute}
             </option>
             {routes.map((route) => (
               <option key={route._id} value={route._id}>
@@ -98,7 +102,7 @@ const Tickets = () => {
               }}
             >
               <span className="trip-icon">→</span>
-              One-Way
+              {t.oneWay}
             </button>
             <button
               className={`trip-type-btn ${isRoundTrip ? 'active' : ''}`}
@@ -108,14 +112,14 @@ const Tickets = () => {
               }}
             >
               <span className="trip-icon">↔</span>
-              Round Trip
+              {t.roundTrip}
             </button>
           </div>
         </div>
 
         <div className="calendars-container">
           <div className="departure-calendar-container">
-            <h3>Departure Date</h3>
+            <h3>{t.departureDate}</h3>
             <Calendar
               onChange={handleDateChange}
               tileDisabled={({ date }) => date <= yesterday}
@@ -126,7 +130,7 @@ const Tickets = () => {
         </div>
 
         <button className="confirm-button" onClick={handleConfirm}>
-          Confirm
+          {t.confirm}
         </button>
       </div>
     </div>

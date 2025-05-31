@@ -289,6 +289,21 @@
     .hero-slideshow h2 {
       font-size: 28px;
     }
+
+    .info-section {
+      grid-template-columns: 1fr;
+      gap: 30px;
+      padding: 40px 15px;
+    }
+
+    .info-content {
+      order: 1;
+    }
+
+    .quick-book-section {
+      order: 2;
+      margin-top: 20px;
+    }
   }
 
   @media (max-width: 480px) {
@@ -315,6 +330,20 @@
 
     .feature-icon {
       font-size: 32px;
+    }
+
+    .info-section {
+      grid-template-columns: 1fr;
+      padding: 30px 15px;
+    }
+
+    .info-content {
+      order: 1;
+    }
+
+    .quick-book-section {
+      order: 2;
+      margin-top: 20px;
     }
   }
   

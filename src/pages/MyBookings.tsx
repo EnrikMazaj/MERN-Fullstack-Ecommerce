@@ -7,7 +7,9 @@ import { toast } from 'react-toastify';
 import { successToastConfig, errorToastConfig } from '../config/toastConfig';
 import './styles/MyBookings.css';
 import axios from 'axios';
-import { FaBus, FaCalendarAlt, FaMapMarkerAlt, FaUser, FaTicketAlt, FaEuroSign } from 'react-icons/fa';
+import { FaBus, FaCalendarAlt, FaMapMarkerAlt, FaUser, FaEuroSign } from 'react-icons/fa';
+import { useTheme } from '../context/ThemeContext';
+import { translations } from '../translations';
 
 interface Booking {
     _id: string;
@@ -34,6 +36,8 @@ const MyBookings = () => {
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const { language } = useTheme();
+    const t = translations[language].bookings;
 
     useEffect(() => {
         const fetchBookings = async () => {
@@ -71,7 +75,7 @@ const MyBookings = () => {
                 console.log('Final bookings with routes:', bookingsWithRoutes);
                 setBookings(bookingsWithRoutes);
             } catch (error) {
-                setError('Failed to load bookings. Please try again later.');
+                setError(t.errors.load);
             } finally {
                 setLoading(false);
             }
@@ -98,9 +102,9 @@ const MyBookings = () => {
                     : booking
             ));
 
-            toast.success('Refund requested successfully! Booking has been cancelled.', successToastConfig);
+            toast.success(t.refund.success, successToastConfig);
         } catch (error) {
-            let errorMessage = 'Failed to process refund request. ';
+            let errorMessage = t.refund.error;
 
             if (axios.isAxiosError(error)) {
                 const errorData = error.response?.data;
@@ -128,8 +132,8 @@ const MyBookings = () => {
     if (loading) {
         return (
             <div className="my-bookings-container">
-                <h1>My Bookings</h1>
-                <div className="loading">Loading your bookings...</div>
+                <h1>{t.title}</h1>
+                <div className="loading">{t.loading}</div>
             </div>
         );
     }
@@ -137,7 +141,7 @@ const MyBookings = () => {
     if (error) {
         return (
             <div className="my-bookings-container">
-                <h1>My Bookings</h1>
+                <h1>{t.title}</h1>
                 <div className="error">{error}</div>
             </div>
         );
@@ -145,10 +149,10 @@ const MyBookings = () => {
 
     return (
         <div className="my-bookings-container">
-            <h1>My Bookings</h1>
+            <h1>{t.title}</h1>
             <div className="bookings-list">
                 {bookings.length === 0 ? (
-                    <p className="no-bookings">You don't have any bookings yet.</p>
+                    <p className="no-bookings">{t.noBookings}</p>
                 ) : (
                     bookings.map((booking) => {
                         console.log('Rendering booking:', booking._id, {
@@ -160,11 +164,11 @@ const MyBookings = () => {
                             <div key={booking._id} className="booking-card">
                                 <div className="ticket-status">
                                     <span className={`status ${booking.status}`}>
-                                        {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                                        {t.status[booking.status]}
                                     </span>
                                     {booking.refundRequested && (
                                         <span className={`refund-status ${booking.refundStatus}`}>
-                                            Refund {booking.refundStatus}
+                                            {t.refundStatus[booking.refundStatus || 'pending']}
                                         </span>
                                     )}
                                 </div>
@@ -176,7 +180,7 @@ const MyBookings = () => {
                                     <div className="route-display">
                                         <div className="route-section">
                                             <div className="route-header">
-                                                <span>Outbound Journey</span>
+                                                <span>{t.outboundJourney}</span>
                                             </div>
                                             <div className="route-details">
                                                 <FaMapMarkerAlt className="route-icon" />
@@ -193,12 +197,12 @@ const MyBookings = () => {
                                             <>
                                                 <div className="route-separator">
                                                     <div className="separator-line"></div>
-                                                    <span className="round-trip-label">Return Journey</span>
+                                                    <span className="round-trip-label">{t.returnJourney}</span>
                                                     <div className="separator-line"></div>
                                                 </div>
                                                 <div className="route-section">
                                                     <div className="route-header">
-                                                        <span>Return Journey</span>
+                                                        <span>{t.returnJourney}</span>
                                                     </div>
                                                     <div className="route-details">
                                                         <FaMapMarkerAlt className="route-icon" />
@@ -221,14 +225,14 @@ const MyBookings = () => {
                                         <div className="detail-row">
                                             <span className="detail-label">
                                                 <FaBus className="detail-icon" />
-                                                Seat:
+                                                {t.seat}:
                                                 <span className="detail-value">{booking.seatNumber}</span>
                                             </span>
                                         </div>
                                         <div className="detail-row">
                                             <span className="detail-label">
                                                 <FaEuroSign className="detail-icon" />
-                                                Total Price:
+                                                {t.totalPrice}:
                                                 <span className="detail-value">€{booking.totalPrice.toFixed(2)}</span>
                                             </span>
                                         </div>
@@ -240,16 +244,10 @@ const MyBookings = () => {
                                                 onClick={() => handleCancelBooking(booking._id)}
                                             >
                                                 <span className="refund-icon">↩</span>
-                                                <span className="refund-text">Request Refund</span>
+                                                <span className="refund-text">{t.requestRefund}</span>
                                             </button>
                                         </div>
                                     )}
-                                    <div className="ticket-footer">
-                                        <span className="booking-id">
-                                            <FaTicketAlt className="detail-icon" />
-                                            ID: {booking._id}
-                                        </span>
-                                    </div>
                                 </div>
                             </div>
                         );

@@ -9,6 +9,8 @@ import routeService from '../../services/routeService';
 import './Cart.css';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useTheme } from '../../context/ThemeContext';
+import { translations } from '../../translations';
 
 interface RouteDetails {
   _id: string;
@@ -28,6 +30,8 @@ const Cart = () => {
   const dispatch = useDispatch();
   const { isLoggedIn, user } = useAuth();
   const navigate = useNavigate();
+  const { language } = useTheme();
+  const t = translations[language].cart;
 
   const totalBookings = bookings.length;
 
@@ -144,24 +148,24 @@ const Cart = () => {
 
       setCartVisibility(false);
 
-      toast.success('Ticket purchased successfully!');
+      toast.success(t.ticket.purchaseSuccess);
 
       dispatch(clearCart());
 
       navigate('/');
     } catch (error) {
-      let errorMessage = 'Failed to create bookings. Please try again.';
+      let errorMessage = t.errors.purchase;
 
       if (error instanceof Error) {
-        errorMessage = `Error: ${error.message}`;
+        errorMessage = `${t.errors.requestError}: ${error.message}`;
       } else if (typeof error === 'object' && error !== null) {
         const axiosError = error as any;
         if (axiosError.response) {
-          errorMessage = `Server error (${axiosError.response.status}): ${JSON.stringify(axiosError.response.data)}`;
+          errorMessage = `${t.errors.serverError} (${axiosError.response.status}): ${JSON.stringify(axiosError.response.data)}`;
         } else if (axiosError.request) {
-          errorMessage = 'No response from server. Please check your connection.';
+          errorMessage = t.errors.noResponse;
         } else {
-          errorMessage = `Request error: ${axiosError.message}`;
+          errorMessage = `${t.errors.requestError}: ${axiosError.message}`;
         }
       }
 
@@ -177,7 +181,7 @@ const Cart = () => {
       setShowPassportForm(false);
       processCheckout();
     } else {
-      setError('Please enter a valid passport number');
+      setError(t.passport.error);
     }
   };
 
@@ -201,32 +205,21 @@ const Cart = () => {
             <button className="close-cart" onClick={() => setCartVisibility(false)}>
               <FaTimes />
             </button>
-            <h3>Your Cart</h3>
+            <h3>{t.title}</h3>
 
             {error && <div className="error-message">{error}</div>}
 
             {showPassportForm ? (
-              <div className="passport-form">
-                <h4>Passport Information Required</h4>
-                <p>Please enter your passport number to complete the booking:</p>
-                <form onSubmit={handlePassportSubmit}>
-                  <input
-                    type="text"
-                    value={passportNumber}
-                    onChange={(e) => setPassportNumber(e.target.value)}
-                    placeholder="Enter passport number"
-                    required
-                  />
-                  <div className="form-buttons">
-                    <button type="button" onClick={() => setShowPassportForm(false)}>
-                      Cancel
-                    </button>
-                    <button type="submit" disabled={isProcessing}>
-                      {isProcessing ? 'Processing...' : 'Submit'}
-                    </button>
-                  </div>
-                </form>
-              </div>
+              <form onSubmit={handlePassportSubmit} className="passport-form">
+                <h4>{t.passport.title}</h4>
+                <input
+                  type="text"
+                  placeholder={t.passport.placeholder}
+                  value={passportNumber}
+                  onChange={(e) => setPassportNumber(e.target.value)}
+                />
+                <button type="submit">{t.passport.submit}</button>
+              </form>
             ) : totalBookings > 0 ? (
               <>
                 <ul className="cart-items-list">
@@ -244,7 +237,7 @@ const Cart = () => {
                                 </span>
                                 <span className="seat-number">
                                   <FaBus className="seat-icon" />
-                                  Seat {booking.seatNumber}
+                                  {t.passenger.seat} {booking.seatNumber}
                                 </span>
                               </div>
                               <div className="ticket-actions">
@@ -257,7 +250,7 @@ const Cart = () => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 dispatch(removeBooking({ seatNumber: booking.seatNumber }));
-                                toast.info('Ticket removed from cart');
+                                toast.info(t.ticket.removed);
                               }}
                             >
                               <FaTrash />
@@ -316,21 +309,23 @@ const Cart = () => {
                     );
                   })}
                 </ul>
-                <div className="cart-total">
-                  <span>Total:</span>
-                  <span className="total-price">€{calculateTotal()}</span>
+                <div className="cart-footer">
+                  <div className="cart-total">
+                    <span>{t.total}:</span>
+                    <span>€{calculateTotal()}</span>
+                  </div>
+                  <button
+                    className="checkout-btn"
+                    onClick={handleCheckout}
+                    disabled={isProcessing}
+                  >
+                    {isProcessing ? 'Processing...' : t.checkout}
+                  </button>
                 </div>
-                <button
-                  className="checkout-button"
-                  onClick={handleCheckout}
-                  disabled={isProcessing}
-                >
-                  {isProcessing ? 'Processing...' : 'Checkout'}
-                </button>
               </>
             ) : (
               <div className="empty-cart">
-                <p>Your cart is empty</p>
+                <p>{t.empty}</p>
               </div>
             )}
           </div>

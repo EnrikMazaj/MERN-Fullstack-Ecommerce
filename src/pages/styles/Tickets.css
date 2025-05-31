@@ -141,6 +141,7 @@ h3 {
   border: 1px solid rgba(0, 0, 0, 0.1);
   animation: fadeInUp 0.8s ease-out;
   backdrop-filter: blur(10px);
+  z-index: 1;
 }
 
 @keyframes fadeInUp {
@@ -188,7 +189,7 @@ h3 {
   background-position: right 1rem center;
   background-size: 1em;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .route-dropdown:hover {
@@ -208,15 +209,15 @@ h3 {
   background-color: white;
   color: #2d3748;
   font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
 }
 
 .trip-type-container {
   display: flex;
   gap: 1rem;
-  width: 100%;
-  max-width: 350px;
-  justify-content: center;
-  margin: 0.5rem 0;
+  margin-bottom: 1.5rem;
 }
 
 .trip-type-btn {
@@ -225,55 +226,30 @@ h3 {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   background: white;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
-  color: #2c3e50;
-  font-weight: 500;
+  color: #666;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.trip-type-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
+  transition: all 0.2s ease;
   width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-
-.trip-type-btn:hover::before {
-  transform: translateX(100%);
 }
 
 .trip-type-btn:hover {
+  background: #f8f9fa;
   border-color: #3498db;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.1);
 }
 
 .trip-type-btn.active {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  background: #3498db;
   color: white;
   border-color: #3498db;
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
-}
-
-.trip-type-btn.active:hover {
-  background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
 }
 
 .trip-icon {
   font-size: 1.1rem;
-  font-weight: bold;
 }
 
 .calendars-container {

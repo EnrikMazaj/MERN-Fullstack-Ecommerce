@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import './Footer.css';
+import { useTheme } from '../../context/ThemeContext';
+import { translations } from '../../translations';
 
 const Footer = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +10,9 @@ const Footer = () => {
     email: '',
     comment: ''
   });
+
+  const { language } = useTheme();
+  const t = translations[language].footer;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -30,7 +35,7 @@ const Footer = () => {
       });
 
       if (response.ok) {
-        toast.success('Thank you for your comment!', {
+        toast.success(t.commentBox.success, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -48,7 +53,7 @@ const Footer = () => {
         throw new Error('Failed to send message');
       }
     } catch (error) {
-      toast.error('Failed to send message. Please try again.', {
+      toast.error(t.commentBox.error, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -63,9 +68,9 @@ const Footer = () => {
   return (
     <footer>
       <div className="comment-box">
-        <h3>Leave a Comment</h3>
+        <h3>{t.commentBox.title}</h3>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">{t.commentBox.name}</label>
           <input
             type="text"
             id="name"
@@ -74,7 +79,7 @@ const Footer = () => {
             onChange={handleChange}
             required
           />
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">{t.commentBox.email}</label>
           <input
             type="email"
             id="email"
@@ -83,7 +88,7 @@ const Footer = () => {
             onChange={handleChange}
             required
           />
-          <label htmlFor="comment">Comment:</label>
+          <label htmlFor="comment">{t.commentBox.comment}</label>
           <textarea
             id="comment"
             name="comment"
@@ -91,15 +96,15 @@ const Footer = () => {
             onChange={handleChange}
             required
           ></textarea>
-          <input type="submit" value="Submit" />
+          <input type="submit" value={t.commentBox.submit} />
         </form>
       </div>
       <div className="contact-info">
-        <h3>Contact Us</h3>
-        <p>123 Station Liosia</p>
-        <p>Dexamenis 21 , Attiki</p>
-        <p>Telephone: (555) 555-1234</p>
-        <p>Email: info@mywebsite.com</p>
+        <h3>{t.contactInfo.title}</h3>
+        <p>{t.contactInfo.address1}</p>
+        <p>{t.contactInfo.address2}</p>
+        <p>{t.contactInfo.telephone}</p>
+        <p>{t.contactInfo.email}</p>
       </div>
     </footer>
   );
