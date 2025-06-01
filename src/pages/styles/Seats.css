@@ -101,9 +101,34 @@
 }
 
 .seat-details-panel {
-  width: 400px;
+  width: 350px;
   flex-shrink: 0;
   box-sizing: border-box;
+  position: relative;
+}
+
+.seat-details-panel .no-seat-selected {
+  width: 350px;
+  height: 500px;
+  background-color: #f5f7fa;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.seat-details-panel .seat-details {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  background: white;
 }
 
 /* Side-by-side layout */
@@ -119,11 +144,10 @@
 
 .seat-details-panel {
   width: 350px;
-  height: 500px;
-  background-color: #f5f7fa;
+  height: auto;
+  min-height: 400px;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  overflow: visible;
 }
 
 @media (max-width: 900px) {
