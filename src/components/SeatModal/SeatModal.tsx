@@ -74,8 +74,8 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
         passengerName,
         passengerPassport: passportNumber,
         routeId,
-        travelDate: departureDate,
-        arrivalDate,
+        travelDate: departureDate.toISOString(),
+        arrivalDate: arrivalDate?.toISOString(),
         isRoundTrip: !!isRoundTrip && !!arrivalDate
       };
       dispatch(addBooking(booking));

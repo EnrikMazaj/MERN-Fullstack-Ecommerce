@@ -6,13 +6,11 @@ import routes from './routes/index.js';
 import { sessionConfig } from './config/redis.js';
 import session from 'express-session';
 
-// Load environment variables from .env file
 dotenv.config();
 
 export const app = express();
 const port = parseInt(process.env.PORT || '10000', 10);
 
-// CORS configuration
 app.use(cors({
     origin: [
         'http://localhost:3001',
@@ -31,36 +29,24 @@ app.use(cors({
     optionsSuccessStatus: 204
 }));
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Session middleware
-app.use(session(sessionConfig));
-
-// Routes
-app.use('/api', routes);
-
-// Start the server
-console.log('Starting server initialization...');
-console.log('Current working directory:', process.cwd());
-console.log('Environment variables:', {
-    PORT: process.env.PORT,
-    NODE_ENV: process.env.NODE_ENV,
-    MONGODB_URL: process.env.MONGODB_URL ? 'Set' : 'Not set',
-    REDIS_URL: process.env.REDIS_URL ? 'Set' : 'Not set'
+app.use((req, res, next) => {
+    if (req.originalUrl === '/api/payments/webhook') {
+        next();
+    } else {
+        express.json()(req, res, next);
+    }
 });
 
-// Connect to database
+app.use(express.urlencoded({ extended: true }));
+
+app.use(session(sessionConfig));
+
+app.use('/api', routes);
+
 connectDB();
 
-// Start the server
-console.log(`Attempting to start server on port ${port}...`);
 const server = app.listen(port, '0.0.0.0', () => {
-    console.log(`Server is running on port ${port}`);
-    console.log(`Environment: ${process.env.NODE_ENV}`);
-    console.log(`Process ID: ${process.pid}`);
-    console.log(`Server address: ${server.address()}`);
+    console.log(`Server is running on port ${port} in ${process.env.NODE_ENV} mode`);
 });
 
 server.on('error', (error: NodeJS.ErrnoException) => {
@@ -68,15 +54,11 @@ server.on('error', (error: NodeJS.ErrnoException) => {
         throw error;
     }
 
-    const bind = 'Port ' + port;
-
     switch (error.code) {
         case 'EACCES':
-            console.error(bind + ' requires elevated privileges');
             process.exit(1);
             break;
         case 'EADDRINUSE':
-            console.error(bind + ' is already in use');
             process.exit(1);
             break;
         default:
@@ -85,9 +67,7 @@ server.on('error', (error: NodeJS.ErrnoException) => {
 });
 
 process.on('SIGTERM', () => {
-    console.log('SIGTERM received. Shutting down gracefully...');
     server.close(() => {
-        console.log('Server closed');
         process.exit(0);
     });
 }); 

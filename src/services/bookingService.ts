@@ -1,53 +1,4 @@
-import axios from 'axios';
-
-const API_URL = process.env.REACT_APP_API_URL || 'https://bus-ecommerce.onrender.com';
-
-const axiosInstance = axios.create({
-    baseURL: API_URL,
-    withCredentials: true,
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    },
-    timeout: 10000,
-    validateStatus: function (status) {
-        return status >= 200 && status < 500;
-    }
-});
-
-axiosInstance.interceptors.request.use(
-    config => {
-        if (config.method === 'get') {
-            config.params = { ...config.params, _t: Date.now() };
-        }
-        return config;
-    },
-    error => {
-        return Promise.reject(error);
-    }
-);
-
-axiosInstance.interceptors.response.use(
-    response => response,
-    error => {
-        if (error.response) {
-            if (error.response.status === 401) {
-                window.location.href = '/login';
-                return Promise.reject(error);
-            }
-            console.error('API Error Response:', {
-                status: error.response.status,
-                data: error.response.data,
-                headers: error.response.headers
-            });
-        } else if (error.request) {
-            console.error('API Error Request:', error.request);
-        } else {
-            console.error('API Error:', error.message);
-        }
-        return Promise.reject(error);
-    }
-);
+import axiosInstance from '../config/axios';
 
 export interface BookingData {
     seatNumber: number;
@@ -60,7 +11,6 @@ export interface BookingData {
 }
 
 const bookingService = {
-
     createBooking: async (bookingData: BookingData) => {
         const response = await axiosInstance.post('/api/bookings', bookingData);
         return response.data;
