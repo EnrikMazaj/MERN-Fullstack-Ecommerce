@@ -6,7 +6,11 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   margin-bottom: 1.5rem;
   width: 100%;
+  max-width: 400px;
   box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+  z-index: 10001;
 }
 
 .seat-details-header {
@@ -17,6 +21,8 @@
   border-bottom: 1px solid #e0e0e0;
   position: relative;
   margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .seat-details-header h2 {
@@ -53,7 +59,10 @@
   gap: 1rem;
   padding: 15px 20px;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
+  margin: 0 auto;
 }
 
 .seatForm input,
@@ -172,9 +181,8 @@
 }
 
 .modal-content {
-  border-radius: 16px;
   width: 90%;
-  max-width: 450px;
+  max-width: 400px;
   max-height: 90vh;
   overflow-y: auto;
   animation: slideUp 0.4s ease-out;
@@ -183,6 +191,11 @@
   box-sizing: border-box;
   padding: 0;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  overflow-x: hidden;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @keyframes fadeIn {
@@ -198,8 +211,8 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .seat-details {
-    max-width: 90%;
-    width: 90%;
+    max-width: 100%;
+    width: 100%;
   }
 
   .seat-details-header h2 {
@@ -208,6 +221,11 @@
   
   .seatForm {
     padding: 15px;
+  }
+
+  .modal-content {
+    width: 90%;
+    max-width: 400px;
   }
 }
 
@@ -226,7 +244,7 @@
     height: auto;
     background-color: transparent;
     display: block;
-    z-index: auto;
+    z-index: 1;
     backdrop-filter: none;
     animation: none;
     pointer-events: none;
@@ -242,8 +260,9 @@
     box-shadow: none;
     animation: none;
     padding: 0;
-    z-index: auto;
+    z-index: 1;
     pointer-events: auto;
+    background: transparent;
   }
 
   .seat-details {
@@ -254,66 +273,91 @@
     margin-bottom: 0;
     width: 100%;
     box-sizing: border-box;
+    position: relative;
+    z-index: 1;
   }
 }
 
 @media (max-width: 480px) {
-  /* Ensure the seat details inside the modal take full width */
+  .modal-content {
+    width: 90%;
+    max-width: 320px;
+    height: auto;
+    max-height: 90vh;
+    border-radius: 16px;
+    padding: 0;
+    margin: 0;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .modal-content .seat-details {
-    width: 80%;
+    width: 100%;
     max-width: 100%;
-    border-radius: 0;
+    height: auto;
+    border-radius: 16px;
     padding: 15px;
+    margin: 0;
     box-sizing: border-box;
-    box-shadow: none;
-    margin-bottom: 0;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     background: white;
+    display: flex;
+    flex-direction: column;
   }
 
   .seat-details-header {
     padding: 15px;
     margin-bottom: 5px;
+    flex-shrink: 0;
   }
   
+  .seatForm {
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
   .seatForm input,
   .custom-select select,
   .seatForm button {
-    padding: 12px 14px;
-    font-size: 15px;
+    padding: 10px 12px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .modal-content {
+    width: 85%;
+    max-width: 280px;
+  }
+
+  .modal-content .seat-details {
+    padding: 12px;
   }
 
   .seatForm {
-    padding: 10px 15px;
+    padding: 8px 12px;
+    gap: 0.5rem;
   }
 
-  .modal-content {
-    width: 100%;
-    max-width: 100%;
-    height: 100%;
-    max-height: 100%;
-    border-radius: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10000;
+  .seatForm input,
+  .seatForm select {
+    padding: 8px 10px;
+    font-size: 13px;
   }
 
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(5px);
-    animation: fadeIn 0.3s ease-out;
+  .seatForm button {
+    padding: 10px;
+    font-size: 13px;
   }
 }
 

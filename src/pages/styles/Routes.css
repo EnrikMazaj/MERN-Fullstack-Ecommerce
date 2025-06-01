@@ -181,4 +181,98 @@ h1::after {
     font-size: 2rem;
   }
 }
+
+/* Specific styles for 360x740 screens */
+@media screen and (width: 360px) and (height: 740px) {
+  .routes-content {
+    padding: 0.5rem;
+    min-height: calc(100vh - 60px);
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+  }
+
+  .routes-container {
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 10px;
+    color: #2c3e50;
+  }
+
+  h1::after {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+  }
+
+  .grid-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 10px;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+  }
+
+  .grid-header {
+    display: none;
+  }
+
+  /* Style each route group */
+  .grid-container > div:nth-child(4n+5),
+  .grid-container > div:nth-child(4n+6),
+  .grid-container > div:nth-child(4n+7),
+  .grid-container > div:nth-child(4n+8) {
+    background: white;
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  /* Add division above first item of each route */
+  .grid-container > div:nth-child(4n+5) {
+    border-top: 2px solid #3498db;
+    background: linear-gradient(to right, #f8f9fa, white);
+  }
+
+  /* Add margin after each complete route */
+  .grid-container > div:nth-child(4n+8) {
+    margin-bottom: 15px;
+    border-bottom: 2px solid #3498db;
+  }
+
+  /* Make all text consistent with colors */
+  .grid-item {
+    font-size: 1rem;
+    margin: 0;
+    padding: 4px 0;
+  }
+
+  .grid-item[data-label="Time"] {
+    color: #3498db;
+    font-weight: 600;
+  }
+
+  .grid-item[data-label="Bus"] {
+    color: #2c3e50;
+  }
+
+  .grid-item[data-label="Destination"] {
+    color: #34495e;
+  }
+
+  .grid-item[data-label="Price"] {
+    color: #27ae60;
+    font-weight: 600;
+  }
+
+  /* Make the content more compact */
+  .routes-content::before,
+  .routes-content::after {
+    opacity: 0.03;
+  }
+}
   
