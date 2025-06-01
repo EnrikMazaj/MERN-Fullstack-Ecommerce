@@ -11,7 +11,8 @@
     "start": "node dist/server.js",
     "start:dev": "ts-node src/server.ts",
     "test:server": "node server-test.js",
-    "test:ts": "cross-env NODE_OPTIONS=\"--loader ts-node/esm\" node src/server-test.ts"
+    "test:ts": "cross-env NODE_OPTIONS=\"--loader ts-node/esm\" node src/server-test.ts",
+    "seed": "cross-env NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" ts-node src/scripts/seedBusRoutes.ts"
   },
   "keywords": [],
   "author": "",

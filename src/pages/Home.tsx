@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Slideshow from '../components/Slideshow/Slideshow';
 import './styles/Home.css';
+import '../styles/common.css';
 import { useTheme } from '../context/ThemeContext';
 import { translations } from '../translations';
 
@@ -11,7 +12,7 @@ const Home: React.FC = () => {
   const t = translations[language].home;
 
   return (
-    <div className="content">
+    <div className="base-content home-content">
       <div className="hero-section">
         <div className="hero-content">
           <h1>{t.welcome}</h1>
@@ -61,7 +62,13 @@ const Home: React.FC = () => {
         <div className="quick-book-section">
           <h3>{t.readyToTravel.title}</h3>
           <p>{t.readyToTravel.description}</p>
-          <button className="secondary-button" onClick={() => navigate('/tickets')}>
+          <button
+            className="secondary-button"
+            onClick={() => {
+              navigate('/tickets');
+            }}
+            type="button"
+          >
             {t.readyToTravel.button}
           </button>
         </div>

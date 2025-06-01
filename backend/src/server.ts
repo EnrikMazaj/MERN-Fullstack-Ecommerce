@@ -37,8 +37,12 @@ app.use(cors({
             return callback(null, true);
         }
 
-        // Allow any Vercel domain or localhost
-        if (origin.endsWith('.vercel.app') || origin === 'http://localhost:10000') {
+        // Allow any Vercel domain, render.com domain, or localhost
+        if (origin.endsWith('.vercel.app') ||
+            origin.endsWith('.onrender.com') ||
+            origin === 'http://localhost:10000' ||
+            origin === 'http://localhost:3001' ||
+            origin === 'http://localhost:3000') {
             callback(null, true);
         } else {
             console.log('CORS blocked request from:', origin);
@@ -68,11 +72,15 @@ const startServer = async () => {
     try {
         await connectDB();
 
-        const port = process.env.PORT || 3000;
+        // Use environment-specific port
+        const port = process.env.NODE_ENV === 'production'
+            ? (process.env.PORT || 10000)  // Production port
+            : (process.env.PORT || 3000);  // Development port
+
         const server = app.listen(port, () => {
             if (process.env.NODE_ENV !== 'test') {
                 console.log(`Server is running on port ${port}`);
-                console.log(`Environment: ${process.env.NODE_ENV}`);
+                console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
                 console.log(`Process ID: ${process.pid}`);
                 console.log(`Server address: ${server.address()}`);
             }

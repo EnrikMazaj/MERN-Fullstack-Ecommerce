@@ -269,7 +269,7 @@
 }
 
 .language-toggle span {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 
@@ -279,12 +279,12 @@
     margin-right: 0;
   }
 
-  .language-toggle span {
-    display: none;
+  .language-toggle {
+    padding: 8px 12px;
+    font-size: 1.2rem;
   }
 
-  .language-toggle {
-    padding: 6px;
+  .language-toggle span {
     font-size: 1rem;
   }
 }

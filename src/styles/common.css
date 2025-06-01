@@ -1,0 +1,11 @@
+.base-content {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  padding: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #333;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+} 

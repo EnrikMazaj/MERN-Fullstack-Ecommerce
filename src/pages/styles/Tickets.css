@@ -1,5 +1,5 @@
 /* Tickets.css */
-.content {
+.tickets-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
@@ -7,9 +7,12 @@
   background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.content::before {
+.tickets-content::before {
   content: '';
   position: absolute;
   top: 0;
@@ -24,7 +27,7 @@
 }
 
 /* Decorative elements */
-.content::after {
+.tickets-content::after {
   content: '';
   position: absolute;
   top: -50%;
@@ -75,8 +78,8 @@
 }
 
 h1 {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
+  font-size: 2.2rem;
+  margin-bottom: 3rem;
   background: linear-gradient(45deg, #1a365d, #2b6cb0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -85,6 +88,7 @@ h1 {
   position: relative;
   padding-bottom: 20px;
   animation: fadeInDown 0.8s ease-out;
+  z-index: 1;
 }
 
 @keyframes fadeInDown {
@@ -127,21 +131,40 @@ h3 {
   font-weight: 600;
 }
 
-.selection {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  margin-bottom: 2rem;
+.tickets-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.route-selection-container {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.selection {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
   align-items: center;
   position: relative;
   border: 1px solid rgba(0, 0, 0, 0.1);
   animation: fadeInUp 0.8s ease-out;
   backdrop-filter: blur(10px);
-  z-index: 1;
+  width: 100%;
 }
 
 @keyframes fadeInUp {
@@ -214,154 +237,173 @@ h3 {
   z-index: 3;
 }
 
+/* Add styles for the select dropdown popup */
+select.route-dropdown {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+select.route-dropdown::-ms-expand {
+  display: none;
+}
+
+select.route-dropdown option {
+  padding: 12px 16px;
+  background-color: white;
+  color: #2d3748;
+  font-size: 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+select.route-dropdown option:last-child {
+  border-bottom: none;
+}
+
+select.route-dropdown option:hover {
+  background-color: #f7fafc;
+}
+
+select.route-dropdown option:checked {
+  background-color: #ebf8ff;
+  color: #2b6cb0;
+  font-weight: 500;
+}
+
 .trip-type-container {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+  width: 100%;
+  justify-content: center;
 }
 
 .trip-type-btn {
   flex: 1;
+  padding: 1rem 1.5rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background: white;
-  color: #666;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%;
+  gap: 0.75rem;
 }
 
 .trip-type-btn:hover {
-  background: #f8f9fa;
   border-color: #3498db;
+  transform: translateY(-2px);
 }
 
 .trip-type-btn.active {
-  background: #3498db;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
   color: white;
-  border-color: #3498db;
+  border-color: transparent;
 }
 
 .trip-icon {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .calendars-container {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  margin: 2rem 0;
   width: 100%;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  animation: fadeInUp 0.8s ease-out 0.2s both;
-  backdrop-filter: blur(10px);
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 .departure-calendar-container {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
   align-items: center;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.8s ease-out;
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
+.departure-calendar-container h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  font-weight: 600;
+  text-align: center;
 }
 
 /* Calendar customization */
 .react-calendar {
   width: 100%;
-  max-width: 400px;
-  background: white;
+  max-width: 300px;
   border: none;
-  border-radius: 12px;
-  padding: 1.5rem;
-  font-family: inherit;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
-}
-
-.react-calendar:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  background: transparent;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  margin: 0 auto;
 }
 
 .react-calendar__tile {
-  padding: 1rem;
+  padding: 0.8rem;
   border-radius: 8px;
   transition: all 0.3s ease;
 }
 
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
-  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-  color: #2b6cb0;
+  background: #e3f2fd;
   transform: translateY(-2px);
 }
 
 .react-calendar__tile--active {
   background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
-  color: white !important;
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+  color: white;
 }
 
 .react-calendar__tile--now {
-  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-  color: #2b6cb0;
-  font-weight: 600;
+  background: #f0f9ff;
+  color: #3498db;
 }
 
 .confirm-button {
-  width: 100%;
-  max-width: 400px;
-  padding: 1.25rem 2rem;
   background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
   color: white;
   border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
+  padding: 1.2rem 3rem;
+  font-size: 1.2rem;
   font-weight: 600;
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin: 2rem auto;
-  display: block;
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
   position: relative;
-  overflow: hidden;
-}
-
-.confirm-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-
-.confirm-button:hover::before {
-  transform: translateX(100%);
+  z-index: 1;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  margin: 2rem auto;
+  min-width: 200px;
+  display: block;
 }
 
 .confirm-button:hover {
-  background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
 }
 
 .confirm-button:active {
   transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.3);
 }
 
 /* Loading animation */
@@ -392,56 +434,114 @@ h3 {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .tickets-content {
+    padding: 1.5rem;
+  }
+
   .floating-element {
     display: none;
   }
-  
-  .content {
-    padding: 1.5rem;
-  }
 
-  .selection {
-    padding: 1.5rem;
-  }
-
-  .calendars-container {
-    padding: 1.5rem;
+  .selection,
+  .departure-calendar-container {
+    padding: 2rem;
   }
 
   h1 {
     font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .trip-type-btn {
+    padding: 0.9rem 1.2rem;
+    font-size: 1rem;
   }
 
   .react-calendar {
-    max-width: 100%;
+    font-size: 1rem;
+  }
+
+  .react-calendar__tile {
+    padding: 1rem;
+  }
+
+  .confirm-button {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .content {
+  .tickets-content {
     padding: 1rem;
   }
 
-  .selection {
-    padding: 1.25rem;
-  }
-
-  .calendars-container {
-    padding: 1.25rem;
+  .selection,
+  .departure-calendar-container {
+    padding: 1.5rem;
   }
 
   h1 {
-    font-size: 1.75rem;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
   }
 
-  .route-dropdown,
-  .trip-type-container {
-    padding: 0.875rem 1rem;
+  .trip-type-btn {
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
   }
 
   .confirm-button {
-    padding: 1rem 1.5rem;
+    width: 100%;
+    padding: 1rem;
     font-size: 1rem;
+  }
+
+  .react-calendar {
+    font-size: 0.9rem;
+  }
+
+  .react-calendar__tile {
+    padding: 0.8rem;
+  }
+
+  select.route-dropdown option {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .selection {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .route-dropdown {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.9rem;
+    border-width: 1px;
+    border-radius: 8px;
+  }
+
+  .route-dropdown option {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .trip-type-container {
+    gap: 0.5rem;
+  }
+
+  .trip-type-btn {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  select.route-dropdown {
+    background-position: right 0.5rem center;
+    background-size: 0.8em;
+    padding-right: 2rem;
   }
 }
   

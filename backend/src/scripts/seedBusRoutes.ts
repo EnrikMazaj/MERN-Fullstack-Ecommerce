@@ -11,7 +11,7 @@ const sampleBusRoutes = [
         destination: 'Thessaloniki',
         departureTime: '08:00',
         dates: [new Date('2024-05-01')],
-        basePrice: 35,
+        basePrice: 20,
         availableSeats: 50,
         status: 'active'
     },
@@ -20,7 +20,7 @@ const sampleBusRoutes = [
         destination: 'Patras',
         departureTime: '09:30',
         dates: [new Date('2024-05-01')],
-        basePrice: 40,
+        basePrice: 20,
         availableSeats: 50,
         status: 'active'
     },
@@ -29,7 +29,7 @@ const sampleBusRoutes = [
         destination: 'Heraklion',
         departureTime: '10:15',
         dates: [new Date('2024-05-01')],
-        basePrice: 45,
+        basePrice: 20,
         availableSeats: 50,
         status: 'active'
     },
@@ -38,7 +38,7 @@ const sampleBusRoutes = [
         destination: 'Larissa',
         departureTime: '11:00',
         dates: [new Date('2024-05-01')],
-        basePrice: 30,
+        basePrice: 20,
         availableSeats: 50,
         status: 'active'
     },
@@ -47,7 +47,7 @@ const sampleBusRoutes = [
         destination: 'Volos',
         departureTime: '12:00',
         dates: [new Date('2024-05-01')],
-        basePrice: 25,
+        basePrice: 20,
         availableSeats: 50,
         status: 'active'
     },
@@ -56,7 +56,7 @@ const sampleBusRoutes = [
         destination: 'Rhodes',
         departureTime: '13:00',
         dates: [new Date('2024-05-01')],
-        basePrice: 50,
+        basePrice: 20,
         availableSeats: 50,
         status: 'active'
     }

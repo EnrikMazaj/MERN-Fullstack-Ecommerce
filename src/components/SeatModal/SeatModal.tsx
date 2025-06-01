@@ -31,10 +31,8 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
     setSelectedSeat(null);
   };
 
-  const getBasePrice = (seatNumber: number) => {
-    if (seatNumber <= 10) return 20; // Premium seats
-    if (seatNumber <= 20) return 16; // Standard seats
-    return 12; // Economy seats
+  const getBasePrice = () => {
+    return isRoundTrip && arrivalDate ? 40 : 20; // 40 euros for round trip, 20 euros for one-way
   };
 
   const getFinalPrice = (basePrice: number, type: TicketType) => {
@@ -51,9 +49,9 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
   const handleAddToCart = (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedSeat) {
-      const basePrice = getBasePrice(selectedSeat);
+      const basePrice = getBasePrice();
       const finalPrice = getFinalPrice(basePrice, ticketType);
-      const totalPrice = isRoundTrip && arrivalDate ? finalPrice * 2 : finalPrice;
+      const totalPrice = finalPrice; // No need to multiply by 2 since basePrice already includes round trip
 
       const booking: Omit<Booking, 'id' | 'userId' | 'status' | 'bookingDate' | 'paymentStatus'> = {
         seatNumber: selectedSeat,

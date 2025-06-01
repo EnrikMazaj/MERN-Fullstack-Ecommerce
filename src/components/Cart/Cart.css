@@ -557,9 +557,9 @@
 /* Responsive adjustments */
 @media (max-width: 480px) {
   .cart-details {
-    width: 90%;
-    max-width: 350px;
-    padding: 15px;
+    width: 80%;
+    max-width: none;
+    padding: 12px;
   }
   
   .cart-icon-container {
@@ -569,6 +569,124 @@
   
   .shoppingCart {
     font-size: 20px;
+  }
+
+  .cart-items-list {
+    gap: 12px;
+    max-height: calc(80vh - 160px);
+  }
+
+  .ticket-header {
+    padding: 10px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ticket-main {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .passenger-info {
+    flex: 1;
+    min-width: 0;
+    gap: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .passenger-name {
+    max-width: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c3e50;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+
+  .seat-number {
+    font-size: 13px;
+    padding: 4px 8px;
+    white-space: nowrap;
+  }
+
+  .ticket-actions {
+    gap: 8px;
+    align-items: center;
+  }
+
+  .ticket-price {
+    font-size: 15px;
+    padding: 4px 8px;
+    white-space: nowrap;
+  }
+
+  .ticket-body {
+    padding: 12px;
+  }
+
+  .route-info {
+    gap: 8px;
+  }
+
+  .route {
+    padding: 6px;
+  }
+
+  .route-details {
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .journey-dates {
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .date {
+    padding: 6px;
+  }
+
+  .date-details {
+    gap: 1px;
+  }
+
+  .departure-label, .return-label {
+    font-size: 11px;
+  }
+
+  .departure-date, .return-date {
+    font-size: 13px;
+  }
+
+  .cart-total {
+    margin: 12px 0;
+    padding: 10px;
+    font-size: 15px;
+  }
+
+  .total-price {
+    font-size: 18px;
+  }
+
+  .checkout-btn {
+    padding: 0.7rem;
+    font-size: 0.95rem;
+  }
+
+  .remove-btn {
+    padding: 4px;
+    margin-left: 4px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+
+  .expand-icon {
+    font-size: 12px;
   }
 }
 

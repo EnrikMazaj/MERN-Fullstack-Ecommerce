@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import './Footer.css';
 import { useTheme } from '../../context/ThemeContext';
 import { translations } from '../../translations';
+import { useLocation } from 'react-router-dom';
 
 const Footer = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,16 @@ const Footer = () => {
 
   const { language } = useTheme();
   const t = translations[language].footer;
+  const location = useLocation();
+
+  // Reset form when location changes
+  useEffect(() => {
+    setFormData({
+      name: '',
+      email: '',
+      comment: ''
+    });
+  }, [location.pathname]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -26,7 +37,7 @@ const Footer = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(process.env.REACT_APP_FORMSPREE_URL || '', {
+      const response = await fetch('https://formspree.io/f/meogabra', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +61,19 @@ const Footer = () => {
           comment: ''
         });
       } else {
-        throw new Error('Failed to send message');
+        if (response.status === 422) {
+          toast.error('Please enter a valid email address', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        } else {
+          throw new Error('Failed to send message');
+        }
       }
     } catch (error) {
       toast.error(t.commentBox.error, {
