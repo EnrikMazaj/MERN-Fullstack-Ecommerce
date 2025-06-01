@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './SeatModal.css';
 import { useDispatch } from 'react-redux';
 import { addBooking } from '../../features/cartSlice';
@@ -21,24 +21,11 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
   const [passengerName, setPassengerName] = useState('');
   const [passportNumber, setPassportNumber] = useState('');
   const [ticketType, setTicketType] = useState<TicketType>('adult');
-  const [isModal, setIsModal] = useState(false);
   const { language } = useTheme();
   const t = translations[language].seats.passengerDetails;
 
   const departureDate = Array.isArray(travelDate) ? travelDate[0] : travelDate;
   const arrivalDate = Array.isArray(travelDate) ? travelDate[1] : undefined;
-
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsModal(window.innerWidth <= 900);
-    };
-
-    checkScreenSize();
-
-    window.addEventListener('resize', checkScreenSize);
-
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
 
   const handleCloseModal = () => {
     setSelectedSeat(null);
@@ -83,91 +70,50 @@ function SeatModal({ selectedSeat, setSelectedSeat, routeId, travelDate, isRound
     }
   };
 
-  if (isModal) {
-    return (
-      <div className="overlay" onClick={(e) => {
-        if (e.target === e.currentTarget) {
-          handleCloseModal();
-        }
-      }}>
-        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-          <div className="seat-details">
-            <div className="seat-details-header">
-              <h2>{t.title}</h2>
-              <button className="close-btn" onClick={handleCloseModal}>
-                <span>&times;</span>
-              </button>
-            </div>
-            <form className="seatForm" onSubmit={handleAddToCart}>
-              <input
-                required
-                type="text"
-                placeholder={t.fullName}
-                value={passengerName}
-                onChange={(e) => setPassengerName(e.target.value)}
-              />
-              <input
-                required
-                type="text"
-                placeholder={t.passportNumber}
-                value={passportNumber}
-                onChange={(e) => setPassportNumber(e.target.value)}
-              />
-              <div className="custom-select">
-                <select
-                  value={ticketType}
-                  onChange={(e) => setTicketType(e.target.value as TicketType)}
-                  required
-                >
-                  <option value="adult">{t.ticketTypes.adult}</option>
-                  <option value="student">{t.ticketTypes.student}</option>
-                  <option value="child">{t.ticketTypes.child}</option>
-                </select>
-              </div>
-              <button type="submit">{t.addToCart}</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="seat-details">
-      <div className="seat-details-header">
-        <h2>{t.title}</h2>
-        <button className="close-btn" onClick={handleCloseModal}>
-          <span>&times;</span>
-        </button>
-      </div>
-      <form className="seatForm" onSubmit={handleAddToCart}>
-        <input
-          required
-          type="text"
-          placeholder={t.fullName}
-          value={passengerName}
-          onChange={(e) => setPassengerName(e.target.value)}
-        />
-        <input
-          required
-          type="text"
-          placeholder={t.passportNumber}
-          value={passportNumber}
-          onChange={(e) => setPassportNumber(e.target.value)}
-        />
-        <div className="custom-select">
-          <select
-            value={ticketType}
-            onChange={(e) => setTicketType(e.target.value as TicketType)}
-            required
-          >
-            <option value="adult">{t.ticketTypes.adult}</option>
-            <option value="student">{t.ticketTypes.student}</option>
-            <option value="child">{t.ticketTypes.child}</option>
-          </select>
+    <div className="overlay" onClick={(e) => {
+      if (e.target === e.currentTarget) {
+        handleCloseModal();
+      }
+    }}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="seat-details">
+          <div className="seat-details-header">
+            <h2>{t.title}</h2>
+            <button className="close-btn" onClick={handleCloseModal}>
+              <span>&times;</span>
+            </button>
+          </div>
+          <form className="seatForm" onSubmit={handleAddToCart}>
+            <input
+              required
+              type="text"
+              placeholder={t.fullName}
+              value={passengerName}
+              onChange={(e) => setPassengerName(e.target.value)}
+            />
+            <input
+              required
+              type="text"
+              placeholder={t.passportNumber}
+              value={passportNumber}
+              onChange={(e) => setPassportNumber(e.target.value)}
+            />
+            <div className="custom-select">
+              <select
+                value={ticketType}
+                onChange={(e) => setTicketType(e.target.value as TicketType)}
+                required
+              >
+                <option value="adult">{t.ticketTypes.adult}</option>
+                <option value="student">{t.ticketTypes.student}</option>
+                <option value="child">{t.ticketTypes.child}</option>
+              </select>
+            </div>
+            <button type="submit">{t.addToCart}</button>
+          </form>
         </div>
-        <button type="submit">{t.addToCart}</button>
-      </form>
+      </div>
     </div>
   );
 }

@@ -40,6 +40,9 @@ axiosInstance.interceptors.response.use(
             });
         } else if (error.request) {
             console.error('API Error Request:', error.request);
+            if (error.code === 'ERR_NETWORK') {
+                console.error('Network error - possible CORS issue');
+            }
         } else {
             console.error('API Error:', error.message);
         }
@@ -59,13 +62,27 @@ export interface Route {
 
 const routeService = {
     getAllRoutes: async (): Promise<Route[]> => {
-        const response = await axiosInstance.get('/api/routes');
-        return response.data.data;
+        try {
+            const response = await axiosInstance.get('/api/routes');
+            return response.data.data;
+        } catch (error: any) {
+            if (error.code === 'ERR_NETWORK') {
+                throw new Error('Network error - please check your connection and try again');
+            }
+            throw error;
+        }
     },
 
     getRouteById: async (routeId: string): Promise<Route> => {
-        const response = await axiosInstance.get(`/api/routes/${routeId}`);
-        return response.data.data;
+        try {
+            const response = await axiosInstance.get(`/api/routes/${routeId}`);
+            return response.data.data;
+        } catch (error: any) {
+            if (error.code === 'ERR_NETWORK') {
+                throw new Error('Network error - please check your connection and try again');
+            }
+            throw error;
+        }
     }
 };
 

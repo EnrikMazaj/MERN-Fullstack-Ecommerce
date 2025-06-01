@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "jest",
-    "dev": "nodemon",
-    "build": "tsc && mkdir -p dist && cp -r src/config dist/ && cp -r src/routes dist/ && cp -r src/models dist/ && cp -r src/controllers dist/",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --forceExit",
+    "dev": "cross-env NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" nodemon",
+    "build": "tsc",
     "start": "node dist/server.js",
     "start:dev": "ts-node src/server.ts",
     "test:server": "node server-test.js",
     "test:ts": "cross-env NODE_OPTIONS=\"--loader ts-node/esm\" node src/server-test.ts"
   },
-  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -32,13 +32,14 @@
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.18.1",
     "@types/jest": "^29.5.14",
-    "@types/node": "^20.11.24",
+    "@types/node": "^20.17.57",
     "cross-env": "^7.0.3",
     "jest": "^29.7.0",
     "nodemon": "^3.0.1",
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.8.3",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0"
   }
 }

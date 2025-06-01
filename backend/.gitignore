@@ -9,6 +9,7 @@ build/
 # Compiled JavaScript in backend
 *.js
 !jest.config.js
+!jest.setup.js
 
 # Environment variables
 .env

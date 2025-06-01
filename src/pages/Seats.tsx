@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SeatModal from '../components/SeatModal/SeatModal.tsx';
 import './styles/Seats.css';
 import { RootState } from '../redux/store.tsx';
@@ -21,6 +21,7 @@ const Seats = () => {
   const [loading, setLoading] = useState(true);
   const [bookedSeats, setBookedSeats] = useState<number[]>([]);
   const location = useLocation();
+  const navigate = useNavigate();
   const { selectedRoute, selectedDates, isRoundTrip } = location.state as LocationState;
   const { language } = useTheme();
   const t = translations[language].seats;
@@ -28,6 +29,11 @@ const Seats = () => {
   const bookings = useSelector((state: RootState) => state.cart.bookings);
 
   useEffect(() => {
+    if (!location.state || !location.state.selectedRoute) {
+      navigate('/'); // Redirect to home if state or selectedRoute is missing
+      return;
+    }
+
     const fetchRouteDetails = async () => {
       try {
         setLoading(true);
@@ -43,7 +49,7 @@ const Seats = () => {
     if (selectedRoute) {
       fetchRouteDetails();
     }
-  }, [selectedRoute, t.errors.loadRoute]);
+  }, [selectedRoute, t.errors.loadRoute, navigate]);
 
   // Load booked seats from localStorage on component mount
   useEffect(() => {

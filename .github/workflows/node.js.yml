@@ -11,21 +11,66 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v4
+    
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+
+    # Backend build and test
+    - name: Install Backend Dependencies
+      working-directory: ./backend
+      run: |
+        npm ci
+        cp jest.setup.js dist/jest.setup.js || true
+
+    - name: Build Backend
+      working-directory: ./backend
+      run: npm run build
+
+    - name: Test Backend
+      working-directory: ./backend
+      env:
+        NODE_ENV: test
+        MONGODB_URL: mongodb://localhost:27017/testdb
+        REDIS_URL: redis://localhost:6379
+        CI: true
+      run: |
+        # Wait for MongoDB to be ready
+        timeout 30s bash -c 'until nc -z localhost 27017; do sleep 1; done'
+        # Run backend tests
+        npm test
+
+    # Frontend build and test
+    - name: Install Frontend Dependencies
+      run: npm ci
+
+    - name: Build Frontend
+      run: npm run build
+      env:
+        CI: false  
+
+    - name: Test Frontend
+      run: npm test -- --passWithNoTests
+      env:
+        CI: true

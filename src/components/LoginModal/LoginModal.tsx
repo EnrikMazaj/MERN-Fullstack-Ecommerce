@@ -6,6 +6,7 @@ import { successToastConfig, errorToastConfig } from '../../config/toastConfig';
 import { API_URL } from '../../config/api';
 import { useTheme } from '../../context/ThemeContext';
 import { translations } from '../../translations';
+import axios from 'axios';
 
 interface RegisterFormData {
   username: string;
@@ -77,29 +78,27 @@ const LoginModal = () => {
     setIsLoginLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/api/users/login`, {
-        method: 'POST',
+      const response = await axios.post(`${API_URL}/api/users/login`, loginFormData, {
+        withCredentials: true,
         headers: {
           'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: JSON.stringify(loginFormData)
+        }
       });
 
-      const data = await response.json();
+      const data = response.data;
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error(data.message || t.errors.login);
       }
 
       login(data.user);
       toast.success(t.loginSuccess, successToastConfig);
       handleCloseLogin();
-    } catch (error) {
-      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+    } catch (error: any) {
+      if (error.code === 'ERR_NETWORK') {
         toast.error('Could not connect to the server. Please check if the server is running.', errorToastConfig);
       } else {
-        toast.error(error instanceof Error ? error.message : t.errors.login, errorToastConfig);
+        toast.error(error.response?.data?.message || t.errors.login, errorToastConfig);
       }
     } finally {
       setIsLoginLoading(false);
