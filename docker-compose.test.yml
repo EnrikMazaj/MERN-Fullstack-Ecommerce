@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.test
+    environment:
+      - NODE_ENV=test
+      - MONGODB_URL=mongodb://mongodb-test:27017/bus-ecommerce-test
+      - REDIS_URL=redis://redis-test:6379
+    depends_on:
+      - mongodb-test
+      - redis-test
+    networks:
+      - test-network
+
+  mongodb-test:
+    image: mongo:latest
+    networks:
+      - test-network
+
+  redis-test:
+    image: redis:alpine
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge 

@@ -1,0 +1,15 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install ALL dependencies (including dev dependencies needed for testing)
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# The test command will be run by docker-compose
+CMD ["npm", "test"] 
