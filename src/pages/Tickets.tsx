@@ -27,16 +27,17 @@ const Tickets = () => {
       try {
         setLoading(true);
         const fetchedRoutes = await routeService.getAllRoutes();
-        setRoutes(fetchedRoutes);
+        setRoutes(fetchedRoutes || []); // Ensure we always have an array
       } catch (error) {
         toast.error(t.errors.load);
+        setRoutes([]); // Set empty array on error
       } finally {
         setLoading(false);
       }
     };
 
     fetchRoutes();
-  }, []);
+  }, [t.errors.load]);
 
   const today = new Date();
   const yesterday = new Date(today);
@@ -52,7 +53,7 @@ const Tickets = () => {
 
   const handleConfirm = () => {
     if (!selectedRoute) {
-      toast.error(t.errors.noRoute);
+      toast.warn(t.errors.noRoute);
       return;
     } else if (!selectedDates) {
       toast.error(t.errors.noDate);
@@ -67,6 +68,14 @@ const Tickets = () => {
       },
     });
   };
+
+  if (loading) {
+    return (
+      <div className="content">
+        <h1>{t.loading}</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="content">
@@ -86,7 +95,7 @@ const Tickets = () => {
             <option value="" disabled>
               {loading ? t.loading : t.selectRoute}
             </option>
-            {routes.map((route) => (
+            {Array.isArray(routes) && routes.map((route) => (
               <option key={route._id} value={route._id}>
                 {route.origin} → {route.destination} ({route.departureTime})
               </option>

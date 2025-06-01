@@ -12,7 +12,14 @@ const cartSlice = createSlice({
   } as CartState,
   reducers: {
     addBooking: (state, action) => {
-      state.bookings.push(action.payload);
+      const payload = { ...action.payload };
+      if (payload.travelDate instanceof Date) {
+        payload.travelDate = payload.travelDate.toISOString();
+      }
+      if (payload.arrivalDate instanceof Date) {
+        payload.arrivalDate = payload.arrivalDate.toISOString();
+      }
+      state.bookings.push(payload);
     },
     removeBooking: (state, action) => {
       state.bookings = state.bookings.filter(

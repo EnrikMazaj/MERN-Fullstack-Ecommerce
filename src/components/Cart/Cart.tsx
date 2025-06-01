@@ -11,6 +11,11 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useTheme } from '../../context/ThemeContext';
 import { translations } from '../../translations';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import StripePaymentForm from './StripePaymentForm';
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY!);
 
 interface RouteDetails {
   _id: string;
@@ -32,6 +37,8 @@ const Cart = () => {
   const navigate = useNavigate();
   const { language } = useTheme();
   const t = translations[language].cart;
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [paymentAmount, setPaymentAmount] = useState(0);
 
   const totalBookings = bookings.length;
 
@@ -87,7 +94,7 @@ const Cart = () => {
     }, 0).toFixed(2);
   };
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString('en-US', {
       weekday: 'short',
       year: 'numeric',
@@ -112,10 +119,12 @@ const Cart = () => {
       return;
     }
 
-    await processCheckout();
+    const totalAmount = bookings.reduce((sum, booking) => sum + booking.totalPrice, 0);
+    setPaymentAmount(Math.round(totalAmount * 100)); // Convert to cents
+    setShowPaymentForm(true);
   };
 
-  const processCheckout = async () => {
+  const handlePaymentSuccess = async () => {
     try {
       setIsProcessing(true);
       setError(null);
@@ -132,9 +141,9 @@ const Cart = () => {
           passengerPassport: passportNumber || booking.passengerPassport,
           userId: user.id,
           routeId: booking.routeId,
-          travelDate: booking.travelDate,
-          isRoundTrip: booking.isRoundTrip,
-          arrivalDate: booking.arrivalDate
+          travelDate: new Date(booking.travelDate),
+          isRoundTrip: booking.isRoundTrip || false,
+          arrivalDate: booking.arrivalDate ? new Date(booking.arrivalDate) : undefined
         };
 
         return bookingService.createBooking(bookingData);
@@ -147,11 +156,9 @@ const Cart = () => {
       });
 
       setCartVisibility(false);
-
+      setShowPaymentForm(false);
       toast.success(t.ticket.purchaseSuccess);
-
       dispatch(clearCart());
-
       navigate('/');
     } catch (error) {
       let errorMessage = t.errors.purchase;
@@ -175,11 +182,16 @@ const Cart = () => {
     }
   };
 
+  const handlePaymentError = (error: string) => {
+    setError(error);
+    setShowPaymentForm(false);
+  };
+
   const handlePassportSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (passportNumber.trim()) {
       setShowPassportForm(false);
-      processCheckout();
+      handleCheckout();
     } else {
       setError(t.passport.error);
     }
@@ -190,148 +202,156 @@ const Cart = () => {
   };
 
   return (
-    <div className="cart-container">
-      <div
-        className="cart-icon-container"
-        onClick={toggleCart}
-      >
-        <FaShoppingCart className="shoppingCart" />
-        {totalBookings > 0 && <span className="cart-count">{totalBookings}</span>}
-      </div>
+    <Elements stripe={stripePromise}>
+      <div className="cart-container">
+        <div
+          className="cart-icon-container"
+          onClick={toggleCart}
+        >
+          <FaShoppingCart className="shoppingCart" />
+          {totalBookings > 0 && <span className="cart-count">{totalBookings}</span>}
+        </div>
 
-      {isCartVisible && (
-        <div className="cart-overlay" onClick={() => setCartVisibility(false)}>
-          <div className="cart-details" onClick={(e) => e.stopPropagation()}>
-            <button className="close-cart" onClick={() => setCartVisibility(false)}>
-              <FaTimes />
-            </button>
-            <h3>{t.title}</h3>
+        {isCartVisible && (
+          <div className="cart-overlay" onClick={() => setCartVisibility(false)}>
+            <div className="cart-details" onClick={(e) => e.stopPropagation()}>
+              <button className="close-cart" onClick={() => setCartVisibility(false)}>
+                <FaTimes />
+              </button>
+              <h3>{t.title}</h3>
 
-            {error && <div className="error-message">{error}</div>}
+              {error && <div className="error-message">{error}</div>}
 
-            {showPassportForm ? (
-              <form onSubmit={handlePassportSubmit} className="passport-form">
-                <h4>{t.passport.title}</h4>
-                <input
-                  type="text"
-                  placeholder={t.passport.placeholder}
-                  value={passportNumber}
-                  onChange={(e) => setPassportNumber(e.target.value)}
+              {showPassportForm ? (
+                <form onSubmit={handlePassportSubmit} className="passport-form">
+                  <h4>{t.passport.title}</h4>
+                  <input
+                    type="text"
+                    placeholder={t.passport.placeholder}
+                    value={passportNumber}
+                    onChange={(e) => setPassportNumber(e.target.value)}
+                  />
+                  <button type="submit">{t.passport.submit}</button>
+                </form>
+              ) : showPaymentForm ? (
+                <StripePaymentForm
+                  amount={paymentAmount}
+                  onSuccess={handlePaymentSuccess}
+                  onError={handlePaymentError}
                 />
-                <button type="submit">{t.passport.submit}</button>
-              </form>
-            ) : totalBookings > 0 ? (
-              <>
-                <ul className="cart-items-list">
-                  {bookings.map((booking) => {
-                    const route = routeDetails[booking.routeId];
-                    const isExpanded = expandedTicket === booking.seatNumber;
-                    return (
-                      <li key={booking.seatNumber} className="cart-item">
-                        <div className="ticket-card">
-                          <div className="ticket-header" onClick={() => toggleTicketExpansion(booking.seatNumber)}>
-                            <div className="ticket-main">
-                              <div className="passenger-info">
-                                <span className="passenger-name">
-                                  {booking.passengerName}
-                                </span>
-                                <span className="seat-number">
-                                  <FaBus className="seat-icon" />
-                                  {t.passenger.seat} {booking.seatNumber}
-                                </span>
-                              </div>
-                              <div className="ticket-actions">
-                                <span className="ticket-price">€{booking.totalPrice.toFixed(2)}</span>
-                                <FaChevronDown className={`expand-icon ${expandedTicket === booking.seatNumber ? 'expanded' : ''}`} />
-                              </div>
-                            </div>
-                            <button
-                              className="remove-btn"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                dispatch(removeBooking({ seatNumber: booking.seatNumber }));
-                                toast.info(t.ticket.removed);
-                              }}
-                            >
-                              <FaTrash />
-                            </button>
-                          </div>
-
-                          {isExpanded && (
-                            <div className="ticket-body">
-                              <div className="route-info">
-                                <div className="route">
-                                  <FaMapMarkerAlt className="route-icon" />
-                                  <div className="route-details">
-                                    <span className="origin">{route?.origin || 'Loading...'}</span>
-                                    <span className="arrow">→</span>
-                                    <span className="destination">{route?.destination || 'Loading...'}</span>
-                                  </div>
+              ) : totalBookings > 0 ? (
+                <>
+                  <ul className="cart-items-list">
+                    {bookings.map((booking) => {
+                      const route = routeDetails[booking.routeId];
+                      const isExpanded = expandedTicket === booking.seatNumber;
+                      return (
+                        <li key={booking.seatNumber} className="cart-item">
+                          <div className="ticket-card">
+                            <div className="ticket-header" onClick={() => toggleTicketExpansion(booking.seatNumber)}>
+                              <div className="ticket-main">
+                                <div className="passenger-info">
+                                  <span className="passenger-name">
+                                    {booking.passengerName}
+                                  </span>
+                                  <span className="seat-number">
+                                    <FaBus className="seat-icon" />
+                                    {t.passenger.seat} {booking.seatNumber}
+                                  </span>
                                 </div>
-                                <div className="journey-dates">
-                                  <div className="date departure">
-                                    <FaCalendarAlt className="date-icon" />
-                                    <div className="date-details">
-                                      <span className="departure-label">Departure</span>
-                                      <span className="departure-date">{formatDate(booking.travelDate)}</span>
+                                <div className="ticket-actions">
+                                  <span className="ticket-price">€{booking.totalPrice.toFixed(2)}</span>
+                                  <FaChevronDown className={`expand-icon ${expandedTicket === booking.seatNumber ? 'expanded' : ''}`} />
+                                </div>
+                              </div>
+                              <button
+                                className="remove-btn"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  dispatch(removeBooking({ seatNumber: booking.seatNumber }));
+                                  toast.info(t.ticket.removed);
+                                }}
+                              >
+                                <FaTrash />
+                              </button>
+                            </div>
+
+                            {isExpanded && (
+                              <div className="ticket-body">
+                                <div className="route-info">
+                                  <div className="route">
+                                    <FaMapMarkerAlt className="route-icon" />
+                                    <div className="route-details">
+                                      <span className="origin">{route?.origin || 'Loading...'}</span>
+                                      <span className="arrow">→</span>
+                                      <span className="destination">{route?.destination || 'Loading...'}</span>
                                     </div>
                                   </div>
-                                  {booking.isRoundTrip && booking.arrivalDate && (
-                                    <>
-                                      <div className="journey-separator">
-                                        <div className="separator-line"></div>
-                                        <div className="round-trip-label">Round Trip</div>
-                                        <div className="separator-line"></div>
+                                  <div className="journey-dates">
+                                    <div className="date departure">
+                                      <FaCalendarAlt className="date-icon" />
+                                      <div className="date-details">
+                                        <span className="departure-label">Departure</span>
+                                        <span className="departure-date">{formatDate(booking.travelDate)}</span>
                                       </div>
-                                      <div className="route return-route">
-                                        <FaMapMarkerAlt className="route-icon" />
-                                        <div className="route-details">
-                                          <span className="origin">{route?.destination || 'Loading...'}</span>
-                                          <span className="arrow">→</span>
-                                          <span className="destination">{route?.origin || 'Loading...'}</span>
+                                    </div>
+                                    {booking.isRoundTrip && booking.arrivalDate && (
+                                      <>
+                                        <div className="journey-separator">
+                                          <div className="separator-line"></div>
+                                          <div className="round-trip-label">Round Trip</div>
+                                          <div className="separator-line"></div>
                                         </div>
-                                      </div>
-                                      <div className="date return">
-                                        <FaCalendarAlt className="date-icon" />
-                                        <div className="date-details">
-                                          <span className="return-label">Return</span>
-                                          <span className="return-date">{formatDate(booking.arrivalDate)}</span>
+                                        <div className="route return-route">
+                                          <FaMapMarkerAlt className="route-icon" />
+                                          <div className="route-details">
+                                            <span className="origin">{route?.destination || 'Loading...'}</span>
+                                            <span className="arrow">→</span>
+                                            <span className="destination">{route?.origin || 'Loading...'}</span>
+                                          </div>
                                         </div>
-                                      </div>
-                                    </>
-                                  )}
+                                        <div className="date return">
+                                          <FaCalendarAlt className="date-icon" />
+                                          <div className="date-details">
+                                            <span className="return-label">Return</span>
+                                            <span className="return-date">{formatDate(booking.arrivalDate)}</span>
+                                          </div>
+                                        </div>
+                                      </>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          )}
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-                <div className="cart-footer">
-                  <div className="cart-total">
-                    <span>{t.total}:</span>
-                    <span>€{calculateTotal()}</span>
+                            )}
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <div className="cart-footer">
+                    <div className="cart-total">
+                      <span>{t.total}:</span>
+                      <span>€{calculateTotal()}</span>
+                    </div>
+                    <button
+                      className="checkout-btn"
+                      onClick={handleCheckout}
+                      disabled={isProcessing}
+                    >
+                      {isProcessing ? 'Processing...' : t.checkout}
+                    </button>
                   </div>
-                  <button
-                    className="checkout-btn"
-                    onClick={handleCheckout}
-                    disabled={isProcessing}
-                  >
-                    {isProcessing ? 'Processing...' : t.checkout}
-                  </button>
+                </>
+              ) : (
+                <div className="empty-cart">
+                  <p>{t.empty}</p>
                 </div>
-              </>
-            ) : (
-              <div className="empty-cart">
-                <p>{t.empty}</p>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </Elements>
   );
 };
 

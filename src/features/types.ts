@@ -8,12 +8,12 @@ export interface Booking {
   userId: string;
   routeId: string;
   status: 'confirmed' | 'cancelled' | 'refunded';
-  bookingDate: Date;
-  travelDate: Date;
-  arrivalDate?: Date; // Optional arrival date for round trips
+  bookingDate: string;
+  travelDate: string;
+  arrivalDate?: string;
   paymentStatus: 'pending' | 'completed' | 'failed';
-  isRoundTrip?: boolean; // Flag to indicate if this is a round trip
+  isRoundTrip?: boolean;
   refundRequested?: boolean;
   refundStatus?: 'pending' | 'approved' | 'rejected' | 'completed';
-  refundDate?: Date;
+  refundDate?: string;
 }
