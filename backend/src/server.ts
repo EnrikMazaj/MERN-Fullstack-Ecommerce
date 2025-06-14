@@ -45,7 +45,6 @@ app.use(cors({
             origin === 'http://localhost:3000') {
             callback(null, true);
         } else {
-            console.log('CORS blocked request from:', origin);
             callback(new Error('Not allowed by CORS'));
         }
     },

@@ -12,7 +12,6 @@ export const connectDB = async () => {
             throw new Error('MongoDB URL is not defined in environment variables');
         }
 
-        console.log('Attempting to connect to MongoDB...');
         console.log('MongoDB URL:', MONGODB_URL.replace(/\/\/[^:]+:[^@]+@/, '//****:****@')); // Hide credentials
 
         const options = {

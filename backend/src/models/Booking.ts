@@ -70,6 +70,10 @@ const bookingSchema = new mongoose.Schema({
         enum: ['pending', 'completed', 'failed'],
         default: 'pending'
     },
+    stripePaymentIntentId: {
+        type: String,
+        trim: true
+    },
     refundRequested: {
         type: Boolean,
         default: false

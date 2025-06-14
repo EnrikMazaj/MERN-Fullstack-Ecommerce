@@ -279,6 +279,16 @@ export const translations = {
                 passwordMismatch: "Passwords do not match",
                 passwordLength: "Password must be at least 6 characters long"
             }
+        },
+        payment: {
+            summary: "Payment Summary",
+            total: "Total",
+            cardDetails: "Card Details",
+            cancel: "Cancel",
+            pay: "Pay",
+            processing: "Processing...",
+            success: "Payment successful! Your tickets have been booked.",
+            error: "Payment failed. Please try again."
         }
     },
     el: {
@@ -561,6 +571,16 @@ export const translations = {
                 passwordMismatch: "Οι κωδικοί πρόσβασης δεν ταιριάζουν",
                 passwordLength: "Ο κωδικός πρόσβασης πρέπει να έχει τουλάχιστον 6 χαρακτήρες"
             }
+        },
+        payment: {
+            summary: "Περίληψη Πληρωμής",
+            total: "Σύνολο",
+            cardDetails: "Στοιχεία Κάρτας",
+            cancel: "Ακύρωση",
+            pay: "Πληρωμή",
+            processing: "Επεξεργασία...",
+            success: "Επιτυχής πληρωμή! Τα εισιτήριά σας έχουν κρατηθεί.",
+            error: "Η πληρωμή απέτυχε. Παρακαλώ δοκιμάστε ξανά."
         }
     }
 }; 

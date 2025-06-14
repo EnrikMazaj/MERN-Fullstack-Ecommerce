@@ -47,7 +47,6 @@ const MyBookings = () => {
                 setLoading(true);
                 setError(null);
                 const response = await bookingService.getUserBookings(user.id);
-                console.log('Raw bookings from API:', response.data);
                 const bookingsWithRoutes = await Promise.all(
                     response.data.map(async (booking: Booking) => {
                         try {
@@ -62,7 +61,6 @@ const MyBookings = () => {
                                     isRoundTrip: booking.isRoundTrip,
                                     arrivalDate: booking.arrivalDate
                                 };
-                                console.log('Processed booking:', processedBooking);
                                 return processedBooking;
                             }
                             return booking;
@@ -72,7 +70,6 @@ const MyBookings = () => {
                         }
                     })
                 );
-                console.log('Final bookings with routes:', bookingsWithRoutes);
                 setBookings(bookingsWithRoutes);
             } catch (error) {
                 setError(t.errors.load);
@@ -155,11 +152,6 @@ const MyBookings = () => {
                     <p className="no-bookings">{t.noBookings}</p>
                 ) : (
                     bookings.map((booking) => {
-                        console.log('Rendering booking:', booking._id, {
-                            isRoundTrip: booking.isRoundTrip,
-                            arrivalDate: booking.arrivalDate,
-                            routeInfo: booking.routeInfo
-                        });
                         return (
                             <div key={booking._id} className="booking-card">
                                 <div className="ticket-status">

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeBooking, clearCart } from '../../features/cartSlice.tsx';
+import { removeBooking } from '../../features/cartSlice.tsx';
 import { FaShoppingCart, FaTrash, FaTimes, FaMapMarkerAlt, FaCalendarAlt, FaChevronDown, FaBus } from 'react-icons/fa';
 import { RootState } from '../../redux/store.tsx';
 import { useAuth } from '../../context/AuthContext';
-import bookingService from '../../services/bookingService';
 import routeService from '../../services/routeService';
+import StripeCheckout from '../StripeCheckout/StripeCheckout';
 import './Cart.css';
-import { useNavigate } from 'react-router-dom';
+
 import { toast } from 'react-toastify';
 import { useTheme } from '../../context/ThemeContext';
 import { translations } from '../../translations';
@@ -20,20 +20,28 @@ interface RouteDetails {
 
 const Cart = () => {
   const [isCartVisible, setCartVisibility] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassportForm, setShowPassportForm] = useState(false);
+  const [showStripeCheckout, setShowStripeCheckout] = useState(false);
   const [passportNumber, setPassportNumber] = useState('');
   const [routeDetails, setRouteDetails] = useState<{ [key: string]: RouteDetails }>({});
   const [expandedTicket, setExpandedTicket] = useState<number | null>(null);
   const bookings = useSelector((state: RootState) => state.cart.bookings);
   const dispatch = useDispatch();
   const { isLoggedIn, user } = useAuth();
-  const navigate = useNavigate();
   const { language } = useTheme();
   const t = translations[language].cart;
 
   const totalBookings = bookings.length;
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   useEffect(() => {
     const fetchRouteDetails = async () => {
@@ -112,74 +120,19 @@ const Cart = () => {
       return;
     }
 
-    await processCheckout();
+    // Open Stripe checkout instead of processing directly
+    setShowStripeCheckout(true);
+    setCartVisibility(false);
   };
 
-  const processCheckout = async () => {
-    try {
-      setIsProcessing(true);
-      setError(null);
 
-      if (!user?.id) {
-        throw new Error('User ID not found. Please log in again.');
-      }
-
-      const bookingPromises = bookings.map(booking => {
-        const bookingData = {
-          seatNumber: booking.seatNumber,
-          totalPrice: booking.totalPrice,
-          passengerName: booking.passengerName,
-          passengerPassport: passportNumber || booking.passengerPassport,
-          userId: user.id,
-          routeId: booking.routeId,
-          travelDate: booking.travelDate,
-          isRoundTrip: booking.isRoundTrip,
-          arrivalDate: booking.arrivalDate
-        };
-
-        return bookingService.createBooking(bookingData);
-      });
-
-      await Promise.all(bookingPromises);
-
-      bookings.forEach(booking => {
-        dispatch(removeBooking({ seatNumber: booking.seatNumber }));
-      });
-
-      setCartVisibility(false);
-
-      toast.success(t.ticket.purchaseSuccess);
-
-      dispatch(clearCart());
-
-      navigate('/');
-    } catch (error) {
-      let errorMessage = t.errors.purchase;
-
-      if (error instanceof Error) {
-        errorMessage = `${t.errors.requestError}: ${error.message}`;
-      } else if (typeof error === 'object' && error !== null) {
-        const axiosError = error as any;
-        if (axiosError.response) {
-          errorMessage = `${t.errors.serverError} (${axiosError.response.status}): ${JSON.stringify(axiosError.response.data)}`;
-        } else if (axiosError.request) {
-          errorMessage = t.errors.noResponse;
-        } else {
-          errorMessage = `${t.errors.requestError}: ${axiosError.message}`;
-        }
-      }
-
-      setError(errorMessage);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
 
   const handlePassportSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (passportNumber.trim()) {
       setShowPassportForm(false);
-      processCheckout();
+      setShowStripeCheckout(true);
+      setCartVisibility(false);
     } else {
       setError(t.passport.error);
     }
@@ -187,6 +140,10 @@ const Cart = () => {
 
   const toggleTicketExpansion = (seatNumber: number) => {
     setExpandedTicket(expandedTicket === seatNumber ? null : seatNumber);
+  };
+
+  const handleStripeCheckoutClose = () => {
+    setShowStripeCheckout(false);
   };
 
   return (
@@ -207,7 +164,18 @@ const Cart = () => {
             </button>
             <h3>{t.title}</h3>
 
-            {error && <div className="error-message">{error}</div>}
+            {error && (
+              <div className="error-message">
+                <span>{error}</span>
+                <button
+                  className="error-close-btn"
+                  onClick={() => setError(null)}
+                  type="button"
+                >
+                  ×
+                </button>
+              </div>
+            )}
 
             {showPassportForm ? (
               <form onSubmit={handlePassportSubmit} className="passport-form">
@@ -317,9 +285,8 @@ const Cart = () => {
                   <button
                     className="checkout-btn"
                     onClick={handleCheckout}
-                    disabled={isProcessing}
                   >
-                    {isProcessing ? 'Processing...' : t.checkout}
+                    {t.checkout}
                   </button>
                 </div>
               </>
@@ -331,6 +298,12 @@ const Cart = () => {
           </div>
         </div>
       )}
+
+      <StripeCheckout
+        isOpen={showStripeCheckout}
+        onClose={handleStripeCheckoutClose}
+        passportNumber={passportNumber}
+      />
     </div>
   );
 };
