@@ -48,6 +48,7 @@
     "server": "NODE_OPTIONS='--experimental-specifier-resolution=node' nodemon",
     "client": "PORT=3001 react-scripts start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev:local": "NODE_ENV=development concurrently \"npm run server\" \"npm run client\"",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "eslint . --ext .ts,.tsx --fix",

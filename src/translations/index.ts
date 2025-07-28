@@ -262,7 +262,7 @@ export const translations = {
             }
         },
         auth: {
-            login: "Sign In",
+            login: "Login",
             register: "Sign Up",
             logout: "Sign Out",
             welcome: "Welcome",

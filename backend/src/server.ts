@@ -1,17 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import session from 'express-session';
-import { RedisStore } from 'connect-redis';
-import { createClient } from 'redis';
 import { connectDB } from './config/database.js';
+import { sessionConfig } from './config/redis.js';
 import routes from './routes/index.js';
 import path from 'path';
-
-const redisClient = createClient({
-    url: process.env.REDIS_URL
-});
-
-redisClient.connect().catch(console.error);
 
 const app = express();
 
@@ -53,17 +46,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
 }));
 
-app.use(session({
-    store: new RedisStore({ client: redisClient }),
-    secret: process.env.SESSION_SECRET || 'your-secret-key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000
-    }
-}));
+app.use(session(sessionConfig));
 
 app.use('/api', routes);
 

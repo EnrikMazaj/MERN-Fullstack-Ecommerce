@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://bus-ecommerce.onrender.com';
+// Use localhost for development, production URL for production
+const API_URL = process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'  // Development URL
+    : 'https://bus-ecommerce.onrender.com';  // Production URL
 
 const axiosInstance = axios.create({
     baseURL: API_URL,
