@@ -6,39 +6,65 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const redisClient: RedisClientType = createClient({
-    url: process.env.REDIS_URL || 'redis://localhost:6379',
-    socket: {
-        reconnectStrategy: (retries) => {
-            if (retries > 3) {
-                return new Error('Max retries reached');
+let redisClient: RedisClientType | null = null;
+let isRedisAvailable = false;
+
+try {
+    redisClient = createClient({
+        url: process.env.REDIS_URL || 'redis://localhost:6379',
+        socket: {
+            reconnectStrategy: (retries) => {
+                if (retries > 3) {
+                    return new Error('Max retries reached');
+                }
+                return Math.min(retries * 100, 3000);
             }
-            return Math.min(retries * 100, 3000);
         }
+    });
+
+    if (process.env.NODE_ENV !== 'test') {
+        redisClient.on('connect', () => {
+            console.log('Redis client connected');
+            isRedisAvailable = true;
+        });
+
+        redisClient.on('error', (error) => {
+            console.error('Redis client error:', error.message);
+            isRedisAvailable = false;
+        });
+
+        redisClient.on('end', () => {
+            console.log('Redis client disconnected');
+            isRedisAvailable = false;
+        });
+
+        redisClient.connect().then(() => {
+            isRedisAvailable = true;
+        }).catch((error) => {
+            console.log('Redis not available, using memory store for sessions');
+            isRedisAvailable = false;
+        });
     }
-});
-
-if (process.env.NODE_ENV !== 'test') {
-    redisClient.on('connect', () => {
-        console.log('Redis client connected');
-    });
-
-    redisClient.on('error', (error) => {
-        console.error('Redis client error:', error);
-    });
-
-    redisClient.connect().catch((error) => {
-        console.error('Redis connection error:', error);
-    });
+} catch (error) {
+    console.log('Redis client creation failed, using memory store for sessions');
+    isRedisAvailable = false;
 }
 
-const store: Store = new RedisStore({
-    client: redisClient,
-    prefix: 'session:'
-});
+let store: Store | undefined;
 
-export const sessionConfig = {
-    store,
+if (redisClient && isRedisAvailable) {
+    try {
+        store = new RedisStore({
+            client: redisClient,
+            prefix: 'session:'
+        });
+    } catch (error) {
+        console.log('Redis store creation failed, using memory store');
+        store = undefined;
+    }
+}
+
+const baseSessionConfig = {
     secret: process.env.SESSION_SECRET || 'your-secret-key',
     resave: false,
     saveUninitialized: false,
@@ -50,4 +76,9 @@ export const sessionConfig = {
         domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined,
         path: '/'
     }
+};
+
+export const sessionConfig = {
+    ...baseSessionConfig,
+    store
 };

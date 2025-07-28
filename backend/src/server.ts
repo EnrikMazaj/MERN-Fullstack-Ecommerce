@@ -46,7 +46,15 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
 }));
 
-app.use(session(sessionConfig));
+app.use((req, res, next) => {
+    session(sessionConfig)(req, res, (err) => {
+        if (err) {
+            console.error('Session middleware error:', err);
+            return next();
+        }
+        next();
+    });
+});
 
 app.use('/api', routes);
 
@@ -54,10 +62,9 @@ const startServer = async () => {
     try {
         await connectDB();
 
-        // Use environment-specific port
         const port = process.env.NODE_ENV === 'production'
-            ? (process.env.PORT || 10000)  // Production port
-            : (process.env.PORT || 3000);  // Development port
+            ? (process.env.PORT || 10000)
+            : (process.env.PORT || 3000);
 
         const server = app.listen(port, () => {
             if (process.env.NODE_ENV !== 'test') {
@@ -78,7 +85,6 @@ const startServer = async () => {
     }
 };
 
-// Only start the server if we're not in a test environment
 if (process.env.NODE_ENV !== 'test') {
     startServer();
 }
