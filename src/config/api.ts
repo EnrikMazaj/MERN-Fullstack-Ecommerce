@@ -20,7 +20,8 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     config => {
-        if (config.method === 'get') {
+        // Add cache-busting for critical data only (bookings need fresh data)
+        if (config.method === 'get' && config.url?.includes('/bookings')) {
             config.params = { ...config.params, _t: Date.now() };
         }
         return config;

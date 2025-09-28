@@ -52,6 +52,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "eslint . --ext .ts,.tsx --fix",
+    "optimize-images": "node scripts/optimize-images.cjs",
     "prepare": "husky"
   },
   "eslintConfig": {
@@ -73,6 +74,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@redis/client": "^5.0.0",
     "@types/bcryptjs": "^3.0.0",
     "@types/cors": "^2.8.17",

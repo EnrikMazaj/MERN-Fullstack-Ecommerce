@@ -1,19 +1,21 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home.tsx';
-import Tickets from './pages/Tickets.tsx';
-import Contact from './pages/Contact.tsx';
-import RoutesKtel from './pages/Routes.tsx';
+import React, { Suspense, lazy } from 'react';
 import Navbar from './components/Navbar/Navbar.tsx';
 import Footer from './components/Footer/Footer.tsx';
-import Seats from './pages/Seats.tsx';
-import React from 'react';
 import Cart from './components/Cart/Cart.tsx';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
-import MyBookings from './pages/MyBookings.tsx';
 import ScrollToTop from './components/ScrollToTop.tsx';
 import ToastConfig from './components/ToastConfig.tsx';
+
+// Lazy load pages for better performance
+const Home = lazy(() => import('./pages/Home.tsx'));
+const Tickets = lazy(() => import('./pages/Tickets.tsx'));
+const Contact = lazy(() => import('./pages/Contact.tsx'));
+const RoutesKtel = lazy(() => import('./pages/Routes.tsx'));
+const Seats = lazy(() => import('./pages/Seats.tsx'));
+const MyBookings = lazy(() => import('./pages/MyBookings.tsx'));
 
 function App() {
   return (
@@ -24,14 +26,27 @@ function App() {
           <ToastConfig />
           <div className="App">
             <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/routes" element={<RoutesKtel />} />
-              <Route path="/tickets" element={<Tickets />} />
-              <Route path="/seats" element={<Seats />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/my-bookings" element={<MyBookings />} />
-            </Routes>
+            <Suspense fallback={
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '50vh',
+                fontSize: '1.2rem',
+                color: '#666'
+              }}>
+                Loading...
+              </div>
+            }>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/routes" element={<RoutesKtel />} />
+                <Route path="/tickets" element={<Tickets />} />
+                <Route path="/seats" element={<Seats />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/my-bookings" element={<MyBookings />} />
+              </Routes>
+            </Suspense>
             <Cart />
             <Footer />
           </div>

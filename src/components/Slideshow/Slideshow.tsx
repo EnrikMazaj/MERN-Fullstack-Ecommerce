@@ -10,22 +10,22 @@ const Slideshow = () => {
 
   const images = [
     {
-      url: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/cc/8d/2a/the-beautiful-mylopotamos.jpg?w=700&h=-1&s=1',
+      url: require('../../assets/the-beautiful-mylopotamos.jpg'),
       title: t.mylopotamos.title,
       description: t.mylopotamos.description
     },
     {
-      url: 'https://wowiwalkers.com/wp-content/uploads/2021/10/Thessaloniki-Photoshop.jpg',
+      url: require('../../assets/Thessaloniki-Photoshop.jpg'),
       title: t.thessaloniki.title,
       description: t.thessaloniki.description
     },
     {
-      url: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+      url: require('../../assets/mykonos.avif'),
       title: t.mykonos.title,
       description: t.mykonos.description
     },
     {
-      url: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+      url: require('../../assets/santorini.avif'),
       title: t.santorini.title,
       description: t.santorini.description
     }
