@@ -1,9 +1,10 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import Navbar from './components/Navbar/Navbar.tsx';
 import Footer from './components/Footer/Footer.tsx';
 import Cart from './components/Cart/Cart.tsx';
+import LoadingScreen from './components/LoadingScreen/LoadingScreen.tsx';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ScrollToTop from './components/ScrollToTop.tsx';
@@ -18,6 +19,17 @@ const Seats = lazy(() => import('./pages/Seats.tsx'));
 const MyBookings = lazy(() => import('./pages/MyBookings.tsx'));
 
 function App() {
+  useEffect(() => {
+    const initialLoader = document.getElementById('initial-loader');
+    if (initialLoader) {
+      initialLoader.style.opacity = '0';
+      initialLoader.style.transition = 'opacity 0.3s ease-out';
+      setTimeout(() => {
+        initialLoader.remove();
+      }, 300);
+    }
+  }, []);
+
   return (
     <AuthProvider>
       <ThemeProvider>
@@ -26,18 +38,7 @@ function App() {
           <ToastConfig />
           <div className="App">
             <Navbar />
-            <Suspense fallback={
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '50vh',
-                fontSize: '1.2rem',
-                color: '#666'
-              }}>
-                Loading...
-              </div>
-            }>
+            <Suspense fallback={<LoadingScreen message="Loading page..." />}>
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/routes" element={<RoutesKtel />} />

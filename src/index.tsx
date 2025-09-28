@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
+import LoadingScreen from './components/LoadingScreen/LoadingScreen.tsx';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -14,7 +15,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate
+        loading={<LoadingScreen message="Initializing application..." />}
+        persistor={persistor}
+      >
         <App />
       </PersistGate>
     </Provider>

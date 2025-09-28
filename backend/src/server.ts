@@ -2,10 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import session from 'express-session';
 import compression from 'compression';
+import dotenv from 'dotenv';
 import { connectDB } from './config/database.js';
 import { sessionConfig } from './config/redis.js';
 import routes from './routes/index.js';
 import path from 'path';
+
+// Load environment variables at the start
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 const app = express();
 
