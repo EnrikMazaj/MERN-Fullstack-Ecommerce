@@ -69,16 +69,21 @@ const Slideshow = () => {
       onMouseLeave={handleMouseLeave}
     >
       <div className="slide">
-        <img src={images[index].url} alt={images[index].title} />
+        <img
+          src={images[index].url}
+          alt={images[index].title}
+          loading="lazy"
+          decoding="async"
+        />
         <div className="slide-content">
           <h3>{images[index].title}</h3>
           <p>{images[index].description}</p>
         </div>
       </div>
-      <button className="prev" onClick={prevSlide}>
+      <button className="prev" onClick={prevSlide} aria-label="Previous slide">
         <FaArrowLeft />
       </button>
-      <button className="next" onClick={nextSlide}>
+      <button className="next" onClick={nextSlide} aria-label="Next slide">
         <FaArrowRight />
       </button>
       <div className="slide-indicators">
@@ -87,6 +92,7 @@ const Slideshow = () => {
             key={i}
             className={`indicator ${i === index ? 'active' : ''}`}
             onClick={() => setIndex(i)}
+            aria-label={`Go to slide ${i + 1}`}
           />
         ))}
       </div>

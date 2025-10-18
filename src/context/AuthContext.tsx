@@ -20,18 +20,29 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState<User | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+
+    const login = (userData: User) => {
+        setIsLoggedIn(true);
+        setUser(userData);
+    };
 
     useEffect(() => {
         const checkSession = async () => {
             try {
+                // Add timeout to prevent blocking for too long
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
                 const response = await fetch(`${API_URL}/api/users/check-auth`, {
                     credentials: 'include',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    signal: controller.signal
                 });
+
+                clearTimeout(timeoutId);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -46,21 +57,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     setUser(null);
                 }
             } catch (error) {
-                console.error('Session check error:', error);
+                // Silent fail - don't block on error, just assume not logged in
                 setIsLoggedIn(false);
                 setUser(null);
-            } finally {
-                setIsLoading(false);
             }
         };
 
         checkSession();
     }, []);
-
-    const login = (userData: User) => {
-        setIsLoggedIn(true);
-        setUser(userData);
-    };
 
     const logout = async () => {
         try {
@@ -77,19 +81,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setIsLoggedIn(false);
                 setUser(null);
             } else {
-                console.error('Logout failed:', await response.text());
+                // Logout failed but continue anyway
             }
         } catch (error) {
-            console.error('Logout error:', error);
+            // Silent fail - still clear local state
             setIsLoggedIn(false);
             setUser(null);
         }
     };
 
-    if (isLoading) {
-        return null;
-    }
-
+    // Don't block rendering while checking auth - show content immediately
     return (
         <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
             {children}
