@@ -1,3 +1,5 @@
+/* Routes Page - Matching Site Theme */
+
 .routes-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -39,18 +41,20 @@
 
 .routes-container {
   width: 90%;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   position: relative;
   z-index: 1;
 }
 
-h1 {
+/* Title Styles */
+.routes-container h1 {
   font-size: 2.5rem;
   margin-bottom: 2rem;
   background: linear-gradient(45deg, #1a365d, #2b6cb0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-weight: 800;
   text-align: center;
   position: relative;
@@ -58,7 +62,7 @@ h1 {
   animation: fadeInDown 0.8s ease-out;
 }
 
-h1::after {
+.routes-container h1::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -71,52 +75,189 @@ h1::after {
   animation: expandWidth 0.8s ease-out forwards;
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+/* Search Bar */
+.search-bar {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+  transition: all 0.3s ease;
+  outline: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.search-input:focus {
+  border-color: #3498db;
+  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.2);
+}
+
+/* Table Container */
+.routes-table-container {
+  width: 100%;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  padding: 20px;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(0, 0, 0, 0.1);
-  animation: fadeInUp 0.8s ease-out;
+  animation: fadeInUp 0.8s ease-out 0.3s backwards;
   backdrop-filter: blur(10px);
   position: relative;
   z-index: 1;
+  overflow: hidden;
 }
 
-.grid-header {
-  font-weight: 600;
-  text-align: center;
-  padding: 15px 0;
+/* Table Styles */
+.routes-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.routes-table thead {
   background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
+
+.routes-table th {
+  padding: 1.25rem;
+  text-align: left;
   color: white;
-  border-radius: 8px;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.grid-item {
-  text-align: center;
-  padding: 15px 0;
-  background-color: #fff;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
+.routes-table tbody tr {
+  border-bottom: 1px solid #e9ecef;
   transition: all 0.3s ease;
 }
 
-.grid-item:nth-child(odd) {
-  background-color: #f8f9fa;
+.routes-table tbody tr:hover {
+  background-color: #f0f9ff;
+  transform: scale(1.01);
 }
 
-.grid-item:hover {
-  background-color: #e3f2fd;
+.routes-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.routes-table tbody tr.cancelled-route {
+  opacity: 0.5;
+  background-color: #f7f7f7;
+}
+
+.routes-table tbody tr.cancelled-route:hover {
+  background-color: #f7f7f7;
+  transform: none;
+}
+
+.routes-table td {
+  padding: 1.25rem;
+  color: #2d3748;
+  font-size: 1rem;
+}
+
+/* Route Destinations */
+.route-destinations {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+}
+
+.route-destinations .origin {
+  color: #2c3e50;
+}
+
+.route-destinations .arrow {
+  color: #3498db;
+  font-size: 1.25rem;
+}
+
+.route-destinations .destination {
+  color: #34495e;
+}
+
+/* Duration */
+.duration {
+  font-weight: 600;
+  color: #3498db;
+}
+
+/* Frequency */
+.frequency {
+  color: #5a6c7d;
+  font-size: 0.95rem;
+}
+
+/* Price */
+.price {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #27ae60;
+}
+
+/* Loading and Error States */
+.loading-message,
+.error-message {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-top: 2rem;
+}
+
+.loading-message p,
+.error-message p {
+  color: #4a5568;
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+}
+
+.retry-button {
+  padding: 0.875rem 1.75rem;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.retry-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
 }
 
+/* No Routes */
+.no-routes {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-top: 2rem;
+}
+
+.no-routes p {
+  color: #718096;
+  font-size: 1.125rem;
+}
+
+/* Animations */
 @keyframes fadeInDown {
   from {
     opacity: 0;
@@ -148,131 +289,130 @@ h1::after {
   }
 }
 
-/* Responsive design for smaller screens */
+/* Tablet Responsive (768px and below) */
 @media (max-width: 768px) {
+  .routes-content {
+    padding: 1.5rem;
+  }
+
+  .routes-container h1 {
+    font-size: 2rem;
+  }
+
+  .routes-table-container {
+    border-radius: 12px;
+  }
+
+  /* Hide table headers on mobile */
+  .routes-table thead {
+    display: none;
+  }
+
+  /* Make table rows into cards on mobile */
+  .routes-table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+  }
+
+  .routes-table tbody tr:hover {
+    transform: none;
+  }
+
+  .routes-table td {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    padding: 0.875rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .routes-table td:last-child {
+    border-bottom: none;
+  }
+
+  .routes-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #2c3e50;
+    padding-right: 1rem;
+  }
+
+  .route-destinations {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .search-input {
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile Responsive (480px and below) */
+@media (max-width: 480px) {
   .routes-content {
     padding: 1rem;
   }
 
-  .grid-container {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 15px;
-  }
-
-  .grid-header {
-    display: none;
-  }
-
-  .grid-item {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    text-align: left;
-    padding: 12px 15px;
-  }
-
-  .grid-item::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #2c3e50;
-  }
-
-  h1 {
-    font-size: 2rem;
-  }
-}
-
-/* Specific styles for 360x740 screens */
-@media screen and (width: 360px) and (height: 740px) {
-  .routes-content {
-    padding: 0.5rem;
-    min-height: calc(100vh - 60px);
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-  }
-
   .routes-container {
-    width: 100%;
-    padding: 0 10px;
+    width: 95%;
   }
 
-  h1 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    padding-bottom: 10px;
-    color: #2c3e50;
+  .routes-container h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
   }
 
-  h1::after {
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, #3498db, #2ecc71);
+  .search-bar {
+    margin-bottom: 1.5rem;
   }
 
-  .grid-container {
-    display: flex;
+  .routes-table td {
+    grid-template-columns: 120px 1fr;
+    padding: 0.75rem 0.875rem;
+    font-size: 0.9rem;
+  }
+
+  .route-destinations {
     flex-direction: column;
-    gap: 0;
-    padding: 10px;
-    background: transparent;
-    box-shadow: none;
-    border: none;
+    align-items: flex-start;
+    gap: 0.25rem;
   }
 
-  .grid-header {
+  .route-destinations .arrow {
     display: none;
   }
 
-  /* Style each route group */
-  .grid-container > div:nth-child(4n+5),
-  .grid-container > div:nth-child(4n+6),
-  .grid-container > div:nth-child(4n+7),
-  .grid-container > div:nth-child(4n+8) {
-    background: white;
-    padding: 12px 15px;
-    border-bottom: 1px solid #e0e0e0;
+  .seats-badge {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.75rem;
   }
 
-  /* Add division above first item of each route */
-  .grid-container > div:nth-child(4n+5) {
-    border-top: 2px solid #3498db;
-    background: linear-gradient(to right, #f8f9fa, white);
-  }
-
-  /* Add margin after each complete route */
-  .grid-container > div:nth-child(4n+8) {
-    margin-bottom: 15px;
-    border-bottom: 2px solid #3498db;
-  }
-
-  /* Make all text consistent with colors */
-  .grid-item {
+  .price {
     font-size: 1rem;
-    margin: 0;
-    padding: 4px 0;
-  }
-
-  .grid-item[data-label="Time"] {
-    color: #3498db;
-    font-weight: 600;
-  }
-
-  .grid-item[data-label="Bus"] {
-    color: #2c3e50;
-  }
-
-  .grid-item[data-label="Destination"] {
-    color: #34495e;
-  }
-
-  .grid-item[data-label="Price"] {
-    color: #27ae60;
-    font-weight: 600;
-  }
-
-  /* Make the content more compact */
-  .routes-content::before,
-  .routes-content::after {
-    opacity: 0.03;
   }
 }
-  
+
+/* Extra Small Phones (360px and below) */
+@media (max-width: 360px) {
+  .routes-content {
+    padding: 0.75rem;
+  }
+
+  .routes-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .routes-table td {
+    grid-template-columns: 100px 1fr;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .routes-table td::before {
+    font-size: 0.85rem;
+  }
+}
